@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "FAQ";
+}
+
+<div style="width: 95%;">
+    <h2 id="top">General</h2>
+    <ul class="faq-links">
+        <li><a href="#what-is-gmr">What is GMR?</a></li>
+        <li><a href="#where-can-i-get-help">Where can I get help?</a></li>
+        <li><a href="#how-to-start-game">How do I start a game?</a></li>
+        <li><a href="#how-to-join-game">How do I join a game?</a></li>
+        <li><a href="#how-to-submit-turn">How do I submit a turn?</a></li>
+        <li><a href="#what-are-points">What are 'Points'?</a></li>
+        <li><a href="#how-to-revert-turn">How do I revert a game to the previous turn?</a></li>
+        <li><a href="#what-is-vacation-mode">What is Vacation mode?</a></li>
+        <li><a href="#what-is-in-game-password">How does my In-Game Password work?</a></li>
+        <li><a href="#how-to-end-game">How do we end a game on GMR?</a></li>
+        <li><a href="#can-pc-mac-play-together">Does GMR work for Mac players as well as PC?</a></li>
+        <li><a href="#can-different-expansions-play-together">Can a friend and I play together on GMR even though he doesn't have the same Expansion/DLC as I do?</a></li>
+    </ul>
+
+    <h2>Troubleshooting</h2>
+    <ul class="faq-links">
+        <li><a href="#civ-crashes-loading-save">Why does Civ V crash sometimes when I try to load a GMR save file?</a></li>
+        <li><a href="#incorrect-first-game-turn">I get a notice that I'm the first player and must create the game, even though we're many turns in?</a></li>
+        <li><a href="#cant-load-scenario-first-turn">I can't click the "Load" button for the first turn of a GMR Scenario game inside the hot seat menu.</a></li>
+        <li><a href="#gmr-client-install-messed-up">GMR Client won't run, can't re-install or uninstall it.</a></li>
+    </ul>
+
+    <div class="faq-questions" style="margin-top: 40px;">
+        <!-- General -->
+        <span id="what-is-gmr"><a href="#top">↑</a> What is GMR?</span>
+        <p>
+            Giant Multiplayer Robot is a multiplayer service for Sid Meier's Civilization V which handles passing your games' save files from player to player.
+        </p>
+
+        <span id="where-can-i-get-help"><a href="#top">↑</a> Where can I get help?</span>
+        <p>
+            We're happy to help with any issues you may have. Just send us a message on <a href="http://twitter.com/GMRobot">Twitter</a>,
+            write on our <a href="http://www.facebook.com/GiantMultiplayerRobot">Facebook page</a>, or
+            email us at <strong>support@multiplayerrobot.com</strong>.
+            <br />
+            <br />
+            If the issue you're experiencing is with a specific game please copy the URL for the game in your message or tell us its GameID,
+            which is the number at the very end of the URL for the game's Detail page. Example: <i>http://multiplayerrobot.com/Game#<strong>{GameID}</strong></i>
+        </p>
+
+        <span id="how-to-start-game"><a href="#top">↑</a> How do I start a game?</span>
+        <p>
+            We've got a <a href="http://www.youtube.com/watch?v=UQNczFe5Icc" target="_blank">video tutorial</a> which should help you get started with creating 
+            a game. Our website style has changed a bit since we made that video, but you should still be able to follow the same directions.
+        </p>
+
+        <span id="how-to-join-game"><a href="#top">↑</a> How do I join a game?</span>
+        <p>
+            Once you're authenticated with GMR you can easily join most <a href="/Game#public" target="_blank">public games</a> by going to their detail page and clicking on the 'Join' button.
+            This will then prompt you to select the civ you wish to play as and add you to the game. Alternatively someone might invite you to join a private game, this will create a notification
+            on the GMR website and send you an email containing a link to the game to be joined. Note that some 'In-Progress' public games are set to 'invite only', meaning you can't automatically
+            join them but instead must post a comment on the game stating your interest and have the game's host send you an invite.
+        </p>
+
+        <span id="how-to-submit-turn"><a href="#top">↑</a> How do I submit a turn?</span>
+        <p>
+            You can submit your turn one of two ways, using the <a href="/Download" target="_blank">GMR desktop client</a>, or through the website on the game's detail page.
+        </p>
+
+        <span id="what-are-points"><a href="#top">↑</a> What are 'Points'?</span>
+        <p>
+            Each time you submit a turn on GMR you are awarded a certain amount points for that turn determined by how many human players are in the game you submitted the turn
+            for. All the points you've earned are totalled and displayed next to your avatar in almost all areas of the website. Your total amount of points is also used to determine
+            your <strong>Rank</strong> on GMR. This helps other players quickly identify how much you've participated in GMR games. Points for a turn are calculated using this formula: 
+            <br />
+            <br />
+            <strong>Points = N + max( N-5, 0 )</strong>
+            <br />
+            Where <i>N</i> is the number of human players not on vacation in the game the moment the turn was submitted.
+            This rewards more points in games with more active human players, and provides bonus points to games with more than 5 such players. Since turns in larger games are less
+            frequent this is an attempt at balancing points rewarded for them.
+            <br />
+            <table style="width: 180px; margin-left: 15px;">
+                <tr>
+                    <td><strong>Points</strong></td>
+                    <td><strong>Rank</strong></td>
+                </tr>
+                @foreach (var pointRank in GmrServer.Global.PointRanks.OrderBy(pr => pr.Key))
+                {
+                    if (pointRank.Key >= 0)
+                    {
+                    <tr>
+                        <td>@string.Format("{0:n0}", pointRank.Key)</td>
+                        <td>@pointRank.Value</td>
+                    </tr>
+                    }
+                }
+            </table>
+        </p>
+
+        <span id="how-to-revert-turn"><a href="#top">↑</a> How do I revert a game to the previous turn?</span>
+        <p>
+            If you are a game's host or it's currently your turn in a game, you can revert the turn back to the previous player, allowing them
+            to replay their last turn. To do so you'll need to be authenticated on the GMR website and go to the game's detail page where you'll
+            find a button titled 'Revert'. Use this when there is some problem with the turn GMR is currently giving you to play or if there's 
+            another reason you feel it's necessary.
+        </p>
+
+        <span id="what-is-vacation-mode"><a href="#top">↑</a> What is Vacation mode?</span>
+        <p>
+            Turning on Vacation mode in GMR will cause the AI to play your turn in each of your games. This does not count as being skipped and
+            therefore doesn't carry the potential to get you automatically removed from a game. This is a useful feature if you're not going to
+            be able to take any GMR turns for several days and don't want to hold up the other players in your games.
+            <br /> <br />
+            You may also allow or disallow vacation mode for each game you're in. This lets you specify that a particular game should not treat
+            you as on vacation even when you've set your GMR account to Vacation as mentioned above. By default you are always set to allow vacation
+            in each game you're in. To disable that simply go to the details for your game and click the button that says "Allow Vacation", switching
+            it to "Don't Allow Vacation".
+        </p>
+
+        <span id="what-is-in-game-password"><a href="#top">↑</a> How does my In-Game Password work?</span>
+        <p>
+            Civilization V's hot seat mode has a feature which lets users set an in-game password for turn protection 
+            from other players. Giant Multiplayer Robot allows you to set a single in-game password for use in all of
+            your GMR games. This password will be set in the save file for any games you play.
+            <br /> <br />
+            GMR also performs password encryption. Regardless of whether or not you set an 
+            in-game password, when your save games get passed to other players, your password will be
+            set to random un-typable characters. This is because it is otherwise possible to
+            open a Civilization V save file and view other players' passwords.
+            <br /> <br />
+            Although we take security precautions with your in-game password, we would strongly reccomend against 
+            using an important password that you use for other websites. Note that data entered into GMR is 
+            <strong>not</strong> sent through SSL and is unencypted.
+            As stated in our @Html.ActionLink("terms of use", "TermsOfUse", "About", null, new { target = "_blank" }),
+            we are not liable for damages caused by using our service, so do avoid giving us sensitive information.
+        </p>
+
+        <span id="how-to-end-game"><a href="#top">↑</a> How do we end a game on GMR?</span>
+        <p>
+            GMR has no way to detect when your game in Civ V has finished, for example when one player has achieved any type of victory. Thus when
+            a game is finished due to a victory condition being met the only thing each player can do is 'Surrender' from the game
+            on the GMR website. Once you surrender from a completed game it will be removed from your games list and free up a slot to start or join
+            a new game. We hope to one day be able to detect victory from the save file, but at the moment this is the best we've got :)
+        </p>
+
+        <span id="can-pc-mac-play-together"><a href="#top">↑</a> Does GMR work for Mac players as well as PC?</span>
+        <p>
+            Yes! Typically a save file created with the PC version of Civ V will work just fine on the Mac version of Civ V and vice-versa.
+            However, when Firaxis releases an update (small or large) to Civ V they almost always release it to the PC first and the Mac
+            a short time later. During the time that the current PC version is different from the current Mac version, Mac players will not
+            be able to load the save files passed along by the PC players and thus are temporarily unable to play in GMR games. In the past when
+            this has happened Mac players just activate <a href="#what-is-vacation-mode">vacation mode</a> until Civ V on the Mac gets updated.
+        </p>
+        <p>
+            Also, if you're a Mac player, you will have to upload and download your turns manually via the GMR website. There are instructions 
+            on how to do this on the Game Details page when it's your turn. We would LOVE to have a desktop client for Mac like we do PC! 
+            Unfortunately, we lack the skills/experience to develop one for Mac OS at this time. So if you or someone you know has the necessary
+            skills and would be interested in writing a GMR client for Mac let us know!
+        </p>
+        
+        <span id="can-different-expansions-play-together"><a href="#top">↑</a> Can a friend and I play together on GMR even though he doesn't have the same Expansion/DLC as I do?</span>
+        <p>
+            Yes, as long as the host of the game only enables the DLC and Expansions that <i><b>all</b></i> other players in the game have
+            it works just fine! You enable/disable these when you create the hot seat game in Civ V. Also, if you have all the DLC and expansions
+            installed you can still load and play any save file down to bare vanilla CiV just fine. Civ V is smart enough to only use what was
+            enabled for that particular game!
+        </p>
+
+
+        <!-- Troubleshooting -->
+        <span id="civ-crashes-loading-save"><a href="#top">↑</a> Why does Civ V crash sometimes when I try to load a GMR save file?</span>
+        <p>
+            Civ V can crash when loading a GMR save file for many reasons including missing Mods or DLC. But at this time the
+            most common reason for a save file becoming un-loadable is due to a bug in Civ V hot seat mode we refer to as "save file bloating".
+            This occurs when a player loads and plays multiple save files one after another without exiting Civ V between them. When you
+            launch Civ V and load a hot seat save file, play your turn, and save it, the resulting save file will be approximately the same
+            size as the original file. However if you then go back to the main menu in Civ V and load another hot seat save file, play your turn,
+            and save it, the new save file for that game will almost always be considerably larger than its original file was. This is what we
+            mean by "bloating".
+        </p>
+        <p>
+            These "bloated" save files are still valid and will be loaded by Civ V on most player's computers. However if the save file is "too bloated"
+            it can cause Civ V to consume an abundant amount of system resources, and if your system doesn't have as much as it tries to consume then
+            the game will crash.
+        </p>
+        <p>
+            <strong>What can you do?</strong>
+            <br />
+            There are a couple things you can try if you think you've run into one of these "bloated" save files. The first thing to try is turning down
+            all the graphics settings in Civ V to their lowest values and then restarting Civ V. Another trick that one of the players in our community
+            discovered is to start up Civ V fresh, go to the Single Player menu and load any single player save file. Once the game has loaded, exit back 
+            to the Main Menu and proceed to load your GMR turn through the hot seat menu as normal. We're not exactly sure why but this will allow Civ V
+            to load the "bloated" file in the majority of cases. 
+        </p>
+        <p>
+            If you've tried all of these things and are still unable to load the turn, you can try
+            reverting the game back to the previous player on the GMR website and having them replay and submit their turn again, hoping the save file you
+            get is better. If this still fails to work then try letting yourself get skipped for that turn. Sometimes a player won't be able to load the
+            save for their turn in a game, but the next time it comes around to them they can. This is all strange stuff and we're truly sorry that it
+            happens :(
+        </p>
+
+        <span id="incorrect-first-game-turn"><a href="#top">↑</a> I get a notice that I'm the first player and must create the game, even though we're many turns in?</span>
+        <p>
+            This can sometimes happen due to a bug that we haven't been able to track down yet in our turn processing and skipping. If it occurs simply
+            revert the turn back to the previous player and let them play their turn again, that generally fixes it. If that doesn't work then email
+            us and let us know which game you're experiencing it in and we'll fix it manually.
+        </p>
+        
+        <span id="cant-load-scenario-first-turn"><a href="#top">↑</a> I can't click the "Load" button for the first turn of a GMR Scenario game inside the hot seat menu.</span>
+        <p>
+            Civ V recently changed the way it recognizes save file types, and as such when GMR generates a "hot seat" save file for your Scenario game on GMR Civ V won't allow
+            it to be loaded. Don't worry, there's any easy workaround for this at the moment, while we investigate a more permanent solution. You simply need to copy the "(GMR) Play this one!.Civ5Save"
+            file that is downloaded for this turn and place it in the <a href="http://savelocations.wikia.com/wiki/Sid_Meier's_Civilization_V">Civ V Single Player saves directory</a>. 
+            Then load the turn through the Civ V Single Player menu and play it as you normally would any other gmr game. When you're turn is finished and you're presented with the password 
+            dialog for the next player, simply save the game and the GMR Client should pick it up and pass it along. From that point on all players should be able to load the turn just 
+            fine from the hot seat menu, just like every other GMR game.
+        </p>
+        
+        <span id="gmr-client-install-messed-up"><a href="#top">↑</a> GMR Client won't run, can't re-install or uninstall it.</span>
+        <p>
+            For various reasons the GMR Client installation on your computer might be become corrupted or broken, preventing you from running, uninstalling, or properly re-installing the 
+            GMR Client. If this happens here are some steps you can try to resolve the issue:
+            <br/>
+            <ol>
+                <li>Uninstall the GMR Client through the Add/Remove Programs control panel in Windows (if it shows up there)</li>
+                <li>Find this folder in windows C:\Users\<i>[your_user_name]</i>\AppData\Local\Apps\2.0\<i>[8_random_characters]</i>.<i>[3_random_characters]</i>\<i>[8_random_characters]</i>.<i>[3_random_characters]</i>\</li>
+                <li>Delete all folders in this directory that start with "gmr"</li>
+                <li>Attempt to install the program again using this link: <a href="http://multiplayerrobot.com/ClientDeploy/setup.exe">http://multiplayerrobot.com/ClientDeploy/setup.exe</a></li>
+            </ol>
+        </p>
+    </div>
+</div>

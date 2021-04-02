@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Home/_Layout.cshtml";
+    ViewBag.Title = "Giant Multiplayer Robot";
+    ViewBag.TwitterHeight = "700";
+}
+
+<div id="what-is-gmr" style="width:675px; float:left;">
+<h1>What is Giant Multiplayer Robot?</h1>
+<a style="float:right; margin: -30px 10px 10px 10px;" target="_blank" href="http://www.youtube.com/watch?v=UQNczFe5Icc" alt="Watch a demonstration video">
+    <img style="border:0" src="@Url.Content("~/Content/images/video.png")" alt="Demo Video" />
+    <br />
+    <span style="margin-left:35px;">Video Tutorial</span>
+</a>
+<p>
+    Giant Multiplayer Robot is a multiplayer service for Sid Meier's Civilization V which handles passing your games' save files from player to player.
+    As this happens, Giant Multiplayer Robot can send you notifications for when it's your turn via the website, email, and/or our desktop app. 
+    Giant Multiplayer Robot also provides services not normally available in Civilization V hot seat multiplayer, such as leaving an in-progress game, 
+    a customizable @Html.ActionLink("turn timer", "TurnTimer", "About", new object(), new { target="_blank" }),
+    and @Html.ActionLink("mod support", "Mods", "About", new object(), new { target="_blank" }).
+</p>
+<img style="float:right; margin-left:10px;" src="@Url.Content("~/Content/images/screen_sm.png")" />
+<h2>Forget the details, focus on the game</h2>
+<p>
+    The Giant Multiplayer Robot desktop app manages uploading and downloading your save files, so you don't have to worry about it.
+    Alternatively, if you're a Mac user or prefer not to use our desktop app, you can also download and submit your turns via your browser.
+</p>
+<h2>Free and easy</h2>
+<p>
+    For free, you can play up to two games at a time. Just log in with your Steam account to get started!
+    (@Html.ActionLink("This is how we use your Steam data", "SteamDataPolicy", "About"), if you're curious)
+    If you'd like to be in more games, or if you'd like to help out with our costs,
+    please @Html.ActionLink("support us", "Index", "SupportUs"). 
+</p>
+
+</div>

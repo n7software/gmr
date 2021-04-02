@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "Support Us";
+    Layout = "~/Views/SupportUs/_Layout.cshtml";
+
+    GmrLib.Models.User currentUser = GmrServer.Global.CurrentUser();
+
+    GmrLib.Models.UserAccountType currentUserAccountType = (currentUser != null) ? currentUser.AccountType : GmrLib.Models.UserAccountType.Free;
+    decimal totalUserPayment = (currentUser != null) ? currentUser.Payments.Sum(p => p.Amount) : 0.0m;
+
+    Func<GmrLib.Models.UserAccountType, string> getRowColor = type => (currentUser != null && type == currentUserAccountType) ? "#FFCC00" : string.Empty;
+}
+<h1>Support Giant Multiplayer Robot</h1>
+<div style="width: 75%">
+    <p>
+        As programmers, we here at Team GMR definitely have fun and benefit from making
+        Giant Multiplayer Robot. However, running a website does have costs to cover, so
+        we definitely appreciate funding from our users. <strong>By supporting us, you enable
+            us to keep things running smoothly and continue providing improvements so that we
+            can all enjoy Civilization V with our friends.</strong>
+    </p>
+    <p>
+        We want to make sure that our service is as excellent as possible. As part of this,
+        we have a standard limitation of two games at a time per user. In other words, if
+        you're in two games, you'll need to finish or leave one before you can create or
+        join another. However, <strong>if you support us, either in one payment
+            or over time, we'll upgrade your account to allow you to join or create more games.</strong>.
+
+        <table id="support-tiers">
+            <tr>
+                <td><strong>Amount</strong></td>
+                <td><strong>Game Limit</strong></td>
+                <td></td>
+            </tr>
+
+            @foreach (var typeCost in GmrServer.Global.SupportAmountByAccountType)
+            {
+                <tr style="color:@getRowColor(typeCost.Key);">
+                    <td>@GmrServer.Global.GetSupportAmountText(typeCost, totalUserPayment)</td>
+                    <td>@GmrServer.Global.GetSupportAmountGameLimitText(typeCost)</td>
+                    <td>
+                        @if (currentUser != null && typeCost.Key == currentUserAccountType)
+                        {
+                            <text>&lt;- Your level</text>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </p>
+    <p>
+        <strong>When you support Giant Multiplayer Robot, you support the users of Giant Multiplayer
+            Robot</strong>, so we really appreaciate every last dollar. 
+        @if (GmrServer.Global.UserSteamID > 0)
+        {
+            <text>If you'd like to support us, just click the button below and it'll take you to PayPal.</text>
+        }
+        else
+        {
+            <text>To make sure that we're able to give you credit for your support please 
+            @Html.ActionLink("sign in.", "Login", "User", new { returnUrl = Request.Url }, new { })</text>
+        }
+    </p>
+</div>
+@if (GmrServer.Global.UserSteamID > 0)
+{    
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="ZD2XNRGQA2SGU">
+        <input id="user-id" type="hidden" name="custom" value="@GmrServer.Global.UserSteamID" />
+        <a href="" id="toggle-other-player" toggled="false" onclick="toggleOtherPlayer(); return false;">Gift game limit to another player?</a>
+        <input type="image" src="@Url.Content("~/Content/images/SupportUs.png")" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+    </form>
+
+
+    <div id="select-other-player">
+        <h3>Select the user you would like to receive the increased game limit</h3>
+        <ul id="selected-list" class="avatar-list"></ul>
+        @Html.Partial("FindUsers")
+    </div>
+    
+    <script type="text/javascript">
+        var currentUserId = '@GmrServer.Global.UserSteamID';
+
+        function initializeSupportUsPage() {
+            $("#found-list").sortable({ connectWith: "#selected-list" });
+            $("#selected-list").sortable({ receive: selectedUser });
+        }
+
+        function selectedUser(eventData, ui) {
+            var newUser = ui.item;
+            newUser.tooltip();
+            $('#selected-list').empty().append(newUser);
+
+            var newUserId = newUser.find('.user-id').val();
+            $('#user-id').val(newUserId + '-' + currentUserId);
+        }
+
+        function clearOtherPlayer() {
+            $('#user-id').val(currentUserId);
+            $('#selected-list').empty();
+            $('#found-list').empty();
+            $('#found').hide();
+            $('#find-user').val('Username').addClass('watermark');
+
+        }
+
+        function toggleOtherPlayer() {
+            var toggleLink = $('#toggle-other-player');
+            var otherPlayerContainer = $('#select-other-player');
+            var isToggled = toggleLink.attr('toggled');
+            var showDuration = 200;
+            var fadeDuration = showDuration / 2;
+
+            if (isToggled === 'true') {
+                clearOtherPlayer();
+                otherPlayerContainer.hide(showDuration);
+                toggleLink.attr('toggled', 'false');
+                toggleLink.fadeOut(fadeDuration).text('Gift game limit to another player?').fadeIn(fadeDuration);
+            }
+            else {
+                otherPlayerContainer.show(showDuration);
+                toggleLink.attr('toggled', 'true');
+                toggleLink.fadeOut(fadeDuration).text('Increase my own game limit').fadeIn(fadeDuration);
+            }
+        }
+
+        $(document).ready(initializeSupportUsPage);
+    </script>
+}

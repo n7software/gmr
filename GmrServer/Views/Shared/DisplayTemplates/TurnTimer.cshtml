@@ -1,0 +1,55 @@
+﻿@model GmrLib.Models.TurnTimer
+
+<div id="turn-timer-container">
+    <div style="float:left">
+        @if(Model.Editable)
+        {
+            <div id="turn-timer-buttons">
+                <div id="edit-turn-timer" class="button link-button edit-icon" style="margin-right:5px" onclick="EditTurnTimer()"></div>
+            </div>
+        }
+        <h2 style="position:relative; @if(Model.Editable) { <text>left:-35px;</text> }">Turn Timer
+        &nbsp;<img src="@Url.Content("~/Content/images/help.png")" style="cursor:pointer" onclick="window.open('@Url.Action("TurnTimer", "About")', 'How to Use the GMR Turn Timer', 'width=615,height=800,scrollbars=1');" alt="help" /></h2>
+        @{ 
+            var turnExpiration = Model.FriendlyTurnExpiration;
+            var skipped = Model.CurrentPlayerTimesSkipped;
+            var timerTimeContstraint = Model.Start.HasValue;
+            string timerRunsOn = Model.RunsOnTheseDays(true);
+
+            var daysLeft = Model.DaysLeft;
+            var hoursLeft = Model.HoursLeft;
+        }
+        @if (Model.GameStarted)
+        {
+        <p style="margin-top:0px;">
+            Current turn expires <strong>@turnExpiration</strong><br />
+            Current player has been skipped <strong>@skipped</strong> @(skipped == 1 ? "time" : "times")
+            @if (Model.SkipLimit.HasValue)
+            { <br /><text>out of the allowed <strong>@Model.SkipLimit</strong> times before being kicked</text> }
+                        
+        </p>
+        }
+        else
+        {
+            <p style="margin-top:0px;">
+                The turn timer's time zone is <strong>@Model.FriendlyTimeZone</strong>
+                @if (Model.SkipLimit.HasValue)
+                { <br /><text> and has a skip limit of <strong>@Model.SkipLimit.Value</strong></text> }
+            </p>
+        }
+        <p>
+            Turn timer set to <strong>@Model.FriendlyDaysAndHours</strong>,<br />
+            @if (!timerTimeContstraint)
+            {<text>and </text>}runs on <strong>@timerRunsOn</strong>@if (timerTimeContstraint) {<text>,<br />
+            and can only expire <strong>between @Model.FriendlyStart and @Model.FriendlyStop</strong></text>}
+        </p>
+    </div>
+    @if (Model.GameStarted)
+    {
+        <div id="timer-sub-container">
+            <div class="turn-timer-text" style="top:72px;">@daysLeft @(daysLeft == 1 ? "day" : "days")</div>
+            <div class="turn-timer-text" style="top:93px;">@hoursLeft @(hoursLeft == 1 ? "hour" : "hours")</div>
+            <img id="turn-timer" src="@Url.Content("~/Content/images/piecontainer.png")" style="background-image:url(@Url.Action("Pie", new { id = Model.GameID }))" />
+        </div>
+    }
+</div>

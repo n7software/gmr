@@ -1,0 +1,503 @@
+﻿div#main
+{
+	background-color: transparent;
+	padding-left: 0px;
+    margin-top: -21px;
+}
+
+ul#menu li a#game
+{
+    padding-bottom: 14px;
+    background-color: #222222;
+    color:#CCCCCC;
+}
+
+ul#menu li a#game:hover
+{
+    background-color: #333333;
+    text-decoration: none;
+}
+
+ul#menu li a#game:active
+{
+    background-color: #555555;
+    text-decoration: none;
+}
+
+div.game-base-container {
+    float: left;
+    width: 695px;
+}
+
+div.game,
+div.comments
+{
+	background-color: #404040;
+	color:#D8D8D8;
+	width:715px;
+	padding-top:12px;
+	padding-bottom: 8px;
+	float:left;
+	margin-top:10px;
+
+}
+
+div.comments {
+    padding-left: 10px;
+}
+
+div.game-name
+{
+    width:710px;
+    margin-left:12px;
+    margin-bottom: 6px;
+    float:left;
+}
+div.name-block
+{
+    width:615px;
+    float:left;
+}
+div.name-block h2,
+div.name-block a
+{
+    position:relative;
+    top: -2px;
+}
+
+div.name-block a
+{
+	color: #7BB036;
+	font-size:160%;
+	font-weight: 500;
+}
+
+
+
+.comments p
+{
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
+
+div.game-host,
+div.author
+{
+	float:left; 
+	margin: 4px 12px 14px 12px;
+	height: 100px;
+	background-color: #505050;
+}
+
+div.author
+{
+	margin: 2px 12px 35px 2px;
+}
+
+div.game-host {
+    width: 180px;
+}
+
+div.game-type,
+.vacation-tag
+{
+    color: #DDDDDD;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    height: 20px;
+    padding: 3px 6px 0px 6px;
+    background-color: #666666;
+    font-size: 90%;
+    margin-right: 6px;
+    margin-top: 4px;
+}
+ul.game-players
+{
+	float:left;
+	padding: 0px 0px 0px 0px;
+	margin-top: 4px;
+	margin-bottom: 0px;
+	width:505px;
+}
+div.game-player-container,
+div.game-player,
+li.game-player
+{
+	float:left;
+	height: 46px;
+	background-color: #505050;
+	list-style: none;
+    width:100%;
+}
+div.game-player-container,
+div.average
+{
+    margin-right: 4px;
+	margin-bottom: 4px;
+}
+
+div.game-player-container {
+    width: 92px;
+    margin-bottom: 18px;
+}
+
+
+img.game-avatar {
+    margin: 7px;
+}
+
+img.game-avatarsm {
+    margin: 4px 3px 3px 3px;
+}
+
+img.civ-icon {
+    float: left;
+}
+
+div.average
+{
+	position: relative;
+}
+
+span.skip-count
+{
+	float: right;
+	padding: 1px;
+	background-color: #D6A028;
+	color: #222;
+	font-weight: bold;
+}
+
+div.game-host,
+div.game-player-container
+{
+	position: relative;
+}
+
+div.game-player
+{
+    width:180px;
+}
+
+input#game-name
+{
+	width:200px; 
+	margin-top:5px;
+	margin-bottom: 10px;
+}
+div.unplayed-games
+{
+	float:right; 
+	border-bottom:1px #555555 solid; 
+	padding:12px;
+}
+div.create-game
+{
+	height:40px; 
+}
+div#create-game-select,
+div#game-type-select,
+div#Scenario-instructions,
+div#ModTotalConversion-instructions,
+div#Mod-instructions
+{
+    float:left;
+	margin-top:10px;
+	width: 750px;
+}
+
+div#create-game-description {
+    float: left;
+    width: 680px;
+}
+
+div.mod-instructions
+{
+    display: none;
+}
+
+.right-box-button
+{
+    width:165px;
+    height:30px;
+    padding-top: 10px; 
+	padding-left: 0px;
+	text-align: center;
+	text-indent: 0px;
+}
+
+.disabled-right-box-button,
+.disabled-right-box-button:hover,
+.disabled-right-box-button:active
+{
+	cursor: default;
+	color: #AAA;
+	border-color: #999;
+	background-color: #666;
+}
+
+
+div.unplayed-game
+{
+	background-color: #333333;
+	color: #D8D8D8;
+	width: 148px;
+	float: left;
+	cursor: pointer;
+	padding: 8px 12px 8px 11px;
+	margin-bottom: 6px;
+	font-size: 16px;
+	color: #76A7CE;
+}
+div.unplayed-game:hover
+{
+	background-color: #505050;
+}
+div.unplayed-game:active
+{
+	background-color: #606060;
+}
+div.saving-changes
+{
+	background-image:url('images/tt-load.gif'); 
+	background-repeat:no-repeat; 
+	background-position: 650px 10px;
+}
+div.saved-changes
+{
+	background-image:url('images/check.png'); 
+	background-repeat:no-repeat; 
+	background-position: 655px 20px;
+}
+
+div.rb-saving-changes
+{
+	background-image:url('images/tt-load.gif'); 
+	background-repeat:no-repeat; 
+	background-position: 162px 5px;
+}
+div.rb-saved-changes
+{
+	background-image:url('images/check.png'); 
+	background-repeat:no-repeat; 
+	background-position: 170px 12px;
+}
+
+*.draggable
+{
+	cursor:move;
+}
+
+div#search,
+div#send-email,
+div#generate-invite-link
+{
+	width:20px;
+	height:20px;
+	background-position: 5px 5px;
+	margin-right:0px;
+	margin-top: -5px;
+}
+
+div#generate-invite-link
+{
+    margin-top:0px;
+}
+
+#invite-link
+{
+	min-height: 0px;
+	margin: 5px 0px 0px 0px;
+	background-color: #CCC;
+	border: 1px solid black;
+}
+
+input#find-user,
+input#email-invite,
+input#invite-link
+{
+	width:130px;
+}
+input#invite-link
+{
+    margin-top:5px;
+}
+
+div.trash-container
+{
+	float:right; 
+	padding:12px 18px 16px 14px;
+
+}
+ul.remove-players
+{
+	float: left;
+	padding: 17px 0px 0px 40px;
+	margin-top: 8px;
+	margin-bottom: 0px;
+	width: 125px;
+	height:60px;
+	background-color: #4D4D4D;
+	list-style:none;
+	background-position:center center;
+	background-image:url('images/trash.png');
+	background-repeat:no-repeat;
+}
+ul#invited-list
+{
+	width: 148px;
+	height: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: #4D4D4D;
+	background-position:center center;
+	background-image:url('images/invite.png');
+	background-repeat:no-repeat;
+	overflow:auto;
+	overflow-x:hidden;
+
+}
+
+.draggable
+{
+	cursor:move;
+}
+
+div.game-setting
+{
+	float:left; 
+	margin-top: 20px;
+    width:700px;
+}
+
+div.player-count
+{
+	font-size:18px;
+	float:right;
+	margin-right: 15px;
+}
+
+div#turn-timer
+{
+    float:right;
+}
+
+div.turn-timer-text
+{
+    position:relative; 
+    left:40px; 
+    width:66px; 
+    height:18px; 
+    margin-top:-18px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align:center;
+}
+
+div#timer-sub-container
+{
+    float:right;
+    margin-top: 20px; 
+    margin-right: 25px;
+}
+
+div#turn-timer-container
+{
+    float: left;
+    width: 545px; 
+    padding-top:5px;
+    padding-left: 15px; 
+    margin-top: 10px;
+    background-color: #404040;
+	color:  #D8D8D8;
+	height:195px;
+}
+
+div.edit-turn-timer
+{
+    height:270px !important;
+}
+
+img.steam-game-title
+{
+	float: left;
+	margin-right: 10px;
+}
+
+div.timer-day
+{
+    width:30px;
+    float:left;
+    text-align:center;
+}
+
+div.turn-timer-load
+{
+    background-image: url('images/tt-load.gif');
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+div#turn-timer-buttons
+{
+    position:relative; 
+    top:165px;
+    left:-5px;
+}
+
+div.validating
+{
+    font-size:18px; 
+    color:white; 
+    position:relative; 
+    top:10px; 
+    width:90px;
+    height:100px; 
+}
+div.dialog-loader
+{
+    width: 740px;
+    height: 36px;
+    background-image: url('images/dialog-load.gif');
+	background-repeat:no-repeat;
+	background-position: right center;
+	margin: 0 auto 0 auto;
+}
+
+ul#menu li a#browser
+{
+    padding-bottom: 17px;
+    background-color: #222222;
+    color:#CCCCCC;
+}
+
+ul#menu li a#browser:hover
+{
+    background-color: #333333;
+    text-decoration: none;
+}
+
+ul#menu li a#browser:active
+{
+    background-color: #555555;
+    text-decoration: none;
+}
+
+div.game-description-container {
+    float: left;
+    width: 695px;
+    margin-top: 10px;
+}
+
+div.game-description-view {
+	min-height: 25px;
+	margin-left: 10px;
+}
+
+#gameDetailBody {
+    float: left;
+    width: 695px;
+    margin-top: 25px;
+}

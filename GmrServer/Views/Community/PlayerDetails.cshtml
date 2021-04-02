@@ -1,0 +1,113 @@
+﻿@model GmrLib.Models.User
+@{
+    GmrLib.Models.PackagedUserStats userStats = ViewBag.UserStats ?? new GmrLib.Models.PackagedUserStats();
+    var borderImages = GmrServer.Avatar.GetBorderImages(Model.UserId);
+    dynamic prefs = GmrLib.Models.PackagedPreferences.Get(Model);
+
+    int timeZone = (int)prefs.TimeZone;
+}
+
+@if (Model != null)
+{
+    <div class="player-details-container">
+        <img class="player-details-avatar @(Model.UserId)lg"
+             style="background-image:url('@Model.FullAvatarUrl');"
+             src="@Url.Content(borderImages.LargeBorder)"
+             alt="@Model.UserName" />
+
+        <div class="player-profile-header">
+            <div><span class="player-detail-name">@Model.UserName</span> @if (prefs.VacationMode)
+                                {<span class="vacation-tag">Vacation</span>}</div>
+
+            @if (GmrServer.Global.UserSteamID > 0 && GmrServer.Global.UserSteamID != Model.UserId)
+            {
+                <div class="send-player-message no-select" unselectable="on" onclick=" createMessageDialog(); ">Send Message</div>
+            }
+
+            <a href="@Model.ProfileUrl" target="_blank" class="player-detail-steam">Steam Profile</a>
+        </div>
+
+        <div class="player-detail-field-name">Joined:</div>
+        <div class="player-detail-field" style="min-width: 140px;">
+            @Model.FirstLogin.ToString("MMMM d, yyyy")
+
+        </div>
+
+        <div class="player-detail-field-name" style="margin-left: 10px;">Last Seen:</div>
+        <div class="player-detail-field">@GmrServer.Global.FriendlyTimeDiff(DateTime.UtcNow.Subtract(Model.LastLoggedIn))</div>
+
+        <div class="player-field-spacer"></div>
+
+        <div class="player-detail-field-name">Rank:</div>
+        <div class="player-detail-field" style="min-width: 152px;">@GmrServer.Global.GetRankFromPoints(Model.TotalPoints, Model.UserId)</div>
+
+        <div class="player-detail-field-name" style="margin-left: 10px;">Points:</div>
+        <div style="float: left; min-width: 125px;">
+            <div class="player-detail-field">@string.Format("{0:n0}", Model.TotalPoints)</div>
+            <img src="/Content/images/points.png" style="float: left; margin: 6px 0px 0px 3px;" />
+        </div>
+
+        <div class="player-detail-field-name" style="margin-left: 10px;">Time Zone:</div>
+        <div class="player-detail-field">@string.Format("GMT{0}{1:n0}", (timeZone < 0) ? "-" : "+", Math.Abs(timeZone))</div>
+
+        <div class="player-field-spacer"></div>
+
+        <div class="player-detail-field-name">Total Turns:</div>
+        <div class="player-detail-field" style="min-width: 104px;">@string.Format("{0:n0}", userStats.TurnCount)</div>
+
+        <div class="player-detail-field-name" style="margin-left: 10px;">Skipped:</div>
+        <div class="player-detail-field" style="min-width: 100px;">@string.Format("{0:n0} times", userStats.SkipCount)</div>
+
+        <div class="player-detail-field-name" style="margin-left: 10px;">Vacationed:</div>
+        <div class="player-detail-field">@string.Format("{0:n0} times", userStats.VacationCount)</div>
+
+        <div class="player-field-spacer"></div>
+
+        <div class="player-detail-field-name" style="margin-left: 0px;">Currently in <strong>@userStats.GameCount</strong> games with an average turn time of <strong>@GmrServer.Global.FriendlyTimeDiff(userStats.AverageTurnTime, string.Empty)</strong></div>
+
+
+        <div id="playerDetailBody">
+            <div class="sub-tab-header">
+                <div id="player-games-@Model.UserId-tab" class="sub-tab" onclick="selectSubTab('#playerDetailBody', '#player-games-@Model.UserId');">Games</div>
+                <div id="player-recent-turns-@Model.UserId-tab" class="sub-tab" onclick="selectSubTab('#playerDetailBody', '#player-recent-turns-@Model.UserId');">Recent Turns</div>
+            </div>
+            <div class="sub-tab-container">
+                <div id="player-games-@Model.UserId-content" class="sub-tab-content">
+                    <div id="loading-player-games-content">
+                        <div id="loading-player-games-content-animation"></div>
+                    </div>
+                </div>
+                <div id="player-recent-turns-@Model.UserId-content" class="sub-tab-content">
+                    <div id="loading-player-recent-turns-content">
+                        <div id="loading-player-recent-turns-content-animation"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        $(function () {
+            selectSubTab('#playerDetailBody', '#player-games-@Model.UserId');
+            
+            @if (Model.UserId != 0)
+            {
+                <text>
+                loadPlayerDetailsGames('@Model.UserId');
+                loadPlayerRecentTurns('@Model.UserId');
+                </text>
+            }
+
+            playerToSendMessage = {
+                userId: '@Model.UserId',
+                border: '@Url.Content(borderImages.SmallBorder)',
+                avatar: '@Model.AvatarUrl',
+                userName: '@Model.UserName'
+            };
+        });
+    </script>
+}
+else
+{
+    <h3>Sorry, but that user wasn't found in our system :(</h3>
+}

@@ -1,0 +1,329 @@
+﻿div#main {
+    background-color: transparent;
+    padding-left: 0px;
+    margin-top: -21px;
+}
+
+ul#menu li a#community {
+    padding-bottom: 14px;
+    background-color: #222222;
+    color: #CCCCCC;
+}
+
+ul#menu li a#game {
+    padding: 5px 14px;
+    background-color: transparent;
+    color: #EEE;
+}
+
+ul#menu li a#game:hover
+{
+    background-color: #EEE;
+    text-decoration: none;
+	color: #666;
+}
+
+ul#menu li a#game:active
+{
+    background-color: #FFF;
+    text-decoration: none;
+}
+
+ul#menu li a#community:hover {
+    background-color: #333333;
+    text-decoration: none;
+}
+
+ul#menu li a#community:active {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+li#tab-forums a {
+    padding-right: 20px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPBAMAAADJ+Ih5AAAAMFBMVEUAAADMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMySLVSoAAAAD3RSTlMAECAwQGBwgI+fr7/P3+/Lm0b7AAAAbElEQVR4Xm3MoQ2AMBAF0O+AHRA4RmCBetBgGABBSJoTCFbCEkRHqERWEBQjNGm5q+abe7n8fPxHKVXJLWKMs2A4HaMmosUyWv5PwTEu0vY2jB1l6M0o2J73gCBvfJeAzANSpjUhcgQySBr4AGqvLmbPJ9VyAAAAAElFTkSuQmCC') /*images/new-tab-light.png*/;
+    *background-image: url('images/new-tab-light.png'); /* For IE 6 and 7 */
+    background-position: right center;
+    background-repeat: no-repeat;
+    border-right: 15px solid #222222;
+}
+
+    li#tab-forums a:hover {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPBAMAAADJ+Ih5AAAAMFBMVEUAAABmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmbTjrt6AAAAD3RSTlMAECAwQGBwgI+fr7/P3+/Lm0b7AAAAbElEQVR4Xm3MoQ2AMBAF0O+AHRA4RmCBetBgGABBSJoTCFbCEkRHqERWEBQjNGm5q+abe7n8fPxHKVXJLWKMs2A4HaMmosUyWv5PwTEu0vY2jB1l6M0o2J73gCBvfJeAzANSpjUhcgQySBr4AGqvLmbPJ9VyAAAAAElFTkSuQmCC') /*images/new-tab-dark.png*/;
+        *background-image: url('images/new-tab-dark.png'); /* For IE 6 and 7 */
+        border-right: 15px solid #F2F2F2;
+    }
+    li#tab-forums a:active {
+        border-right: 15px solid #FFF;
+    }
+
+div.game-base-container,
+div.game,
+div.game-name {
+    width: 100%;
+}
+
+ul.game-players {
+    width: 645px;
+}
+
+div#search {
+    width: 20px;
+    height: 20px;
+    background-position: 5px 5px;
+    margin-right: 0px;
+    margin-top: -5px;
+}
+
+div#players {
+    padding: 10px 5px 10px 0px;
+}
+
+div.player-list {
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+    padding: 1px;
+    padding-top: 3px;
+}
+
+div#player-list-loading {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+
+div#player-list-content {
+    float: left;
+    width: 100%;
+}
+
+div#player-list-header {
+    float: left;
+    width: 100%;
+    padding-bottom: 5px;
+    border-bottom: solid 2px;
+}
+
+div.player-paging {
+    float: right;
+}
+
+img.page-button {
+    cursor: pointer;
+    float: left;
+    margin-top: 5px;
+}
+
+input.page-input {
+    width: 40px;
+    float: left;
+}
+
+span.page-of {
+    float: left;
+    margin: 3px 0px 0px 5px;
+}
+
+a.find-user-page {
+    float: left;
+    margin: 2px 0px 0px 8px;
+}
+
+#players-navigation {
+    float: left;
+    width: 100%;
+}
+
+.player-row {
+    float: left;
+    width: 100%;
+    margin-top: 5px;
+    background-color: #666;
+}
+.player-row:hover {
+    background-color: #777;
+}
+
+.player-sort-icon {
+    float: left;
+    margin-left: 5px;
+    margin-top: 4px;
+    width: 7px;
+    height: 16px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    background-image: url('/content/images/sort-none.png');
+}
+
+.sort-ascending {
+    background-image: url('/content/images/sort-ascending.png');
+}
+
+.sort-descending {
+    background-image: url('/content/images/sort-descending.png');
+}
+
+.player-cell {
+    float: left;
+    width: 80px;
+}
+
+.player-cell-title {
+    float: left;
+    font-size: 120%;
+    color: #FFF;
+}
+
+.player-row .player-cell {
+    display: table;
+    height: 38px;
+}
+
+.player-cell-text {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#player-list-header .player-points,
+#player-list-header .player-turns,
+#player-list-header .player-games,
+#player-list-header .player-average-turn,
+#player-list-header .player-total-skipped {
+    cursor: pointer;
+}
+
+.player-title {
+    width: 313px;
+}
+
+.player-index {
+    font-weight: bold;
+    margin: 0px 5px;
+}
+
+.player-avatar {
+    width: 43px;
+}
+
+.player-name .player-cell-text {
+    cursor: pointer;
+}
+
+.player-row .player-points img,
+.player-row .player-points span {
+    float: left;
+}
+
+.player-row .player-points img {
+    margin: 2px 3px 0px 0px;
+}
+
+.player-average-turn {
+    width: 100px;
+}
+
+.player-total-skipped {
+    width: 100px;
+}
+
+.player-total-vacation {
+    width: 100px;
+}
+
+.player-row .player-total-skipped,
+.player-row .player-total-vacation {
+    text-indent: 25px;
+}
+
+.player-row .player-games {
+    text-indent: 20px;
+}
+
+.player-row .player-turns {
+    text-indent: 5px;
+}
+
+.find-player {
+    float: left;
+}
+
+#find-player-input {
+    float: left;
+    height: 20px;
+}
+
+#clear-player-name-filter {
+    float: left;
+    width: 24px;
+    margin: 0px 0px 0px 4px;
+}
+
+.player-details-container {
+    padding: 10px 5px 10px 0px;
+}
+
+.player-details-avatar {
+    background-position: 0px 0px;
+    width: 184px;
+    height: 184px;
+    float: left;
+    margin-right: 20px;
+    border: 0;
+}
+
+.player-profile-header {
+    float: left;
+    width: 720px;
+}
+
+.player-detail-name {
+    float: left;
+    font-size: 250%;
+    margin-bottom: 10px;
+}
+
+.player-detail-steam {
+    float: right;
+    margin: 6px 10px 0px 0px;
+    font-size: 110%;
+}
+
+.send-player-message {
+    float: right;
+    text-indent: 0px;
+    text-align: center;
+    margin: 0px;
+}
+
+.player-detail-field-name,
+.player-detail-field {
+    float: left;
+    font-size: 130%;
+}
+
+.player-detail-field {
+    margin-left: 10px;
+    font-weight: 600;
+    color: #EEE;
+}
+
+.player-field-spacer {
+    float: left;
+    width: 720px;
+    margin-top: 10px;
+}
+
+#playerDetailBody {
+    float: left;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.vacation-tag {
+    font-size: 150%;
+    padding: 0px 6px;
+    height: 30px;
+    float: left;
+    margin: 10px 0px 0px 10px;
+}

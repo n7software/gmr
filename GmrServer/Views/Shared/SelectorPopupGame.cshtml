@@ -1,0 +1,6 @@
+﻿@foreach (var c in ViewBag.AllSteamGames)
+{
+    <div class="game-selector-item" onclick="updateSelector(@c.SteamGameID, this)">
+        @Html.DisplayFor(m => c)
+    </div>
+}

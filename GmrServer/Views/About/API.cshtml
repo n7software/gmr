@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = " GMR REST API Documentation";
+}
+
+<div style="width: 95%;">
+    <h2 id="top">API Methods</h2>
+    <ul class="faq-links">
+        <li><a href="#authenticate-user">AuthenticateUser</a></li>
+        <li><a href="#get-games-and-players">GetGamesAndPlayers</a></li>
+        <li><a href="#get-latest-save-file-bytes">GetLatestSaveFileBytes</a></li>
+        <li><a href="#submit-turn">SubmitTurn</a></li>
+    </ul>
+
+    <div class="faq-questions" style="margin-top: 40px;">
+        
+        <span id="authenticate-user"><a href="#top">↑</a> AuthenticateUser</span>
+        <p>
+            <i>[GET]http://multiplayerrobot.com/api/Diplomacy/<b>AuthenticateUser?authKey=[user authKey]</b></i>
+        </p>
+        <p>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>authKey</b> - The authentication key for the user as found on the <a href="~/Download">Download page</a> after they login to GMR</li>
+            </ul>
+        </p>
+        <p>
+            <b>Returns:</b> A 64-bit integer representing the user's PlayerId if success, <i>null</i> or empty if failure
+        </p>
+        <p>
+            <b>Sample Request:</b> http://multiplayerrobot.com/api/Diplomacy/AuthenticateUser?authKey=XI2N29D0JKD10
+        </p>
+        <p>
+            <b>Sample Response:</b> 76561198007962530
+        </p>
+        <p>
+            <b>Notes:</b> Use this method to verify if an Authentication Key you've been given by the user is valid on GMR. 
+            Thus you really only need to call it once per application lifetime.
+        </p>
+        <br/>
+        
+        <span id="get-games-and-players"><a href="#top">↑</a> GetGamesAndPlayers</span>
+        <p>
+            <i>[GET]http://multiplayerrobot.com/api/Diplomacy/<b>GetGamesAndPlayers?playerIDText=[playerId1_playerId2_playerId3...]&amp;authKey=[user authKey]</b></i>
+        </p>
+        <p>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>playerIDText</b> - A list of GMR PlayerIds to query, seperated with an underscore</li>
+                <li><b>authKey</b> - The authentication key for the user as found on the <a href="~/Download">Download page</a> after they login to GMR</li>
+            </ul>
+        </p>
+        <p>
+            <b>Returns:</b> XML or JSON serialized complex type:
+            <br/>
+            "GamesAndPlayers" : {<br/>
+            &emsp;&emsp; "Games" : [{"Name":<i>&lt;game's name&gt;</i>, <br/>
+            &emsp;&emsp;&emsp;&emsp; "GameId":<i>&lt;game's ID&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp; "Players":[{"UserId":<i>&lt;player's ID&gt;</i>, "TurnOrder":<i>&lt;player's position in game&gt;</i>}, ...],<br/>
+            &emsp;&emsp;&emsp;&emsp; "CurrentTurn":{"TurnId":<i>&lt;turn's ID&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; "Number":<i>&lt;this turn number in game&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; "UserId":<i>&lt;current player ID&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; "Started":<i>&lt;date and time turn started&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; "Expires":<i>&lt;date and time turn expires&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; "PlayerNumber":<i>&lt;current player sequence in game&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; "IsFirstTurn":<i>&lt;whether it's the first turn in game&gt;</i>}<br/>
+            &emsp;&emsp;&emsp;&emsp; }, ...],<br/>
+            &emsp;&emsp; "Players" : [{"SteamID":<i>&lt;same as PlayerId and UserId&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp; "PersonaName":<i>&lt;player's name&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp; "AvatarUrl":<i>&lt;URL to player's avatar&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp; "PersonaState":<i>&lt;player's steam status&gt;</i>,<br/>
+            &emsp;&emsp;&emsp;&emsp; "GameID":<i>&lt;steam ID of game user is currently playing&gt;</i><br/>
+            &emsp;&emsp;&emsp;&emsp; }, ...],<br/>
+            &emsp;&emsp; "CurrentTotalPoints" : <i>&lt;users total points&gt;</i>
+            }
+            
+        </p>
+        <p>
+            <b>Sample Request:</b> http://multiplayerrobot.com/api/Diplomacy/GetGamesAndPlayers?playerIDText=76561198083415130_76561198044733382&amp;authKey=XI2N29D0JKD10
+        </p>
+        <p>
+            <b>Sample Response:</b> <br/>
+            {"Games":[{"Name":"SMASHER3000", "GameId":3328, "Players":[{"UserId":76561198083415130, "TurnOrder":4}, {"UserId":76561198044733382,"TurnOrder":0}, {"UserId":76561198027844720,"TurnOrder":1}, {"UserId":76561197970797348,"TurnOrder":2}, {"UserId":76561198082609496,"TurnOrder":3}, {"UserId":0,"TurnOrder":5}, {"UserId":0,"TurnOrder":6}, {"UserId":0,"TurnOrder":7}, {"UserId":0,"TurnOrder":8}, {"UserId":0,"TurnOrder":9}], "CurrentTurn":{"TurnId":405850,"Number":721, "UserId":76561198044733382, "Started":"2013-07-19T14:33:52.613", "Expires":"2013-07-20T14:33:52.613", "Skipped":false, "PlayerNumber":0, "IsFirstTurn":false}, "Type":0}], "Players":[{"SteamID":76561197970797348, "PersonaName":"Driblis", "AvatarUrl":"http://media.steampowered.com/steamcommunity/public/images/avatars/49/49736644b35bcc09fbe77b69e4db8c0f229df9a5.jpg", "PersonaState":0,"GameID":0}, {"SteamID":76561198027844720, "PersonaName":"Kebab", "AvatarUrl":"http://media.steampowered.com/steamcommunity/public/images/avatars/62/627702a474ba48b69092cd42719c6ab00482e086.jpg", "PersonaState":0,"GameID":0}], "CurrentTotalPoints":641}
+        </p>
+        <p>
+            <b>Notes:</b> Please don't call this more than once every 15 seconds. This is the method used to poll the server for the latest information pertitenent to the player.
+            It returns everything you need to show the player's current list of games with the current player order, each player's avatar, name, and Steam status, and the current
+            player's total points on GMR.
+        </p>
+        <br/>
+
+        <span id="get-latest-save-file-bytes"><a href="#top">↑</a> GetLatestSaveFileBytes</span>
+        <p>
+            <i>[GET]http://multiplayerrobot.com/api/Diplomacy/<b>GetLatestSaveFileBytes?authKey=[user authKey]&amp;gameId=[game ID]</b></i>
+        </p>
+        <p>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>authKey</b> - The authentication key for the user as found on the <a href="~/Download">Download page</a> after they login to GMR</li>
+                <li><b>gameId</b> - The ID of the GMR game to download the latest save file for</li>
+            </ul>
+        </p>
+        <p>
+            <b>Returns:</b> The current save file as an attachment called "(GMR) Play this one!.Civ5Save"
+        </p>
+        <p>
+            <b>Sample Request:</b> http://multiplayerrobot.com/api/Diplomacy/GetLatestSaveFileBytes?authKey=XI2N29D0JKD10&amp;gameId=3042
+        </p>
+        <p>
+            <b>Sample Response:</b> <i>A download of all the bytes representing the save file</i>
+        </p>
+        <p>
+            <b>Notes:</b> Use this method to get the save file for a player's turn. Note that even though the method appears to just get the latest save file
+            for a particular game, if the provided authKey does not match that game's current player this call will return an unauthorized error.
+        </p>
+        <br/>
+
+        <span id="submit-turn"><a href="#top">↑</a> SubmitTurn</span>
+        <p>
+            <i>[POST]http://multiplayerrobot.com/api/Diplomacy/<b>SubmitTurn?authKey=[user authKey]&amp;turnId=[turn ID]</b></i>
+        </p>
+        <p>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>authKey</b> - The authentication key for the user as found on the <a href="~/Download">Download page</a> after they login to GMR</li>
+                <li><b>gameId</b> - The ID of the GMR turn that you're submitting a save file for</li>
+                <li><i>POST Body</i> - The raw bytes of the save file being submitted for this turn</li>
+            </ul>
+        </p>
+        <p>
+            <b>Returns:</b> XML or JSON serialized complex type:<br/>
+            "SubmitTurnResultType" : {<br/>
+            &emsp;&emsp; "ResultType" : <i>&lt; UnexpectedError | OK | NotTurn | DoubleSubmit &gt;</i>,<br/>
+            &emsp;&emsp; "PointsEarned" : <i>&lt;amount of points earned for this turn&gt;</i>
+            }
+        </p>
+        <p>
+            <b>Sample Request:</b> http://multiplayerrobot.com/api/Diplomacy/SubmitTurn?authKey=XI2N29D0JKD10&amp;turnId=367583 [save file bytes in POST body]
+        </p>
+        <p>
+            <b>Sample Response:</b> {"ResultType":"OK", "PointsEarned":4}
+        </p>
+        <p>
+            <b>Notes:</b> This is the method used to submit a save file as the result of a player's turn. You need to include the the raw bytes of the save file
+            as the content of the request, similiar to how you would upload a file in any HTTP scenario. Make sure that you include the size of the save file's bytes
+            in the "Content-length" header of the request. We check this header to make sure that our server receives all the bytes properly.
+        </p>
+        <br/>
+    </div>
+</div>

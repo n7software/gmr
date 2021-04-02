@@ -1,0 +1,23 @@
+﻿@model GmrLib.Models.Civilization
+@{
+    ViewBag.Title = "Joining " + ViewBag.GameName;
+}
+<div class="tabcontentcontainer">
+    <link href="@Url.Content("~/Content/Game.css")" rel="stylesheet" type="text/css" />
+    <h2>Joining:</h2>
+    @Html.Partial("~/Views/Shared/BaseGame.cshtml", GmrLib.Models.Game.GetGameById((int)Session["GameIdBeingJoined"]))
+    <div style="float: left;">
+        <br />
+        <br />
+        <h3>Which civilization would you like to play as?
+    <h3>
+        <div style="float: left;">
+            @using (Html.BeginForm())
+            {
+                @Html.EditorForModel()
+                <br />
+                <input type="submit" id="join-game" class="button plus-icon" value="Join Game" />
+            }
+        </div>
+    </div>
+</div>

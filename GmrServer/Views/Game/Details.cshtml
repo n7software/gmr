@@ -1,0 +1,772 @@
+﻿@model GmrLib.Models.Game
+@{
+    ViewBag.Title = "Details";
+    ViewBag.ShowGameDetails = Model.Started == null;
+    //Layout = "~/Views/Game/_Layout.cshtml";
+    var userCanModifyGame = User.Identity.IsAuthenticated && (Model.Host.UserId == GmrServer.Global.UserSteamID || GmrServer.Global.IsAdminAuthenticated());
+    ViewBag.UserCanModifyGame = userCanModifyGame;
+
+    bool isModStart = (Model.GameType == GmrLib.Models.GameType.Mod || Model.GameType == GmrLib.Models.GameType.ModTotalConversion)
+        && Model.Started != null && Model.Turns.Count() == 1;
+
+    bool gameEditable = ViewBag.GameEditable = (userCanModifyGame && Model.Started == null);
+    bool allowCivChange = (ViewBag.AllowCivChange ?? false);
+    bool showDetails = ViewBag.ShowGameDetails ?? false;
+    bool isHost = ViewBag.IsHost ?? false;
+    ViewBag.GameID = Model.GameID;
+
+    var currentGamePlayer = Model.Players.FirstOrDefault(p => p.UserID == GmrServer.Global.UserSteamID);
+}
+
+<script type="text/javascript">
+
+    function initializeGameDetailControls() {
+        @if (gameEditable && Model.GameType != GmrLib.Models.GameType.Scenario)
+        {
+            <text>
+        $('#game-details-content .game-players:first').sortable({ update: updateOrder, connectWith: ".remove-players" });
+            </text>
+        }
+        else if (gameEditable && Model.GameType == GmrLib.Models.GameType.Scenario)
+        {
+            <text>
+        $("#game-details-content .human-player").sortable({ update: updateOrder, connectWith: ".remove-players" });
+        </text>
+        }
+
+        @if (isHost)
+        {
+            <text>
+        $("#game-details-content .remove-players:first").sortable({ receive: deleteUser });
+        totalItems = $("#game-details-content .game-players:first").children().length;
+        $("#game-details-content #found-list").sortable({ connectWith: "#invited-list" });
+        $("#game-details-content #invited-list").sortable({ receive: inviteUser, connectWith: ".remove-players" });
+        </text>
+        }
+    }
+
+    @if (isHost)
+    {
+        <text>
+
+    function inviteUser(eventData, ui) {
+        $('#game-details-content .right-box').removeClass("rb-saving-changes");
+        $('#game-details-content .right-box').removeClass("rb-saved-changes");
+        $('#game-details-content .right-box').addClass("rb-saving-changes");
+
+        var item = $(ui.item);
+        var hiddenid = $('input.user-id', item);
+        var userid = new String();
+        if (hiddenid != null)
+            userid = hiddenid.val();
+        $.post('@Url.Action("InvitePlayer", new { id = Model.GameID })?playerId='
+                + userid.toString(),
+                function () {
+                    $('#game-details-content .right-box').removeClass("rb-saving-changes");
+                    $('#game-details-content .right-box').removeClass("rb-saved-changes");
+                    $('#game-details-content .right-box').addClass("rb-saved-changes");
+                });
+    }
+
+    function deleteUser(eventData, ui) {
+        var item = $(ui.item);
+        var hidden = $('input.turn-order', item);
+        var turnIndex = new String();
+        if (hidden != null)
+            turnIndex = hidden.val();
+        var hiddenid = $('input.user-id', item);
+        var userid = new String();
+        if (hiddenid != null)
+            userid = hiddenid.val();
+        $.post('@Url.Action("RemoveGamePlayer", new { id = Model.GameID })?playerTurnIndex='
+                         + turnIndex + '&playerID=' + userid.toString(),
+                        function () {
+
+                            var i = 1;
+                            $("#game-details-content .game-player").each(function () {
+                                $('input.turn-order', this).val(i.toString());
+                                i++;
+                            });
+
+                            $('#game-details-content .game').removeClass("saving-changes");
+                            $('#game-details-content .game').removeClass("saved-changes");
+                            $('#game-details-content .game').addClass("saved-changes");
+                            $("#game-details-content .game-players:first").sortable("enable");
+                            var disabledBox = $(".disabled-max-player-box:last");
+                            if (disabledBox != null) {
+                                disabledBox.removeClass("disabled-max-player-box");
+                            }
+                        });
+        item.hide(500);
+
+        window.setTimeout(
+            function () {
+                        @if (Model.GameType == GmrLib.Models.GameType.Scenario)
+                        {
+                            <text>
+                window.location.reload();
+                            </text>
+                        }
+            }, 1500);
+    }
+
+    </text>
+    }
+
+    @if (gameEditable)
+    {
+        <text>
+    var totalItems;
+    function updateOrder(eventData, ui) {
+        $('#game-details-content .game').removeClass("saving-changes");
+        $('#game-details-content .game').removeClass("saved-changes");
+        $('#game-details-content .game').addClass("saving-changes");
+        $("#game-details-content .game-players:first").sortable("disable");
+        //          var index = $(ui.item).index();
+        var postData = "?newOrder=";
+        var parent = $("#game-details-content .game-players:first");
+        var total = parent.children().length;
+        if (total != totalItems) {
+            totalItems = total;
+            return;
+        }
+        for (var i = 0; i < total; i++) {
+            var li = $("li:eq(" + i + ")", parent)
+            var hidden = $('input.turn-order', li);
+            var newIndex = (i + offset) % (total + 1);
+            postData += hidden.val() + ":" + newIndex + ",";
+            hidden.val(newIndex);
+        }
+
+        $.post('@Url.Action("ReorderGamePlayers", new { id = Model.GameID })' + postData,
+            function () {
+                $('#game-details-content .game').removeClass("saving-changes");
+                $('#game-details-content .game').removeClass("saved-changes");
+                $('#game-details-content .game').addClass("saved-changes");
+                $("#game-details-content .game-players:first").sortable("enable");
+            });
+    }
+
+    </text>
+    }
+</script>
+
+@Html.Partial("BaseGame")
+
+<div class="right-box">
+    @if (showDetails && !gameEditable)
+    {
+        <div class="right-box-content">
+            <div style="float: left;">
+                <h2 style="margin-bottom: 10px;">Max Players</h2>
+                <div class="disabled-max-player-box max-player-box">@Model.MaxPlayers</div>
+            </div>
+            <div style="float: left;">
+                <h2 style="margin-bottom: 10px;">Game Visibility</h2>
+                <div class="disabled-max-player-box selector-box">
+                    @if (Model.Private)
+                    {<text>Private</text>}
+                    else
+                    {<text>Public</text>}
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (isHost)
+    {
+        <div class="right-box-content">
+            <h3>Invites</h3>
+            <ul id="invited-list" class="avatar-list">
+                @{
+        IEnumerable<GmrLib.Models.User> invites =
+            (from n in Model.Notifications
+             where n.NotificationType == (int)GmrLib.Models.NotificationType.GameInvite
+             select n.ReceivingUser).ToList();
+        var gamePlayers = Model.Players.Select(p => p.User);
+        invites = invites.Where(p => !gamePlayers.Contains(p));
+        foreach (var player in invites)
+        {
+                    <li class="found-user">
+                        <img class="@(player.UserId)sm avatarsm tooltip draggable" src="@Url.Content(GmrServer.Avatar.GetBorderImages(player.UserId).SmallBorder)"
+                                 style="background-image:url(@player.AvatarUrl)" title="@player.UserName" />
+                        <input class="user-id" type="hidden" value="@player.UserId " />
+                    </li>
+        }
+                }
+            </ul>
+            <h4>Drag users from this</h4>
+            @Html.Partial("FindUsers")
+
+            <h4 style="margin-top: 20px;">Send email invite</h4>
+            <div id="email-invite-container">
+                <input class="text-box single-line watermark" id="email-invite" name="EmailInvite"
+                    type="text" tag value="Email Address" onclick="watermark(this)" />
+                <div id="send-email" class="button link-button email-icon" style="float: right" onclick="emailInvite(@Model.GameID);">
+                </div>
+            </div>
+
+            <h4 style="margin-top: 20px;">Generate invite links</h4>
+            <div id="invite-link-container">
+                <span style="font-size: 11px;">Note that each link will only work once if the game is private</span>
+                @*<input class="text-box single-line" id="invite-link" name="InviteLink" type="text" readonly="readonly" />*@
+                <textarea class="text-box" id="invite-link" name="InviteLink" cols="14" rows="1" readonly="readonly"></textarea>
+                <div id="generate-invite-link" class="button link-button message-icon" style="float: right" onclick="generateInviteLink(@Model.GameID);">
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-box-content trash-container">
+            <h3>Trash</h3>
+            <ul class="remove-players">
+                <li></li>
+            </ul>
+        </div>
+    }
+
+    @if (allowCivChange)
+    {
+        <div class="right-box-content" @if (!gameEditable)
+                                       {<text>style="border: 0;"</text>}>
+            @if (gameEditable && Model.GameType != GmrLib.Models.GameType.Scenario)
+            {
+                @Html.ActionLink("Add an AI Player", "AddAIPlayer", new { id = Model.GameID }, new { @class = "button right-box-button", style = "margin-bottom: 5px;" })<br />
+            }
+            @if (Model.GameType != GmrLib.Models.GameType.ModTotalConversion)
+            {
+                @Html.ActionLink("Change your civilization", "ChangeCiv", new { id = Model.GameID }, new { @class = "button right-box-button", style = "" })
+            }
+        </div>
+    }
+
+    @if (Model.HasStarted)
+    {
+        <div class="right-box-content">
+            Started
+            @GmrServer.Global.FriendlyTimeDiff(DateTime.UtcNow.Subtract(Model.Started.Value))
+            <br />
+            <br />
+            <strong>@Model.TotalGameTurns</strong> game turns played
+            <br />
+            <br />
+            <strong>@Model.TotalSubmittedTurns</strong> turns submitted by players
+            <br />
+            <br />
+            <strong>@Model.AverageTurnsPerDay</strong> turns submitted per day average
+        </div>
+
+        <div class="right-box-content">
+            <strong>Average time to play turn</strong>
+            <br />
+            @foreach (var player in Model.Players.Where(p => p.UserID != 0).OrderBy(p => p.AverageTurnTimeSpan))
+            {
+                <p>
+                    <div class="game-player average">
+                        <a href="@GmrServer.Global.GetPlayerDetailsUrl(player.UserID)" target="_blank">
+                            <img class="avatarsm tooltip @(player.UserID)sm" style="background-image:url('@player.User.AvatarUrl');" src="@Url.Content(GmrServer.Avatar.GetBorderImages(player.UserID).SmallBorder)" 
+                                 alt="@player.User.UserName" title="@player.User.UserName" />
+                        </a>
+                        <div style="float: left; margin: 1px 5px 1px 8px;">
+                            @if (player.AverageTurnTimeSpan.HasValue)
+                            { 
+                                <text>@Html.Raw(GmrServer.Global.FriendlyTimeDiff(player.AverageTurnTimeSpan.Value, string.Empty, true))</text> 
+                            }
+                            else
+                            { <text>No average yet</text> }
+                        </div>
+
+                        @if (player.TimesSkipped > 0)
+                        {                            
+                            <span class="skip-count tooltip"
+                                  title="Skipped @player.TimesSkipped times">@player.TimesSkipped</span>
+                        }
+                    </div>
+                </p>
+            }
+            <div style="height: 5px; width: 10px; float: left;"></div>
+        </div>
+    }
+</div>
+
+
+<div id="gameDetailBody">
+    <div class="sub-tab-header">
+        <div id="game-details-sub-tab" class="sub-tab" onclick="selectSubTab('#gameDetailBody', '#game-details-sub');">Details</div>
+        <div id="game-comments-tab" class="sub-tab" onclick="selectSubTab('#gameDetailBody', '#game-comments');">Comments</div>
+        <div id="game-recent-turns-@Model.GameID-tab" class="sub-tab" onclick="selectSubTab('#gameDetailBody', '#game-recent-turns-@Model.GameID');">Recent Turns</div>
+    </div>
+    <div class="sub-tab-container">
+        <div id="game-details-sub-content" class="sub-tab-content">
+            <div class="game-description-container">
+                <fieldset style="padding: 0px;">
+                    <legend style="margin: 0px 5px 0px 10px;">Description</legend>
+                    @if (isHost)
+                    {
+                        <div class="game-description-view" style="float: left; margin: 10px;">
+                            <textarea id="edit-game-description" class="game-description-box" rows="5" style="width: 650px;">@HttpUtility.HtmlDecode(Model.Description)</textarea>
+                            <span class="subscript" style="margin: 3px 0px 0px 15px; float: left;"><strong>Bold</strong>: [b]text[/b]; <i>Italics</i>: [i]text[/i].<br />
+                                Links: [link]http://multiplayerrobot.com[/link] or [link=http://multiplayerrobot.com]Giant Multiplayer Robot[/link]<br />
+                                Start a new paragraph by pushing enter twice.
+                            </span>
+                            <span id="save-description-error" class="field-validation-error"></span>
+                            <div id="save-description" class="no-select" unselectable="on" onclick="saveDescription(this, @Model.GameID);">Save Description</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="game-description-view">@Html.Raw(GmrServer.Util.Utilities.ParseCommentCodes(Model.Description, false))</div>
+                    }
+                </fieldset>
+            </div>
+
+            @if (gameEditable)
+            {
+                <div class="game-setting">
+                    <h2 style="margin-bottom: 10px;">Max Players</h2>
+                    @for (int i = 2; i <= 12; i++)
+                    {
+                        if (Model.Type != (int)GmrLib.Models.GameType.Scenario || Model.MaxPlayers == i)
+                        {
+                            bool noClick = Model.Type == (int)GmrLib.Models.GameType.Scenario && Model.MaxPlayers == i;
+                            bool disabled = i < Model.Players.Count;
+                            bool sub = !disabled && i < Model.MaxPlayers;
+                        <div unselectable="on" @if (!noClick)
+                                               {<text>onclick="updateMaxPlayers(this, @i, @Model.GameID)"</text>}
+                    class="no-select max-player-box @if (i == Model.MaxPlayers)
+                                                    {<text>selected-max-player-box </text>} 
+                                                @if (disabled)
+                                                {<text>disabled-max-player-box </text>} 
+                                                @if (sub)
+                                                {<text>sub-max-player-box </text>} 
+                                                @if (noClick)
+                                                {<text>no-click-switch </text>}">@i
+                        </div>
+                        }
+                    }
+                    @if (Model.Type == (int)GmrLib.Models.GameType.Scenario)
+                    {
+                        <div style="width: 620px; height: 70px; float: left"></div>
+                        <span class="subscript">Since this is a scenario game, the max players setting has been automatically set.</span>
+                    }
+                </div>
+                <div class="game-setting">
+                    <h2 style="margin-bottom: 10px">Game Visibility</h2>
+                    <div style="width: 695px; float: left; margin-bottom: 10px;">
+                        <div unselectable="on" onclick="gamePrivate(this, true, @Model.GameID)" class="no-select selector-box @if (Model.Private)
+                                                                                                                              {<text>selected-selector-box</text>}">
+                            Private
+                        </div>
+                        <div unselectable="on" onclick="gamePrivate(this, false, @Model.GameID)" class="no-select selector-box @if (!Model.Private)
+                                                                                                                               {<text>selected-selector-box</text>}">
+                            Public
+                        </div>
+                    </div>
+                    <span class="subscript" style="float: left;">Public games are visibile in the Game Browser until started.<br />
+                        Anyone can join them, and the difficulty for all players is Prince.</span>
+                </div>
+                <div class="game-setting">
+                    <h2 style="margin-bottom: 10px;">Allow DLC Civilizations?</h2>
+
+                    <div unselectable="on"
+                 class="no-select dlc-allowed-box @if (Model.AllowDLC)
+                                                  {<text>enabled-dlc-allowed-box </text>}
+                        @if (Model.Type == (int)GmrLib.Models.GameType.Scenario)
+                        {<text>no-click-switch</text>}"
+                 style="font-size:20px;"
+                 dlcToggle="@Model.AllowDLC"
+                 @if (Model.Type != (int)GmrLib.Models.GameType.Scenario)
+                 { <text>onclick="gameDlcAllowed(this, @Model.GameID);"</text> }>
+                        @if (Model.AllowDLC)
+                        {
+                            <text>DLC Enabled</text>
+                        }
+                        else
+                        {
+                            <text>DLC Disabled</text>
+                        }
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    @if (Model.Type == (int)GmrLib.Models.GameType.Scenario)
+                    {
+                        <span class="subscript">Since this is a scenario game, the DLC setting has been automatically set.</span>
+                    }
+                    else
+                    {
+                        <span class="subscript">Enabling DLC will allow players to select DLC Civilizations for this game.</span> 
+                    }
+                </div>       
+            }
+
+            @if (userCanModifyGame && Model.Started == null)
+            {
+                @Html.Partial("~/Views/Shared/TurnTimerArea.cshtml", Model)
+        
+                <div style="float: left; width: 685px;">
+                    <div id="start-game" class="no-select" unselectable="on" onclick="confirmStart(@Model.GameID);">
+                        Start Game
+                    </div>
+                </div>
+                <span style="margin-top: 10px; float: left; width: 685px;" class="subscript">Starting this game will finalize all settings, including players.<br />
+                    Don't start the game if you're still waiting for people to join.</span>    
+                
+
+                <span id="game-details-error" class="field-validation-error" style="font-weight: bold">@ViewBag.Error</span>
+    
+                <div id="dialog-confirm-start" title="Start the game?" style="visibility: hidden;">
+                    <p>
+                        Once you've started the game you will not be able to make any changes to it.<br />
+                        Are you sure you want to start it now?
+                    </p>
+                </div>
+            }
+            else
+            {
+                if (Model.HasStarted)
+                { 
+           
+                <div style="float: left; width: 695px; margin-top: 10px;">
+                    @if (ViewBag.IsPlayersTurn ?? false)
+                    {
+                        <div style="float: left; width: 695px;">
+                            <fieldset>
+                                <legend>Take your turn</legend>
+                                @if (ViewBag.IsSaveAvailable ?? false)
+                                {
+                                    <div class="turnStep">
+                                        <span class="turnStepNumber">1.</span>
+                                        <div class="turnStepBody" style="width: auto;">
+                                            <div id="download-save" class="no-select" unselectable="on" onclick="window.open('@Url.Action("DownloadSave", new { id = Model.GameID })', '_blank');">
+                                                Download Save File
+                                            </div>
+                                            @if (GmrServer.Global.IsAdminAuthenticated() && Model.UnalteredSaveFileBytes != null)
+                                            {
+                                                <div id="download-save" class="no-select" unselectable="on" style="margin-left: 10px;"
+                                        onclick="window.open('@Url.Action("DownloadSave", new { id = Model.GameID, original = true })', '_blank');">
+                                                    Unaltered Save File
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <br />
+                                }
+                                <div class="turnStep">
+                                    <span class="turnStepNumber">
+                                        @if (ViewBag.IsSaveAvailable ?? false)
+                                        {
+                                            <text>2.</text>
+                                        }
+                                        else
+                                        {
+                                            <text>1.</text>
+                                        }
+                                    </span>
+                                    <div class="turnStepBody" style="font-weight: normal; padding-top: 2px;">
+                                        @if (ViewBag.IsSaveAvailable ?? false)
+                                        {
+                                            <text>Place the file in <strong>My Documents\My Games\Sid Meier's Civilization V\Saves\hotseat</strong>
+                                            on a PC or <strong>~/Documents/Aspyr/Sid Meier's Civilization 5/Saves/hotseat</strong>
+                                            on a Mac, load and play your turn (main menu -> Multiplayer -> Hot Seat -> Load Game),
+                                and save the game</text>
+                                        }
+                                        else if (isModStart)
+                                        {
+                                            <text>
+                                            To start a modded game, you'll need to give the save file to GMR to turn into a hot seat game
+                                            before completing your first turn. Simply save your game any time during your turn, then find it in
+                                            <strong>My Documents\My Games\Sid Meier's Civilization V\ModdedSaves\single</strong>
+                                            on a PC or <strong>~/Documents/Aspyr/Sid Meier's Civilization 5/ModdedSaves/single</strong>
+                                            on a Mac.
+                                </text>
+                                        }
+                                        else
+                                        {
+                                            <text>Create the hot seat game, play your turn, and save the game. You'll find the save file
+                                            in <strong>My Documents\My Games\Sid Meier's Civilization V\Saves\hotseat</strong>
+                                            on a PC or <strong>~/Documents/Aspyr/Sid Meier's Civilization 5/Saves/hotseat</strong>
+                                            on a Mac.</text>
+                                        }
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="turnStep" style="margin-top: 15px;">
+                                    <span class="turnStepNumber">
+                                        @if (ViewBag.IsSaveAvailable ?? false)
+                                        {
+                                            <text>3.</text>
+                                        }
+                                        else
+                                        {
+                                            <text>2.</text>
+                                        }
+                                    </span>
+                                    <div class="turnStepBody" style="height: 30px;">
+                                        <script type="text/javascript">
+                                            function fileUploadChanged() {
+                                                var fileName = $("#saveFileUpload").val().replace(/^.*[\\\/]/, '');
+                                                $("#fileText").text(fileName);
+
+                                                //$("#fileSubmit").css("visibility", fileName ? "visible" : "hidden");
+                                                if (fileName) {
+                                                    $("#fileSubmit").fadeIn(600);
+                                                }
+                                            }
+
+                                            function submitSaveFile() {
+                                                $("#fileSubmit").removeClass('upload-icon');
+                                                $("#fileSubmit").addClass('async-icon');
+
+                                                document.forms["uploadSaveFile"].submit();
+                                            }
+                                        </script>
+                                        @using (Html.BeginForm("UploadSave", "Game", FormMethod.Post, new { enctype = "multipart/form-data", name = "uploadSaveFile", id = "uploadSaveFile" }))
+                                        {
+                                            <div class="fileinputs">
+                                                <input type="hidden" name="turnId" value="@(ViewBag.TurnID ?? -1)" />
+                                                <input type="file" name="saveFileUpload" id="saveFileUpload" class="file" style=""
+                                                    onchange="fileUploadChanged();" />
+                                                <div class="fakefile" style="">
+                                                    <span id="fileText" class="fileText">Upload new save file...</span> <span id="fileBrowse"
+                                                        class="button">Browse</span>
+                                                </div>
+                                            </div>
+                                
+                                            <div id="fileSubmit" class="button link-button upload-icon" style="display: none;"
+                                                onclick="submitSaveFile()">
+                                            </div>                 
+                                        }
+                                    </div>
+                                </div>
+                                @if (isModStart)
+                                {
+                                    <div class="turnStep">
+                                        <span class="turnStepNumber">3.</span>
+                                        <div class="turnStepBody" style="padding-top: 2px;">
+                                            <strong>After submitting the initial save file, it will still be your turn.</strong>
+                                            You will need to download the modified save file, complete your turn, then submit
+                                the file after you have clicked Next Turn.
+                                        </div>
+                                    </div>
+                                }
+                            </fieldset>
+                        </div>
+                    }
+                </div>
+   
+                }
+    
+                @Html.Partial("~/Views/Shared/TurnTimerArea.cshtml", Model)
+
+                if (Model.HasStarted)
+                {
+
+                    if (ViewBag.PlayerCanRevertTurn ?? false)
+                    {
+        
+                <div id="dialog-confirm-revert" title="Revert the last turn?" style="visibility: hidden; display: none;">
+                    <p>
+                        This will revert the last turn taken in the game, allowing the previous player to
+            take their turn again.<br />
+                        Are you sure you want to do this?
+                    </p>
+                </div>
+    
+                <div id="revert-turn" class="no-select" unselectable="on" onclick="javascript:confirmTurnRevert(@Model.GameID);">
+                    Revert Turn
+                </div>
+    
+    
+                    }
+
+                    if (ViewBag.PlayerCanSkip ?? false)
+                    {
+        
+                <div id="dialog-confirm-skip" title="Skip your turn?" style="visibility: hidden; display: none;">
+                    <p>
+                        This will skip your turn, causing the AI to play it for you.<br />
+                        Are you sure you want to do this?
+                    </p>
+                </div>
+    
+                <div id="skip-turn" class="no-select" unselectable="on" onclick="javascript:confirmTurnSkip(@Model.GameID);">
+                    Skip Turn
+                </div>
+    
+    
+                    }
+
+                    if (ViewBag.PlayerCanSurrenderGame ?? false)
+                    {
+        
+                <div id="surrender-game" class="no-select" unselectable="on" onclick="javascript:confirmSurrender(@Model.GameID);">
+                    Surrender
+                </div>
+    
+                <div id="dialog-confirm-surrender" title="Surrender this game?" style="visibility: hidden; display: none;">
+                    <p>
+                        This will remove you from the game and instruct an AI player to take your place.<br />
+                        Are you sure you want to do this?
+                    </p>
+                </div>
+                    }
+                }
+
+                if (ViewBag.PlayerCanJoinGame ?? false)
+                {
+                <div style="float: left; width: 685px; padding-left: 10px;">
+                    <div id="join-game" class="no-select" unselectable="on" onclick="window.location='@Url.Action("Join", new { id = Model.GameID })';">
+                        Join Game
+                    </div>
+                </div>
+                }
+
+                if (ViewBag.PlayerCanLeaveGame ?? false)
+                {
+                <div style="float: left; width: 685px; padding-left: 10px;">
+                    <div id="leave-game" class="no-select" unselectable="on" onclick="javascript:confirmLeave(@Model.GameID);">
+                        Leave Game
+                    </div>
+                </div>
+    
+                <div id="dialog-confirm-leave" title="Leave this game?" style="visibility: hidden;">
+                    <p>
+                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                        Are you sure you want to leave this game?
+                    </p>
+                </div>
+                }
+                
+                <div style="float:left; width:620px; margin-top:15px;"></div>
+
+                if (currentGamePlayer != null)
+                {
+                <div class="game-setting" style="width: 265px;">
+                    <div unselectable="on" 
+                         class="no-select list-public-box 
+                         @if (!currentGamePlayer.DisablePasswordEncrypt)
+                         {<text>enabled-dlc-allowed-box</text>} "
+                             style="font-size:20px; width:260px;"
+                             isToggled="@string.Format("{0}", !currentGamePlayer.DisablePasswordEncrypt)"
+                             onclick="gameDontEncryptPassword(this, @currentGamePlayer.GamePlayerID);">
+
+                        @if (!currentGamePlayer.DisablePasswordEncrypt)
+                        {
+                            <text>Password Encrypted</text>
+                        }
+                        else
+                        {
+                            <text>Password Not Encrypted</text>
+                        }
+                    </div>
+                    <br style="clear: left;" />
+                    <span class="subscript" style="width: 300px; margin-top: 15px; float: left;">
+                        This setting allows you to control whether the in-game password you set here on the GMR website is encrypted in the save file for this game
+                        during other players' turns. This does not affect the password for your turn.
+                    </span>
+                </div>
+                
+                <div class="game-setting" style="width: 265px; margin-left: 50px;">
+                    <div unselectable="on" 
+                         class="no-select list-public-box 
+                         @if (currentGamePlayer.AllowVacation)
+                         {<text>enabled-dlc-allowed-box</text>} "
+                         style="font-size:20px; width:260px;"
+                         isToggled="@string.Format("{0}", currentGamePlayer.AllowVacation)"
+                         onclick="gameAllowVacationMode(this, @currentGamePlayer.GamePlayerID);">
+
+                        @if (currentGamePlayer.AllowVacation)
+                        {
+                            <text>My Vacation Allowed</text>
+                        }
+                        else
+                        {
+                            <text>My Vacation Not Allowed</text>
+                        }
+                    </div>
+                    <br style="clear: left;" />
+                    <span class="subscript" style="width: 300px; margin-top: 15px; float: left;">
+                        This allows you to specify whether Vacation Mode applies to this game. If you've enabled Vacation Mode in your user settings
+                        and allow it in this game then the AI will play your turns for you until you disable it in either spot.
+                    </span>
+                </div>
+                }
+
+                if (userCanModifyGame)
+                {
+                <div class="game-setting" style="width: 650px;">
+                    <h2 style="margin-bottom: 10px;">List in Public Games?</h2>
+
+                    <div unselectable="on" 
+                         class="no-select list-public-box 
+                         @if (!Model.Private)
+                         {<text>enabled-dlc-allowed-box</text>} "
+                         style="font-size:20px;"
+                         isToggled="@string.Format("{0}", !Model.Private)"
+                         onclick="gameShowInPublic(this, @Model.GameID);">
+
+                        @if (Model.Private)
+                        {
+                            <text>Hidden from Public</text>
+                        }
+                        else
+                        {
+                            <text>Shown in Public</text>
+                        }
+                    </div>
+                    <div unselectable="on" 
+             class="no-select allow-public-join
+             @if (Model.AllowPublicJoin)
+             {<text>enabled-dlc-allowed-box</text>} "
+             style="font-size:20px;"
+             isToggled="@string.Format("{0}", Model.Private)"
+             onclick="gameAllowPublicJoin(this, @Model.GameID);">
+
+                        @if (Model.AllowPublicJoin)
+                        {
+                            <text>Public Can Join</text>
+                        }
+                        else
+                        {
+                            <text>Invite Only</text>
+                        }
+                    </div>
+                    <br style="clear: left;" />
+                    <span class="subscript" style="width: 400px; margin-top: 15px; float: left;">Choosing to show this game in the list of public games will allow other 
+            players to see it, comment on it, and potentially join it - replacing an AI player. 
+            You can specify whether you want to allow anyone to be able to join your game
+            or require that they have an invite.
+                    </span>
+                </div>
+                }
+            }
+
+            @if ((userCanModifyGame && Model.Started == null) || GmrServer.Global.IsAdminAuthenticated())
+            {
+                <div style="float: left; width: 342px;">
+                    <div id="cancel-game" class="no-select" unselectable="on" onclick="confirmCancel(@Model.GameID);">
+                        Cancel Game
+                    </div>
+                </div>
+                <span style="margin-top: 10px; float: left; width: 685px;" class="subscript">Cancelling this game will remove it from your list<br />
+                    and notify other players who joined or were<br />
+                    invited to it that it was canceled.</span>
+    
+                <div id="dialog-confirm-cancel" style="visibility: hidden;">
+                    <p>
+                        This will cancel the game, are you sure you want to continue?
+                    </p>
+                </div>
+            }
+        </div>
+        <div id="game-comments-content" class="sub-tab-content">
+            @Html.Partial("BaseComments")
+        </div>
+        <div id="game-recent-turns-@Model.GameID-content" class="sub-tab-content">
+            <div id="loading-game-recent-turns-content">
+                <div id="loading-game-recent-turns-content-animation"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Css = "Home";
+    ViewBag.TwitterHeight = ViewBag.TwitterHeight ?? "800";
+}
+
+<style>
+    .twitter-timeline {
+        height: @ViewBag.TwitterHeight !important;
+    }
+</style>
+
+<div style="width:240px; float:right;">
+<a class="twitter-timeline"  href="https://twitter.com/GMRobot" width="240" height="@ViewBag.TwitterHeight" data-theme="dark" data-link-color="#419DF3" data-widget-id="353220695339175936">Tweets by @@GMRobot</a>
+<script>
+    !function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + "://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); }
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#twitter-widget-0").contents().find(".twitter-timeline").attr("style", "border-radius: 0px !important;");
+                $("#twitter-widget-0").contents().find(".tweet-box-button").attr("style", "border-radius: 0px !important;");
+                $("#twitter-widget-0").contents().find(".avatar").attr("style", "border-radius: 0px !important;");
+            }, 500);
+        });
+    }(document, "script", "twitter-wjs");
+</script>
+</div>
+
+@RenderBody()

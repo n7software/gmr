@@ -1,0 +1,12 @@
+﻿@model IEnumerable<GmrLib.Models.Comment>
+
+@foreach (var comment in Model)
+{
+    @Html.DisplayFor(m => comment)
+}
+@if (Model.Count() >= GmrServer.Controllers.CommentController.CommentsPerPage)
+{
+    <div id="loading-comments">
+        <div id="loading-comments-animation"></div>
+    </div>
+}

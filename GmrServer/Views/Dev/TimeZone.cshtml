@@ -1,0 +1,14 @@
+﻿@model GmrServer.Controllers.DevController.SteamIdWrapper
+@{
+    ViewBag.Title = "Magic Time Zone Guesser";
+}
+
+<h2>Magic Time Zone Guesser</h2>
+
+@using(Html.BeginForm())
+{
+    <text>Give me a Steam ID @Html.EditorFor(m => m.SteamId)</text>
+    <input type="submit" />
+}
+<br />
+@(ViewBag.Result ?? String.Empty)

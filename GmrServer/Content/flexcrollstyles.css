@@ -1,0 +1,39 @@
+﻿/* Scroll Bar Master Styling Starts Here */
+/* All comments can be freely removed from the css */
+
+.scrollgeneric {
+line-height: 1px;
+font-size: 1px;
+position: absolute;
+top: 0; left: 0;
+}
+
+.vscrollerbase {
+	/*border-radius: 4px;*/
+	width: 10px;
+	background-color: #CCCCCC;
+}
+.vscrollerbar {
+	width: 10px;
+	background-color: #333333;
+	/*border-radius: 4px;*/
+}
+.hscrollerbase {
+display:none;
+height: 10px;
+background-color: #CCCCCC;
+}
+.hscrollerbar {
+display:none;
+height: 10px;
+background-color: black;
+}
+
+.scrollerjogbox {
+/*border-radius:4px;*/
+width: 10px;
+height: 10px;
+top: auto; left: auto;
+bottom: 0px; right: 0px;
+background-color: #CCCCCC;
+}

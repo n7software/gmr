@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Login Failed";
+}
+
+<h2>Uh-oh.</h2>
+<p style="width:75%">
+    If you're seeing this page, then that means something went wrong with the Steam login.
+    Steam's third party login service goes down briefly on occasion, 
+    so if you try again in a soon, it should work. 
+</p>
+In case you're interested, here's the specific error:<br />
+<span class="field-validation-error">@ViewBag.Message</span>

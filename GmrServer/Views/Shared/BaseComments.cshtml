@@ -1,0 +1,59 @@
+﻿@model GmrLib.Models.ICommentBase
+@{
+    bool isUserAuthenticated = GmrServer.Global.UserSteamID > 0;
+}
+<script type="text/javascript">
+    
+    $(function() {
+        initializeCommentsBase('@Model.Id', '@Model.CommentTypeInt');
+    });
+
+</script>
+<div style="float: left; width: 695px; margin-top: 20px;">
+    <div class="comments" style="margin-top: 0px;">
+        @if (isUserAuthenticated)
+        {
+            <div id="new-comment" style="margin-bottom: 5px">
+                @using (Html.BeginForm("AddComment", "Comment", FormMethod.Post, new { name = "postNewComment", id = "postNewComment" }))
+                {
+                    <textarea name="newComment" id="newComment" class="comment-box prompt" rows="5" onfocus="clearPrompt(this);" tag="Enter new comment...">Enter new comment...</textarea>
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="type" value="@Model.CommentTypeInt" />
+                    <span id="new-comment-error" class="field-validation-error" style="margin: 5px 0px 0px 10px; float: left; display: none;"></span>
+                
+                    <div id="post-comment" class="no-select" unselectable="on" onclick="postComment(this);" style="text-indent: 36px;">
+                        Post
+                    </div>
+                
+                    <span class="subscript" style="margin: 3px 0px 0px 5px; float: left;"><strong>Bold</strong>: [b]text[/b]; <i>Italics</i>: [i]text[/i].<br />
+                        Links: [link]http://multiplayerrobot.com[/link] or [link=http://multiplayerrobot.com]Giant Multiplayer Robot[/link]<br />
+                        Start a new paragraph by pushing enter twice.
+                    </span>
+                }
+            </div>
+        }
+        else
+        {
+            @Html.ActionLink("Sign in to leave a comment", "Login", "User", new { returnUrl = Request.Url }, new { id = "login-comment" })
+        }
+        <div id="dialog-confirm-comment-delete" title="Delete this comment?" style="display: none;">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                Are you certain you want to delete this comment?
+            </p>
+        </div>
+        <div id="comment-list-@Model.Id" class="comment-list">
+            @{ var comments = Model.Comments.OrderByDescending(c => c.DateCreated).Take(GmrServer.Controllers.CommentController.CommentsPerPage); }
+            @foreach (var comment in comments)
+            {
+                @Html.DisplayFor(m => comment)
+            }
+            @if (comments.Count() >= GmrServer.Controllers.CommentController.CommentsPerPage)
+            {
+                <div id="loading-comments">
+                    <div id="loading-comments-animation"></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

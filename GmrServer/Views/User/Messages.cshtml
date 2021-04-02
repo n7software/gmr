@@ -1,0 +1,55 @@
+﻿@model IEnumerable<GmrLib.Models.Message>
+@{
+    ViewBag.Title = "Messages";
+    ViewBag.Css = "User";
+}
+
+<style type="text/css">
+    div#main {
+        background-color: transparent;
+        padding-left: 0px;
+        margin-top: -21px;
+    }
+</style>
+
+<div class="tabmenucontainer">
+    <ul class="tabmenu">
+        <li id="tab-messages"><a href="/User/Messages" onclick="selectTab('#tab-messages', '#messages'); setLocationHash('#'); loadFirstMessages(); return false;">Messages</a></li>
+        <li id="tab-message-details" style="display: none;"><a id="link-message-details" href="/User/Messages#" style="color: #419EF3" onclick="selectTab('#tab-message-details', '#message-details'); setLocationHash(lastMessageDetailsId); return false;"></a></li>
+    </ul>
+</div>
+<div style="clear: both;"></div>
+<div class="tabcontentcontainer">
+    <div id="messages" class="tabcontent">
+        @if (GmrServer.Global.UserSteamID > -1)
+        {
+            <div id="loading-messages">
+                <div id="loading-messages-animation"></div>
+            </div>
+        }
+        else
+        {
+            <div id="sign-in" class="no-select" unselectable="on" onclick="window.location = '@Url.Action("Login", "User", new { returnUrl = Request.Url })';">
+                Sign In
+            </div>
+        }
+    </div>
+    <div id="message-details" class="tabcontent">
+        <div id="message-details-content"></div>
+        <div id="loading-message-details">
+            <div id="loading-message-details-animation"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(initializeMessageIndexPage);
+
+    @if (GmrServer.Global.UserSteamID > -1)
+    {
+        <text>
+        isUserAuthenticated = true;
+        </text>
+    }
+</script>

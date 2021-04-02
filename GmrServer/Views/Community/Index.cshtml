@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Community/_Layout.cshtml";
+    ViewBag.Title = "Community";
+}
+
+<div class="tabmenucontainer">
+    <ul class="tabmenu">
+        <li id="tab-players"><a href="/Community" onclick="selectTab('#tab-players', '#players'); setLocationHash('#'); loadFirstPlayers(); return false;">Players</a></li>
+        <li id="tab-turns"><a href="/Community#turns" onclick="selectTab('#tab-turns', '#turns'); setLocationHash('turns'); loadFirstTurns(); return false;">Turns</a></li>
+        <li id="tab-forums"><a href="http://steamcommunity.com/groups/multiplayerrobot/discussions" target="_blank">Forums</a></li>
+        <li id="tab-player-details" style="display: none;"><a id="link-player-details" href="/Community#" style="color: #419EF3" onclick="selectTab('#tab-player-details', '#player-details'); setLocationHash(lastPlayerDetailsId); return false;"></a></li>
+    </ul>
+</div>
+<div style="clear: both;"></div>
+<div class="tabcontentcontainer">
+    <div id="players" class="tabcontent">
+        <div id="loading-players">
+            <div id="loading-players-animation"></div>
+        </div>
+    </div>
+    <div id="turns" class="tabcontent">
+        <div id="loading-turns">
+            <div id="loading-turns-animation"></div>
+        </div>
+    </div>
+    <div id="forums" class="tabcontent">
+        <h2>Coming Soon!  :)</h2>
+    </div>
+    <div id="player-details" class="tabcontent">
+        <div id="player-details-content"></div>
+        <div id="loading-player-details">
+            <div id="loading-player-details-animation"></div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog-create-message" style="display: none;">
+    @Html.Partial("CreateMessage")
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(initializeCommunityIndexPage);
+</script>

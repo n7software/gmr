@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Can't Join Game";
+    Layout = "~/Views/Game/_Layout.cshtml";
+}
+<div class="tabcontentcontainer">
+    <h2>Sorry!</h2>
+    <p style="width: 75%">
+        @Html.Raw(Model)
+    </p>
+    @if (Session["GameIdBeingJoined"] != null)
+    {
+        <text>@Html.ActionLink("View Game Details", "Details", new { id = (int)Session["GameIdBeingJoined"] })</text>
+    }
+</div>

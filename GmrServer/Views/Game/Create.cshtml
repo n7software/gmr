@@ -1,0 +1,93 @@
+﻿<h2>Create a Game</h2>
+
+<div style="float: left; width: 750px;">
+    Name
+    <input class="text-box single-line" id="game-name" name="GameName" type="text" />
+    <span id="game-name-error" class="field-validation-error" style="display: none;">Game name must be between 1 and 50 characters
+    </span>
+</div>
+
+<div id="create-game-description">
+    <textarea id="game-description" name="GameDescription" class="game-description-box prompt" rows="5" onfocus="clearPrompt(this);" tag="Enter a description for this game including map type, size, game speed, starting era, etc...">Enter a description for this game including map type, size, game speed, starting era, etc...</textarea>
+    <br />
+    <span id="game-description-error" class="field-validation-error" style="display: none;">You must enter at least 20 characters for a description, and no more than 2,048</span>
+    <span class="subscript" style="margin: 3px 0px 0px 15px; float: left;"><strong>Bold</strong>: [b]text[/b]; <i>Italics</i>: [i]text[/i].<br />
+        Links: [link]http://multiplayerrobot.com[/link] or [link=http://multiplayerrobot.com]Giant Multiplayer Robot[/link]<br />
+        Start a new paragraph by pushing enter twice.
+    </span>
+</div>
+
+<div id="create-game-select" style="margin-top: 20px;">
+    @Html.Partial("~/Views/Shared/EditorTemplates/SteamGame.cshtml", GmrLib.Models.SteamGame.Civ5)
+</div>
+
+@{
+    var allGameTypes = GmrLib.Models.Game.AllGameTypes;
+}
+
+
+<div>
+    <div id="game-type-select">
+        <input id="game-type" type="hidden" value="@GmrLib.Models.GameType.Standard" />
+
+        @foreach (var kvp in allGameTypes)
+        {
+            <div id="select-type-@kvp.Key" unselectable="on" class="no-select selector-box @if (kvp.Equals(allGameTypes.First()))
+                                                                                           { <text>selected-selector-box</text> }" 
+                style="font-size:20px;" onclick="setGameType('@kvp.Key');">
+                @kvp.Value
+            </div>
+        }
+        &nbsp;<img src="@Url.Content("~/Content/images/help.png")" style="cursor:pointer" onclick="window.open('@Url.Action("Mods", "About")', 'Mods and Scenarios in GMR', 'width=615,height=800,scrollbars=1');" alt="help" />
+    </div>
+
+    <div id="Mod-instructions" class="mod-instructions">
+        <p>
+            A Basic Mod game extends normal Civilization V by adding or modifying game elements. Select
+            this option if your mod uses the normal game civilizations, even if they are modified.
+        </p>
+    </div>
+
+    <div id="ModTotalConversion-instructions" class="mod-instructions">
+        <p>
+            A Total Mod radically changes Civilization V by replacing many elements of the game. Select
+            this option if your mod replaces normal game civilizations.
+        </p>
+    </div>
+
+    <div id="Scenario-instructions" class="mod-instructions">
+        <p>
+            A scenario is a pre-built world, typically designed to simulate a fictional or historical situation.
+            This game type can also be used to import an existing game into GMR. Just make sure that the player 
+            who created the game hosts it on GMR on his/her turn.
+        </p>
+        <p>
+            In order to make a scenario GMR game, we'll need the initial save file. Just start up the scenario, save while it's still the first turn,
+            and select the file below. The save file is in <strong>My Documents\My Games\Sid Meier's Civilization V\ModdedSaves\single</strong> on a PC or 
+            <strong>~/Documents/Aspyr/Sid Meier's Civilization 5/ModdedSaves/single</strong> on a Mac.
+        </p>
+
+        @using (Html.BeginForm("CreateScenario", "Game", FormMethod.Post, new { enctype = "multipart/form-data", name = "createScenario", id = "createScenario" }))
+        {
+            <input type="hidden" id="scenarioName" name="scenarioName" />
+            <input type="hidden" id="scenarioGame" name="scenarioGame" />
+            <input type="hidden" id="scenarioDescription" name="scenarioDescription" />
+        
+            <div class="fileinputs">
+                <input type="file" id="saveFileUpload" name="saveFileUpload" class="file" style="" onchange="fileUploadChanged();" />
+                <div class="fakefile" style="">
+                    <span id="fileText" class="fileText">Select save file...</span>
+                    <span id="fileBrowse" class="button" style="font-size: 80%;">Browse</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <p style="float: left;">
+        Other game options, such as max players or DLC, will be available once you've created your game.
+    </p>
+    
+    <div id="game-create-error" style="display:none; float:left; color:red;">
+       
+    </div>
+</div>

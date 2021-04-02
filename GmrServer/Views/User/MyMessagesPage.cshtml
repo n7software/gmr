@@ -1,0 +1,18 @@
+﻿@using System.Linq
+@model System.Collections.Generic.IEnumerable<GmrLib.Models.Message>
+@{
+    Layout = null;
+}
+
+@Html.DisplayForModel()
+
+@if (Model.Count() >= GmrServer.Controllers.UserController.MessagesPerPage)
+{
+    <div id="loading">
+        <div id="loading-animation"></div>
+    </div>
+}
+else
+{
+    <div id="my-messages-end"></div>
+}

@@ -1,0 +1,115 @@
+﻿#message-list {
+    float: left;
+    width: 695px;
+}
+
+.message-base-container {
+    float: left;
+    width: 100%;
+}
+
+.message {
+    background-color: #404040;
+	color: #D8D8D8;
+	width: 100%;
+    min-height: 90px;
+    padding: 5px;
+	float: left;
+	margin-top: 10px;
+}
+
+.message-has-new {
+    background-color: #383838;
+}
+
+.message-title {
+    margin-left: 10px;
+    margin-bottom: 6px;
+    float: left;
+}
+
+.message-title-text {
+	font-size:140%;
+	font-weight: 500;
+}
+
+.message-last-recipient {
+	float:left;
+    width: 90px;
+	height: 90px;
+	background-color: #505050;
+}
+
+.message-recipients {
+	float: right;
+    max-width: 96px;
+    height: 100%;
+	padding: 0px;
+	margin-top: 0px;
+	margin-left: 5px;
+    overflow-y: hidden;
+}
+
+.message-last-comment {
+    float: left;
+    width: 485px;
+    max-height: 92px;
+    margin-left: 10px;
+    overflow-y: hidden;
+}
+.message-last-comment p {
+    margin-top: 0px;
+}
+
+.message-recipient-container,
+.message-recipient {
+	float:left;
+	height: 46px;
+	background-color: #505050;
+	list-style: none;
+    width:100%;
+}
+
+.message-recipient-container {
+    margin-right: 4px;
+    margin-bottom: 4px;
+    width: 44px;
+}
+
+img.game-avatar {
+    margin: 7px;
+}
+
+img.game-avatarsm {
+    margin: 4px 3px 3px 3px;
+}
+
+.message-comment-count {
+    float: left;
+    margin-left: 10px;
+    font-size: 140%;
+}
+
+.mark-as-read-link {
+    float: right;
+    margin: 5px 10px 0px 0px;
+}
+
+#message-details-content .message {
+    width: 665px;
+    min-height: 40px;
+    margin-top: 0px;
+}
+
+#message-details-content .message-recipients {
+    max-width: 100%;
+    float: left;
+}
+
+.comments {
+    float: left;
+}
+
+.comment {
+    padding: 5px -5px 0px 5px;
+}

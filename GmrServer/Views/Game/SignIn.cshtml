@@ -1,0 +1,10 @@
+﻿
+<script type="text/javascript">
+    try {
+        setGameDetailName('Sign In');
+    } catch (err) { }
+</script>
+
+<div id="sign-in" class="no-select" unselectable="on" onclick="window.location = '@Url.Action("Login", "User", new { returnUrl = Request.Url })';">
+    Sign In
+</div>

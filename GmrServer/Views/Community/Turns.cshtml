@@ -1,0 +1,64 @@
+﻿@model IEnumerable<GmrLib.Models.Turn>
+@{
+    Layout = null;
+}
+<div style="float: left; margin-right: 5px;">
+    <div class="player-turn-list" style="margin-top: 10px;">
+        <div class="player-turn-list-header">
+            <div class="turn-game turn-cell" style="width: 613px;">
+                <span class="turn-cell-title">Game</span>
+            </div>
+            <div class="turn-finished turn-cell">
+                <span class="turn-cell-title">Finished</span>
+            </div>
+            <div class="turn-type turn-cell">
+                <span class="turn-cell-title">Skipped</span>
+            </div>
+            <div class="turn-points turn-cell">
+                <span class="turn-cell-title">Points</span>
+            </div>
+        </div>
+        <div class="player-turn-list-content">
+            @foreach (var turn in Model)
+            {
+                var turnCiv = turn.GamePlayer.Civilization ?? GmrLib.Models.Civilization.Unknown;
+                
+                <div class="turn-row">
+                    <div class="turn-game-player-icon turn-cell" style="background-color: #@turnCiv.BackgroundColor">
+                        <div class="turn-cell-text">
+                            <a href="/Community#@turn.UserID" target="_blank" onclick="showPlayerDetails('@turn.UserID'); return false;">
+                                <img class="@turn.UserID sm avatarsm tooltip" 
+                                     src="@Url.Content(GmrServer.Avatar.GetBorderImages(@turn.UserID).SmallBorder)"
+                                     style="background-image:url('@turn.User.AvatarUrl')"
+                                     alt="@turn.User.UserName"
+                                     title="@turn.User.UserName"/>
+                            </a>
+                            <img src="@Url.Content(turnCiv.SmallImageUrl)" />
+                        </div>
+                    </div>
+                    <div class="turn-game-player-name turn-cell">
+                        <div class="turn-cell-text">
+                            <a href="/Game#@turn.GameID" target="_blank">@turn.Game.Name</a>
+                        </div>
+                    </div>
+                    <div class="turn-finished turn-cell">
+                        <div class="turn-cell-text">
+                            @Html.Raw(GmrServer.Global.FriendlyTimeDiff(DateTime.UtcNow.Subtract(turn.Finished.Value), addNewLines: true))
+                        </div>
+                    </div>
+                    <div class="turn-type turn-cell">
+                        <div class="turn-cell-text">
+                            @turn.SkipStatusDisplay
+                        </div>
+                    </div>
+                    <div class="turn-points turn-cell">
+                        <div class="turn-cell-text">
+                            <img src="/Content/images/points.png" />
+                            <span>@string.Format("{0:n0}", turn.Points)</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

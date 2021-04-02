@@ -1,0 +1,19 @@
+﻿@model GmrLib.Models.SteamGame
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/gameselector.js")"></script>
+
+@Html.HiddenFor(m => m.SteamGameID, new { id = "SteamGameID"  })
+
+@{
+    var gmrDB = new GmrLib.Models.GmrEntities();
+    IEnumerable<GmrLib.Models.SteamGame> allGames = gmrDB.SteamGames;
+}
+
+<div id="game-list">
+    @foreach (var game in allGames.Where(g => !g.IsHidden))
+    {
+        <div id="game-selector" class="no-select @if(game.SteamGameID == Model.SteamGameID) {<text>game-selected</text>}" onclick="selectGame(@game.SteamGameID)">
+            @Html.Partial("~/Views/Shared/DisplayTemplates/SteamGame.cshtml", game)
+        </div>
+    }
+</div>

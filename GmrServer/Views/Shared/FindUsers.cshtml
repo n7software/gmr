@@ -1,0 +1,53 @@
+﻿<div id="find-users-container">
+
+    <script type="text/javascript"> 
+
+        $(document).ready(function () {
+            $('#searching').hide();
+            $('#found').hide();
+
+            $("#find-user").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    findUsers();
+                }
+            });
+        });
+
+        function findUsers() {
+            $('#found').hide();
+            $('#searching').show(100);
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("FindUsers", "Query")?search=' + $('#find-user').val()
+                    @if(ViewBag.GameID != null)
+                    {<text>+ '&gameContext=@ViewBag.GameID'</text>},
+                success: function (data) {
+                    $('#searching').hide();
+                    $('#found').show();
+                    $("#found-list").children().remove();
+                    for(i in data.results)
+                    {
+                        var player = data.results[i];
+                        var $new = generateFoundUserItem(player)
+                                    .appendTo($("#found-list"));
+                        AddTooltip($('img' ,$new));
+                    }
+                    
+                },
+                dataType: "json",
+                cache: false
+            });
+
+        }
+    
+    </script>
+
+    <input class="text-box single-line watermark" id="find-user" name="FindUser" type="text" value="Username" onfocus="watermark(this)" />
+    <div id="search" class="button link-button search-icon" style="float:right" onclick="findUsers()"></div>
+    <div id="searching"></div>
+    <div id="found">
+        <ul id="found-list" class="avatar-list">
+            
+        </ul>
+    </div>
+</div>

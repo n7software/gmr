@@ -1,0 +1,1735 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GmrLib.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Civilizations">
+          <Key>
+            <PropertyRef Name="CivID" />
+          </Key>
+          <Property Name="CivID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Leader" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImageUrl" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="SmallImageUrl" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="InGameId" Type="int" Nullable="false" />
+          <Property Name="InGameKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="InGameLeaderKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="InGameColorKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="BackgroundColor" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="ForegroundColor" Type="char" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameID" Type="int" />
+          <Property Name="TurnID" Type="int" />
+          <Property Name="MessageID" Type="int" />
+          <Property Name="Value" Type="nvarchar" MaxLength="2084" Nullable="false" />
+          <Property Name="PostedBy" Type="bigint" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateModified" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'gmrdb.dbo.GameAllowedCivs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="GameAllowedCivs">
+          <Key>
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="CivID" />
+          </Key>
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="CivID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameInviteTokens">
+          <Key>
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="Token" />
+          </Key>
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="Token" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GamePlayers">
+          <Key>
+            <PropertyRef Name="GamePlayerID" />
+          </Key>
+          <Property Name="GamePlayerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="TurnOrder" Type="int" Nullable="false" />
+          <Property Name="CivID" Type="int" />
+          <Property Name="TimesSkipped" Type="int" Nullable="false" />
+          <Property Name="AverageTurnTime" Type="int" />
+          <Property Name="DisablePasswordEncrypt" Type="bit" Nullable="false" />
+          <Property Name="AllowVacation" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Started" Type="datetime" />
+          <Property Name="Finished" Type="datetime" />
+          <Property Name="Winner" Type="bigint" />
+          <Property Name="Host" Type="bigint" Nullable="false" />
+          <Property Name="Private" Type="bit" Nullable="false" />
+          <Property Name="MaxPlayers" Type="int" Nullable="false" />
+          <Property Name="TurnTimeLimit" Type="int" />
+          <Property Name="SkipLimit" Type="int" />
+          <Property Name="TurnTimerDays" Type="varchar" MaxLength="14" />
+          <Property Name="TimeZone" Type="int" Nullable="false" />
+          <Property Name="TurnTimerStart" Type="time" Precision="5" />
+          <Property Name="TurnTimerStop" Type="time" Precision="5" />
+          <Property Name="SteamGameID" Type="int" Nullable="false" />
+          <Property Name="AllowDLC" Type="bit" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Scenario" Type="bit" Nullable="false" />
+          <Property Name="AllowPublicJoin" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2048" />
+        </EntityType>
+        <EntityType Name="MessageRecipients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageId" Type="int" Nullable="false" />
+          <Property Name="RecipientUserId" Type="bigint" Nullable="false" />
+          <Property Name="HasNew" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="bigint" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotificationType" Type="int" Nullable="false" />
+          <Property Name="SendingUserID" Type="bigint" />
+          <Property Name="ReceivingUserID" Type="bigint" Nullable="false" />
+          <Property Name="TurnID" Type="int" />
+          <Property Name="GameID" Type="int" />
+          <Property Name="MessageID" Type="int" />
+          <Property Name="CustomMessage" Type="varchar" MaxLength="256" />
+          <Property Name="Checked" Type="datetime" />
+          <Property Name="Sent" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="TransactionId" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="PayingUserId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Preferences">
+          <Key>
+            <PropertyRef Name="Key" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Saves">
+          <Key>
+            <PropertyRef Name="SaveID" />
+          </Key>
+          <Property Name="SaveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SteamGameCivilizations">
+          <Key>
+            <PropertyRef Name="SteamGameID" />
+            <PropertyRef Name="CivID" />
+          </Key>
+          <Property Name="SteamGameID" Type="int" Nullable="false" />
+          <Property Name="CivID" Type="int" Nullable="false" />
+          <Property Name="IsDLC" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SteamGames">
+          <Key>
+            <PropertyRef Name="SteamGameID" />
+          </Key>
+          <Property Name="SteamGameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="SteamID" Type="bigint" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="SmallImageUrl" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="IsHidden" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Turns">
+          <Key>
+            <PropertyRef Name="TurnID" />
+          </Key>
+          <Property Name="TurnID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="Started" Type="datetime" />
+          <Property Name="Finished" Type="datetime" />
+          <Property Name="SaveID" Type="int" />
+          <Property Name="Skipped" Type="int" Nullable="false" />
+          <Property Name="GamePlayerID" Type="int" />
+          <Property Name="Points" Type="int" Nullable="false" />
+          <Property Name="FileSizeInBytes" Type="int" />
+          <Property Name="ExpiresOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProfileUrl" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="AvatarUrl" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="MediumAvatarUrl" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="FullAvatarUrl" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="AuthKey" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="LastLoggedIn" Type="datetime" Nullable="false" />
+          <Property Name="Premium" Type="bit" Nullable="false" />
+          <Property Name="FirstLogin" Type="datetime" Nullable="false" />
+          <Property Name="AccountType" Type="int" Nullable="false" />
+          <Property Name="TotalPoints" Type="int" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserStats">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AvatarUrl" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="TotalPoints" Type="int" Nullable="false" />
+          <Property Name="GameCount" Type="int" Nullable="false" />
+          <Property Name="TurnCount" Type="int" Nullable="false" />
+          <Property Name="SkipCount" Type="int" Nullable="false" />
+          <Property Name="VacationCount" Type="int" Nullable="false" />
+          <Property Name="AverageTurnTime" Type="int" Nullable="false" />
+          <Property Name="LastUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'gmrdb.dbo.UsersGamesStarted' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="UsersGamesStarted">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="GameID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Comments_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Messages">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="PostedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameInviteTokens_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GameInviteTokens" Type="Self.GameInviteTokens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="GameInviteTokens">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamePlayers_Civilizations">
+          <End Role="Civilizations" Type="Self.Civilizations" Multiplicity="0..1" />
+          <End Role="GamePlayers" Type="Self.GamePlayers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Civilizations">
+              <PropertyRef Name="CivID" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="CivID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_SteamGames">
+          <End Role="SteamGames" Type="Self.SteamGames" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SteamGames">
+              <PropertyRef Name="SteamGameID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="SteamGameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Users_Host">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Host" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Users_Winner">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Winner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRecipients_Messages">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="1" />
+          <End Role="MessageRecipients" Type="Self.MessageRecipients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageRecipients">
+              <PropertyRef Name="MessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRecipients_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="MessageRecipients" Type="Self.MessageRecipients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="MessageRecipients">
+              <PropertyRef Name="RecipientUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_0">
+          <End Role="Turns" Type="Self.Turns" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turns">
+              <PropertyRef Name="TurnID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="TurnID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Messages">
+          <End Role="Messages" Type="Self.Messages" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Users_Reveiver">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="ReceivingUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Users_Sender">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="SendingUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payments_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Preferences_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Preferences" Type="Self.Preferences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Preferences">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SteamGameCivilizations_Civilizations">
+          <End Role="Civilizations" Type="Self.Civilizations" Multiplicity="1" />
+          <End Role="SteamGameCivilizations" Type="Self.SteamGameCivilizations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Civilizations">
+              <PropertyRef Name="CivID" />
+            </Principal>
+            <Dependent Role="SteamGameCivilizations">
+              <PropertyRef Name="CivID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SteamGameCivilizations_SteamGames">
+          <End Role="SteamGames" Type="Self.SteamGames" Multiplicity="1" />
+          <End Role="SteamGameCivilizations" Type="Self.SteamGameCivilizations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SteamGames">
+              <PropertyRef Name="SteamGameID" />
+            </Principal>
+            <Dependent Role="SteamGameCivilizations">
+              <PropertyRef Name="SteamGameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_GamePlayers">
+          <End Role="GamePlayers" Type="Self.GamePlayers" Multiplicity="0..1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GamePlayers">
+              <PropertyRef Name="GamePlayerID" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="GamePlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_Saves">
+          <End Role="Saves" Type="Self.Saves" Multiplicity="0..1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves">
+              <PropertyRef Name="SaveID" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="SaveID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGames_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GamePlayers" Type="Self.GamePlayers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGames_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GamePlayers" Type="Self.GamePlayers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CalculatePointsForTurn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="turnId" Type="int" Mode="In" />
+          <Parameter Name="gameId" Type="int" Mode="In" />
+          <Parameter Name="points" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="DeleteUserStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="GetUserStats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userId" Type="bigint" Mode="In" />
+          <Parameter Name="userName" Type="nvarchar" Mode="InOut" />
+          <Parameter Name="avatarUrl" Type="varchar" Mode="InOut" />
+          <Parameter Name="totalPoints" Type="int" Mode="InOut" />
+          <Parameter Name="gameCount" Type="int" Mode="InOut" />
+          <Parameter Name="turnCount" Type="int" Mode="InOut" />
+          <Parameter Name="skipCount" Type="int" Mode="InOut" />
+          <Parameter Name="vacationCount" Type="int" Mode="InOut" />
+          <Parameter Name="averageTurnTime" Type="int" Mode="InOut" />
+          <Parameter Name="lastUpdated" Type="datetime" Mode="InOut" />
+        </Function>
+        <Function Name="UpdateUserPointsTotal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userId" Type="bigint" Mode="In" />
+        </Function>
+        <EntityContainer Name="GmrLibModelsStoreContainer">
+          <EntitySet Name="Civilizations" EntityType="Self.Civilizations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameInviteTokens" EntityType="Self.GameInviteTokens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GamePlayers" EntityType="Self.GamePlayers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessageRecipients" EntityType="Self.MessageRecipients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Preferences" EntityType="Self.Preferences" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Saves" EntityType="Self.Saves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SteamGameCivilizations" EntityType="Self.SteamGameCivilizations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SteamGames" EntityType="Self.SteamGames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turns" EntityType="Self.Turns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStats" EntityType="Self.UserStats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameAllowedCivs" EntityType="Self.GameAllowedCivs" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [GameAllowedCivs].[GameID] AS [GameID], 
+    [GameAllowedCivs].[CivID] AS [CivID]
+    FROM [dbo].[GameAllowedCivs] AS [GameAllowedCivs]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UsersGamesStarted" EntityType="Self.UsersGamesStarted" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UsersGamesStarted].[UserId] AS [UserId], 
+    [UsersGamesStarted].[GameID] AS [GameID]
+    FROM [dbo].[UsersGamesStarted] AS [UsersGamesStarted]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Comments_Games" Association="Self.FK_Comments_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Messages" Association="Self.FK_Comments_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameInviteTokens_Games" Association="Self.FK_GameInviteTokens_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameInviteTokens" EntitySet="GameInviteTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamePlayers_Civilizations" Association="Self.FK_GamePlayers_Civilizations">
+            <End Role="Civilizations" EntitySet="Civilizations" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_SteamGames" Association="Self.FK_Games_SteamGames">
+            <End Role="SteamGames" EntitySet="SteamGames" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Users_Host" Association="Self.FK_Games_Users_Host">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Users_Winner" Association="Self.FK_Games_Users_Winner">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRecipients_Messages" Association="Self.FK_MessageRecipients_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="MessageRecipients" EntitySet="MessageRecipients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRecipients_Users" Association="Self.FK_MessageRecipients_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MessageRecipients" EntitySet="MessageRecipients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_0" Association="Self.FK_Notifications_0">
+            <End Role="Turns" EntitySet="Turns" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Games" Association="Self.FK_Notifications_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Messages" Association="Self.FK_Notifications_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Users_Reveiver" Association="Self.FK_Notifications_Users_Reveiver">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Users_Sender" Association="Self.FK_Notifications_Users_Sender">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payments_Users" Association="Self.FK_Payments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Preferences_Users" Association="Self.FK_Preferences_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Preferences" EntitySet="Preferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SteamGameCivilizations_Civilizations" Association="Self.FK_SteamGameCivilizations_Civilizations">
+            <End Role="Civilizations" EntitySet="Civilizations" />
+            <End Role="SteamGameCivilizations" EntitySet="SteamGameCivilizations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SteamGameCivilizations_SteamGames" Association="Self.FK_SteamGameCivilizations_SteamGames">
+            <End Role="SteamGames" EntitySet="SteamGames" />
+            <End Role="SteamGameCivilizations" EntitySet="SteamGameCivilizations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_GamePlayers" Association="Self.FK_Turns_GamePlayers">
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_Games" Association="Self.FK_Turns_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_Saves" Association="Self.FK_Turns_Saves">
+            <End Role="Saves" EntitySet="Saves" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_Users" Association="Self.FK_Turns_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGames_Games" Association="Self.FK_UserGames_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGames_Users" Association="Self.FK_UserGames_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GmrLib.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Civilization">
+          <Key>
+            <PropertyRef Name="CivID" />
+          </Key>
+          <Property Name="CivID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Leader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SmallImageUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InGameId" Type="Int32" Nullable="false" />
+          <Property Name="InGameKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InGameLeaderKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InGameColorKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BackgroundColor" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="ForegroundColor" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="GamePlayers" Relationship="Self.FK_GamePlayers_Civilizations" FromRole="Civilizations" ToRole="GamePlayers" />
+          <NavigationProperty Name="SteamGameCivilizations" Relationship="Self.FK_SteamGameCivilizations_Civilizations" FromRole="Civilizations" ToRole="SteamGameCivilizations" />
+          <NavigationProperty Name="Games" Relationship="Self.GameAllowedCivs" FromRole="Civilizations" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameID" Type="Int32" />
+          <Property Name="TurnID" Type="Int32" />
+          <Property Name="MessageID" Type="Int32" />
+          <Property Name="Value" Type="String" MaxLength="2084" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_Comments_Games" FromRole="Comments" ToRole="Games" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_Comments_Messages" FromRole="Comments" ToRole="Messages" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Comments_Users" FromRole="Comments" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="GameInviteToken">
+          <Key>
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="Token" />
+          </Key>
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="Guid" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_GameInviteTokens_Games" FromRole="GameInviteTokens" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="GamePlayer">
+          <Key>
+            <PropertyRef Name="GamePlayerID" />
+          </Key>
+          <Property Name="GamePlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+          <Property Name="TurnOrder" Type="Int32" Nullable="false" />
+          <Property Name="CivID" Type="Int32" />
+          <Property Name="TimesSkipped" Type="Int32" Nullable="false" />
+          <Property Name="AverageTurnTime" Type="Int32" />
+          <Property Name="DisablePasswordEncrypt" Type="Boolean" Nullable="false" />
+          <Property Name="AllowVacation" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Civilization" Relationship="Self.FK_GamePlayers_Civilizations" FromRole="GamePlayers" ToRole="Civilizations" />
+          <NavigationProperty Name="Turns" Relationship="Self.FK_Turns_GamePlayers" FromRole="GamePlayers" ToRole="Turns" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_UserGames_Games" FromRole="GamePlayers" ToRole="Games" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserGames_Users" FromRole="GamePlayers" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Started" Type="DateTime" Precision="3" />
+          <Property Name="Finished" Type="DateTime" Precision="3" />
+          <Property Name="WinnerUserId" Type="Int64" />
+          <Property Name="HostUserId" Type="Int64" Nullable="false" />
+          <Property Name="Private" Type="Boolean" Nullable="false" />
+          <Property Name="MaxPlayers" Type="Int32" Nullable="false" />
+          <Property Name="TurnTimeLimit" Type="Int32" />
+          <Property Name="SkipLimit" Type="Int32" />
+          <Property Name="TurnTimerDays" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="TimeZone" Type="Int32" Nullable="false" />
+          <Property Name="TurnTimerStart" Type="Time" Precision="5" />
+          <Property Name="TurnTimerStop" Type="Time" Precision="5" />
+          <Property Name="SteamGameID" Type="Int32" Nullable="false" />
+          <Property Name="AllowDLC" Type="Boolean" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Scenario" Type="Boolean" Nullable="false" />
+          <Property Name="AllowPublicJoin" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Games" FromRole="Games" ToRole="Comments" />
+          <NavigationProperty Name="InviteTokens" Relationship="Self.FK_GameInviteTokens_Games" FromRole="Games" ToRole="GameInviteTokens" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_UserGames_Games" FromRole="Games" ToRole="GamePlayers" />
+          <NavigationProperty Name="SteamGame" Relationship="Self.FK_Games_SteamGames" FromRole="Games" ToRole="SteamGames" />
+          <NavigationProperty Name="Host" Relationship="Self.FK_Games_Users_Host" FromRole="Games" ToRole="Users" />
+          <NavigationProperty Name="Winner" Relationship="Self.FK_Games_Users_Winner" FromRole="Games" ToRole="Users" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notifications_Games" FromRole="Games" ToRole="Notifications" />
+          <NavigationProperty Name="Turns" Relationship="Self.FK_Turns_Games" FromRole="Games" ToRole="Turns" />
+          <NavigationProperty Name="Civilizations" Relationship="Self.GameAllowedCivs" FromRole="Games" ToRole="Civilizations" />
+        </EntityType>
+        <EntityType Name="MessageRecipient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageId" Type="Int32" Nullable="false" />
+          <Property Name="RecipientUserId" Type="Int64" Nullable="false" />
+          <Property Name="HasNew" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_MessageRecipients_Messages" FromRole="MessageRecipients" ToRole="Messages" />
+          <NavigationProperty Name="Recipient" Relationship="Self.FK_MessageRecipients_Users" FromRole="MessageRecipients" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedByUserId" Type="Int64" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Messages" FromRole="Messages" ToRole="Comments" />
+          <NavigationProperty Name="Recipients" Relationship="Self.FK_MessageRecipients_Messages" FromRole="Messages" ToRole="MessageRecipients" />
+          <NavigationProperty Name="CreatedByUser" Relationship="Self.FK_Messages_Users" FromRole="Messages" ToRole="Users" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notifications_Messages" FromRole="Messages" ToRole="Notifications" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotificationType" Type="Int32" Nullable="false" />
+          <Property Name="SendingUserID" Type="Int64" />
+          <Property Name="ReceivingUserID" Type="Int64" Nullable="false" />
+          <Property Name="TurnID" Type="Int32" />
+          <Property Name="GameID" Type="Int32" />
+          <Property Name="MessageID" Type="Int32" />
+          <Property Name="CustomMessage" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Checked" Type="DateTime" Precision="3" />
+          <Property Name="Sent" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_Notifications_Games" FromRole="Notifications" ToRole="Games" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_Notifications_Messages" FromRole="Notifications" ToRole="Messages" />
+          <NavigationProperty Name="ReceivingUser" Relationship="Self.FK_Notifications_Users_Reveiver" FromRole="Notifications" ToRole="Users" />
+          <NavigationProperty Name="SendingUser" Relationship="Self.FK_Notifications_Users_Sender" FromRole="Notifications" ToRole="Users" />
+          <NavigationProperty Name="Turn" Relationship="GmrLib.Models.FK_Notifications_Turns" FromRole="Notification" ToRole="Turn" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="TransactionId" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PayingUserId" Type="Int64" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Payments_Users" FromRole="Payments" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Preference">
+          <Key>
+            <PropertyRef Name="Key" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Preferences_Users" FromRole="Preferences" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Save">
+          <Key>
+            <PropertyRef Name="SaveID" />
+          </Key>
+          <Property Name="SaveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Turns" Relationship="Self.FK_Turns_Saves" FromRole="Saves" ToRole="Turns" />
+        </EntityType>
+        <EntityType Name="SteamGame">
+          <Key>
+            <PropertyRef Name="SteamGameID" />
+          </Key>
+          <Property Name="SteamGameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SteamID" Type="Int64" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SmallImageUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsHidden" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Games_SteamGames" FromRole="SteamGames" ToRole="Games" />
+          <NavigationProperty Name="SteamGameCivilizations" Relationship="Self.FK_SteamGameCivilizations_SteamGames" FromRole="SteamGames" ToRole="SteamGameCivilizations" />
+        </EntityType>
+        <EntityType Name="Turn">
+          <Key>
+            <PropertyRef Name="TurnID" />
+          </Key>
+          <Property Name="TurnID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="Started" Type="DateTime" Precision="3" />
+          <Property Name="Finished" Type="DateTime" Precision="3" />
+          <Property Name="SaveID" Type="Int32" />
+          <Property Name="Skipped" Type="Int32" Nullable="false" />
+          <Property Name="GamePlayerID" Type="Int32" />
+          <Property Name="Points" Type="Int32" Nullable="false" />
+          <Property Name="FileSizeInBytes" Type="Int32" />
+          <NavigationProperty Name="GamePlayer" Relationship="Self.FK_Turns_GamePlayers" FromRole="Turns" ToRole="GamePlayers" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_Turns_Games" FromRole="Turns" ToRole="Games" />
+          <NavigationProperty Name="Save" Relationship="Self.FK_Turns_Saves" FromRole="Turns" ToRole="Saves" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Turns_Users" FromRole="Turns" ToRole="Users" />
+          <NavigationProperty Name="Notifications" Relationship="GmrLib.Models.FK_Notifications_Turns" FromRole="Turn" ToRole="Notification" />
+          <Property Name="ExpiresOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProfileUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AvatarUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MediumAvatarUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FullAvatarUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AuthKey" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="LastLoggedIn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Premium" Type="Boolean" Nullable="false" />
+          <Property Name="FirstLogin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AccountTypeInt" Type="Int32" Nullable="false" />
+          <Property Name="TotalPoints" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Users" FromRole="Users" ToRole="Comments" />
+          <NavigationProperty Name="GamePlayers" Relationship="Self.FK_UserGames_Users" FromRole="Users" ToRole="GamePlayers" />
+          <NavigationProperty Name="GamesHosted" Relationship="Self.FK_Games_Users_Host" FromRole="Users" ToRole="Games" />
+          <NavigationProperty Name="MessageRecipients" Relationship="Self.FK_MessageRecipients_Users" FromRole="Users" ToRole="MessageRecipients" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Users" FromRole="Users" ToRole="Messages" />
+          <NavigationProperty Name="ReceivedNotifications" Relationship="Self.FK_Notifications_Users_Reveiver" FromRole="Users" ToRole="Notifications" />
+          <NavigationProperty Name="SentNotifications" Relationship="Self.FK_Notifications_Users_Sender" FromRole="Users" ToRole="Notifications" />
+          <NavigationProperty Name="Payments" Relationship="Self.FK_Payments_Users" FromRole="Users" ToRole="Payments" />
+          <NavigationProperty Name="Preferences" Relationship="Self.FK_Preferences_Users" FromRole="Users" ToRole="Preferences" />
+          <NavigationProperty Name="Turns" Relationship="Self.FK_Turns_Users" FromRole="Users" ToRole="Turns" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SteamGameCivilization">
+          <Key>
+            <PropertyRef Name="SteamGameID" />
+            <PropertyRef Name="CivID" />
+          </Key>
+          <Property Name="SteamGameID" Type="Int32" Nullable="false" />
+          <Property Name="CivID" Type="Int32" Nullable="false" />
+          <Property Name="IsDLC" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Civilization" Relationship="Self.FK_SteamGameCivilizations_Civilizations" FromRole="SteamGameCivilizations" ToRole="Civilizations" />
+          <NavigationProperty Name="SteamGame" Relationship="Self.FK_SteamGameCivilizations_SteamGames" FromRole="SteamGameCivilizations" ToRole="SteamGames" />
+        </EntityType>
+        <EntityType Name="UserStat">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AvatarUrl" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TotalPoints" Type="Int32" Nullable="false" />
+          <Property Name="GameCount" Type="Int32" Nullable="false" />
+          <Property Name="TurnCount" Type="Int32" Nullable="false" />
+          <Property Name="SkipCount" Type="Int32" Nullable="false" />
+          <Property Name="VacationCount" Type="Int32" Nullable="false" />
+          <Property Name="AverageTurnTime" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_GamePlayers_Civilizations">
+          <End Role="Civilizations" Type="Self.Civilization" Multiplicity="0..1" />
+          <End Role="GamePlayers" Type="Self.GamePlayer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Civilizations">
+              <PropertyRef Name="CivID" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="CivID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SteamGameCivilizations_Civilizations">
+          <End Role="Civilizations" Type="Self.Civilization" Multiplicity="1" />
+          <End Role="SteamGameCivilizations" Type="Self.SteamGameCivilization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Civilizations">
+              <PropertyRef Name="CivID" />
+            </Principal>
+            <Dependent Role="SteamGameCivilizations">
+              <PropertyRef Name="CivID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Messages">
+          <End Role="Messages" Type="Self.Message" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameInviteTokens_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GameInviteTokens" Type="Self.GameInviteToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="GameInviteTokens">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_GamePlayers">
+          <End Role="GamePlayers" Type="Self.GamePlayer" Multiplicity="0..1" />
+          <End Role="Turns" Type="Self.Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GamePlayers">
+              <PropertyRef Name="GamePlayerID" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="GamePlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGames_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GamePlayers" Type="Self.GamePlayer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGames_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GamePlayers" Type="Self.GamePlayer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_SteamGames">
+          <End Role="SteamGames" Type="Self.SteamGame" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SteamGames">
+              <PropertyRef Name="SteamGameID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="SteamGameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Users_Host">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="HostUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Users_Winner">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="WinnerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Turns" Type="Self.Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRecipients_Messages">
+          <End Role="Messages" Type="Self.Message" Multiplicity="1" />
+          <End Role="MessageRecipients" Type="Self.MessageRecipient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageRecipients">
+              <PropertyRef Name="MessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRecipients_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="MessageRecipients" Type="Self.MessageRecipient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="MessageRecipients">
+              <PropertyRef Name="RecipientUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="CreatedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Messages">
+          <End Role="Messages" Type="Self.Message" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Messages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Users_Reveiver">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="ReceivingUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Users_Sender">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="SendingUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payments_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Preferences_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Preferences" Type="Self.Preference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Preferences">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_Saves">
+          <End Role="Saves" Type="Self.Save" Multiplicity="0..1" />
+          <End Role="Turns" Type="Self.Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Saves">
+              <PropertyRef Name="SaveID" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="SaveID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SteamGameCivilizations_SteamGames">
+          <End Role="SteamGames" Type="Self.SteamGame" Multiplicity="1" />
+          <End Role="SteamGameCivilizations" Type="Self.SteamGameCivilization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SteamGames">
+              <PropertyRef Name="SteamGameID" />
+            </Principal>
+            <Dependent Role="SteamGameCivilizations">
+              <PropertyRef Name="SteamGameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turns_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GameAllowedCivs">
+          <End Role="Civilizations" Type="Self.Civilization" Multiplicity="*" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="GmrEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Civilizations" EntityType="Self.Civilization" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="GameInviteTokens" EntityType="Self.GameInviteToken" />
+          <EntitySet Name="GamePlayers" EntityType="Self.GamePlayer" />
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="MessageRecipients" EntityType="Self.MessageRecipient" />
+          <EntitySet Name="Messages" EntityType="Self.Message" />
+          <EntitySet Name="Notifications" EntityType="Self.Notification" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="Preferences" EntityType="Self.Preference" />
+          <EntitySet Name="Saves" EntityType="Self.Save" />
+          <EntitySet Name="SteamGames" EntityType="Self.SteamGame" />
+          <EntitySet Name="Turns" EntityType="Self.Turn" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="SteamGameCivilizations" EntityType="Self.SteamGameCivilization" />
+          <EntitySet Name="UserStats" EntityType="Self.UserStat" />
+          <AssociationSet Name="FK_GamePlayers_Civilizations" Association="Self.FK_GamePlayers_Civilizations">
+            <End Role="Civilizations" EntitySet="Civilizations" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SteamGameCivilizations_Civilizations" Association="Self.FK_SteamGameCivilizations_Civilizations">
+            <End Role="Civilizations" EntitySet="Civilizations" />
+            <End Role="SteamGameCivilizations" EntitySet="SteamGameCivilizations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Games" Association="Self.FK_Comments_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Messages" Association="Self.FK_Comments_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameInviteTokens_Games" Association="Self.FK_GameInviteTokens_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameInviteTokens" EntitySet="GameInviteTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_GamePlayers" Association="Self.FK_Turns_GamePlayers">
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGames_Games" Association="Self.FK_UserGames_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGames_Users" Association="Self.FK_UserGames_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_SteamGames" Association="Self.FK_Games_SteamGames">
+            <End Role="SteamGames" EntitySet="SteamGames" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Users_Host" Association="Self.FK_Games_Users_Host">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Users_Winner" Association="Self.FK_Games_Users_Winner">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Games" Association="Self.FK_Notifications_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_Games" Association="Self.FK_Turns_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRecipients_Messages" Association="Self.FK_MessageRecipients_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="MessageRecipients" EntitySet="MessageRecipients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRecipients_Users" Association="Self.FK_MessageRecipients_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MessageRecipients" EntitySet="MessageRecipients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Users" Association="Self.FK_Messages_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Messages" Association="Self.FK_Notifications_Messages">
+            <End Role="Messages" EntitySet="Messages" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Users_Reveiver" Association="Self.FK_Notifications_Users_Reveiver">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Users_Sender" Association="Self.FK_Notifications_Users_Sender">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payments_Users" Association="Self.FK_Payments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Preferences_Users" Association="Self.FK_Preferences_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Preferences" EntitySet="Preferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_Saves" Association="Self.FK_Turns_Saves">
+            <End Role="Saves" EntitySet="Saves" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SteamGameCivilizations_SteamGames" Association="Self.FK_SteamGameCivilizations_SteamGames">
+            <End Role="SteamGames" EntitySet="SteamGames" />
+            <End Role="SteamGameCivilizations" EntitySet="SteamGameCivilizations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turns_Users" Association="Self.FK_Turns_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="GameAllowedCivs" Association="Self.GameAllowedCivs">
+            <End Role="Civilizations" EntitySet="Civilizations" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <FunctionImport Name="CalculatePointsForTurn">
+            <Parameter Name="turnId" Mode="In" Type="Int32" />
+            <Parameter Name="gameId" Mode="In" Type="Int32" />
+            <Parameter Name="points" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteUserStats">
+          <Parameter Name="userId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="GetPlayersStartedGameIds" ReturnType="Collection(Int32)">
+          <Parameter Name="userId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="GetUserStats">
+            <Parameter Name="userId" Mode="In" Type="Int64" />
+            <Parameter Name="userName" Mode="InOut" Type="String" />
+            <Parameter Name="avatarUrl" Mode="InOut" Type="String" />
+            <Parameter Name="totalPoints" Mode="InOut" Type="Int32" />
+            <Parameter Name="gameCount" Mode="InOut" Type="Int32" />
+            <Parameter Name="turnCount" Mode="InOut" Type="Int32" />
+            <Parameter Name="skipCount" Mode="InOut" Type="Int32" />
+            <Parameter Name="vacationCount" Mode="InOut" Type="Int32" />
+            <Parameter Name="averageTurnTime" Mode="InOut" Type="Int32" />
+            <Parameter Name="lastUpdated" Mode="InOut" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateUserPointsTotal">
+          <Parameter Name="userId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <AssociationSet Name="FK_Notifications_Turns" Association="GmrLib.Models.FK_Notifications_Turns">
+            <End Role="Turn" EntitySet="Turns" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <EntitySet Name="UsersGamesStarteds" EntityType="GmrLib.Models.UsersGamesStarted" />
+        </EntityContainer>
+        <Association Name="FK_Notifications_Turns">
+          <End Type="GmrLib.Models.Turn" Role="Turn" Multiplicity="0..1" />
+          <End Type="GmrLib.Models.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turn">
+              <PropertyRef Name="TurnID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="TurnID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UsersGamesStarted">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GmrLibModelsStoreContainer" CdmEntityContainer="GmrEntities">
+          <EntitySetMapping Name="Civilizations">
+            <EntityTypeMapping TypeName="GmrLib.Models.Civilization">
+              <MappingFragment StoreEntitySet="Civilizations">
+                <ScalarProperty Name="CivID" ColumnName="CivID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Leader" ColumnName="Leader" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="SmallImageUrl" ColumnName="SmallImageUrl" />
+                <ScalarProperty Name="InGameId" ColumnName="InGameId" />
+                <ScalarProperty Name="InGameKey" ColumnName="InGameKey" />
+                <ScalarProperty Name="InGameLeaderKey" ColumnName="InGameLeaderKey" />
+                <ScalarProperty Name="InGameColorKey" ColumnName="InGameColorKey" />
+                <ScalarProperty Name="BackgroundColor" ColumnName="BackgroundColor" />
+                <ScalarProperty Name="ForegroundColor" ColumnName="ForegroundColor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="GmrLib.Models.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="TurnID" ColumnName="TurnID" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="UserID" ColumnName="PostedBy" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameInviteTokens">
+            <EntityTypeMapping TypeName="GmrLib.Models.GameInviteToken">
+              <MappingFragment StoreEntitySet="GameInviteTokens">
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GamePlayers">
+            <EntityTypeMapping TypeName="GmrLib.Models.GamePlayer">
+              <MappingFragment StoreEntitySet="GamePlayers">
+                <ScalarProperty Name="GamePlayerID" ColumnName="GamePlayerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserId" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="TurnOrder" ColumnName="TurnOrder" />
+                <ScalarProperty Name="CivID" ColumnName="CivID" />
+                <ScalarProperty Name="TimesSkipped" ColumnName="TimesSkipped" />
+                <ScalarProperty Name="AverageTurnTime" ColumnName="AverageTurnTime" />
+                <ScalarProperty Name="DisablePasswordEncrypt" ColumnName="DisablePasswordEncrypt" />
+                <ScalarProperty Name="AllowVacation" ColumnName="AllowVacation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="GmrLib.Models.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="WinnerUserId" ColumnName="Winner" />
+                <ScalarProperty Name="HostUserId" ColumnName="Host" />
+                <ScalarProperty Name="Private" ColumnName="Private" />
+                <ScalarProperty Name="MaxPlayers" ColumnName="MaxPlayers" />
+                <ScalarProperty Name="TurnTimeLimit" ColumnName="TurnTimeLimit" />
+                <ScalarProperty Name="SkipLimit" ColumnName="SkipLimit" />
+                <ScalarProperty Name="TurnTimerDays" ColumnName="TurnTimerDays" />
+                <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
+                <ScalarProperty Name="TurnTimerStart" ColumnName="TurnTimerStart" />
+                <ScalarProperty Name="TurnTimerStop" ColumnName="TurnTimerStop" />
+                <ScalarProperty Name="SteamGameID" ColumnName="SteamGameID" />
+                <ScalarProperty Name="AllowDLC" ColumnName="AllowDLC" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Scenario" ColumnName="Scenario" />
+                <ScalarProperty Name="AllowPublicJoin" ColumnName="AllowPublicJoin" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageRecipients">
+            <EntityTypeMapping TypeName="GmrLib.Models.MessageRecipient">
+              <MappingFragment StoreEntitySet="MessageRecipients">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="RecipientUserId" ColumnName="RecipientUserId" />
+                <ScalarProperty Name="HasNew" ColumnName="HasNew" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="GmrLib.Models.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="GmrLib.Models.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
+                <ScalarProperty Name="SendingUserID" ColumnName="SendingUserID" />
+                <ScalarProperty Name="ReceivingUserID" ColumnName="ReceivingUserID" />
+                <ScalarProperty Name="TurnID" ColumnName="TurnID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+                <ScalarProperty Name="CustomMessage" ColumnName="CustomMessage" />
+                <ScalarProperty Name="Checked" ColumnName="Checked" />
+                <ScalarProperty Name="Sent" ColumnName="Sent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="GmrLib.Models.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="PayingUserId" ColumnName="PayingUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Preferences">
+            <EntityTypeMapping TypeName="GmrLib.Models.Preference">
+              <MappingFragment StoreEntitySet="Preferences">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Saves">
+            <EntityTypeMapping TypeName="GmrLib.Models.Save">
+              <MappingFragment StoreEntitySet="Saves">
+                <ScalarProperty Name="SaveID" ColumnName="SaveID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SteamGames">
+            <EntityTypeMapping TypeName="GmrLib.Models.SteamGame">
+              <MappingFragment StoreEntitySet="SteamGames">
+                <ScalarProperty Name="SteamGameID" ColumnName="SteamGameID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SteamID" ColumnName="SteamID" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="SmallImageUrl" ColumnName="SmallImageUrl" />
+                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turns">
+            <EntityTypeMapping TypeName="GmrLib.Models.Turn">
+              <MappingFragment StoreEntitySet="Turns">
+                <ScalarProperty Name="ExpiresOn" ColumnName="ExpiresOn" />
+                <ScalarProperty Name="TurnID" ColumnName="TurnID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="SaveID" ColumnName="SaveID" />
+                <ScalarProperty Name="Skipped" ColumnName="Skipped" />
+                <ScalarProperty Name="GamePlayerID" ColumnName="GamePlayerID" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="FileSizeInBytes" ColumnName="FileSizeInBytes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GmrLib.Models.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ProfileUrl" ColumnName="ProfileUrl" />
+                <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
+                <ScalarProperty Name="MediumAvatarUrl" ColumnName="MediumAvatarUrl" />
+                <ScalarProperty Name="FullAvatarUrl" ColumnName="FullAvatarUrl" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AuthKey" ColumnName="AuthKey" />
+                <ScalarProperty Name="LastLoggedIn" ColumnName="LastLoggedIn" />
+                <ScalarProperty Name="Premium" ColumnName="Premium" />
+                <ScalarProperty Name="FirstLogin" ColumnName="FirstLogin" />
+                <ScalarProperty Name="AccountTypeInt" ColumnName="AccountType" />
+                <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SteamGameCivilizations">
+            <EntityTypeMapping TypeName="GmrLib.Models.SteamGameCivilization">
+              <MappingFragment StoreEntitySet="SteamGameCivilizations">
+                <ScalarProperty Name="SteamGameID" ColumnName="SteamGameID" />
+                <ScalarProperty Name="CivID" ColumnName="CivID" />
+                <ScalarProperty Name="IsDLC" ColumnName="IsDLC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStats">
+            <EntityTypeMapping TypeName="GmrLib.Models.UserStat">
+              <MappingFragment StoreEntitySet="UserStats">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
+                <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
+                <ScalarProperty Name="GameCount" ColumnName="GameCount" />
+                <ScalarProperty Name="TurnCount" ColumnName="TurnCount" />
+                <ScalarProperty Name="SkipCount" ColumnName="SkipCount" />
+                <ScalarProperty Name="VacationCount" ColumnName="VacationCount" />
+                <ScalarProperty Name="AverageTurnTime" ColumnName="AverageTurnTime" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="GameAllowedCivs" TypeName="GmrLib.Models.GameAllowedCivs" StoreEntitySet="GameAllowedCivs">
+            <EndProperty Name="Civilizations">
+              <ScalarProperty Name="CivID" ColumnName="CivID" />
+            </EndProperty>
+            <EndProperty Name="Games">
+              <ScalarProperty Name="GameID" ColumnName="GameID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="CalculatePointsForTurn" FunctionName="GmrLib.Models.Store.CalculatePointsForTurn" />
+          <FunctionImportMapping FunctionImportName="DeleteUserStats" FunctionName="GmrLib.Models.Store.DeleteUserStats" />
+          <FunctionImportMapping FunctionImportName="GetUserStats" FunctionName="GmrLib.Models.Store.GetUserStats" />
+          <FunctionImportMapping FunctionImportName="UpdateUserPointsTotal" FunctionName="GmrLib.Models.Store.UpdateUserPointsTotal" />
+          <EntitySetMapping Name="UsersGamesStarteds">
+            <EntityTypeMapping TypeName="GmrLib.Models.UsersGamesStarted">
+              <MappingFragment StoreEntitySet="UsersGamesStarted">
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

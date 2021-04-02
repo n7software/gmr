@@ -1,0 +1,39 @@
+﻿@model IEnumerable<GmrLib.Models.Game>
+
+<h1>
+    <span style="font-size:100%;color:#CCC;">@Model.Count() out of @GmrServer.Global.GetCurentUserGameLimitText()</span>
+    @if(GmrServer.Global.CurrentUserGameLimit() > 0)
+    {
+        <a href="../SupportUs" style="font-size: 75%;">(Increase Game Limit)</a>
+    }
+</h1>
+
+<div class="right-box" style="">
+    @{
+        var unplayedGames = Model.Where(g => g.Started == null).OrderBy(g => g.Created);
+    }
+    @if (unplayedGames.Count() > 0)
+    {
+        <div class="unplayed-games">
+            <h3>Not yet started</h3>
+            <span class="subscript">A game will be deleted once it's 30 days old if it hasn't been started</span>
+            <div style="padding-top:12px;">
+                @foreach (var game in unplayedGames)
+                {
+                    <div class="unplayed-game" onclick="goToGameDetails(@game.GameID);">
+                        @game.Name
+                        <div class="subscript" style="width:100%; text-align:right">Created @GmrServer.Global.FriendlyTimeDiffDaysOnly(DateTime.UtcNow.Subtract(game.Created)) ago</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    <div class="create-game right-box-content" style="border-bottom: 0;">
+        <div id="create-game-button" class="button right-box-button" style="" onclick="createGameDialog();">Create a new game</div>
+    </div>
+</div>
+
+@foreach (var game in Model.Where(g => g.HasStarted))
+{
+    @Html.DisplayFor(m => game)
+}

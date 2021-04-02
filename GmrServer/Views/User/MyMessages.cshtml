@@ -1,0 +1,27 @@
+﻿@using System.Linq
+@model System.Collections.Generic.IEnumerable<GmrLib.Models.Message>
+
+<div class="right-box">
+    <div class="create-message right-box-content" style="border-bottom: 0;">
+        <div id="create-message-button" class="button right-box-button" onclick="createMessageDialog();">New Message</div>
+    </div>
+</div>
+
+<div id="message-list">
+    @if (Model.Any())
+    {
+        @Html.Partial("MyMessagesPage", Model)
+    }
+    else
+    {
+        <span style="float: left; margin-top: 10px;">You don't have any messages yet. Perhaps you should send one to someone :)</span>
+    }
+</div>
+
+<div id="dialog-create-message" style="display: none;">
+    @Html.Partial("CreateMessage")
+</div>
+
+<script type="text/javascript">
+    $(loadMoreMessages);
+</script>

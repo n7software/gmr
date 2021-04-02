@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Dev Tools</h2>
+
+<strong>@GmrServer.Global.ApiThreader.TotalClients</strong> users in <strong>@GmrServer.Global.ApiThreader.TotalThreads</strong> threads in the Steam API thread pool
+<br />
+<strong>@GmrWorker.DesktopAppMonitor.Instance.GetTotalActiveAuthTokens()</strong> active desktop clients
+<br />
+<strong>@GmrLib.GameManager.GetNumberOfGamesInCache()</strong> games in cache <a href="/Dev/ClearGameCache" target="_self">(clear)</a>
+<br />
+<br />
+<a href="/Game/FindGames">Find Games</a>

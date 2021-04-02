@@ -1,0 +1,27 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    
+    <script type="text/javascript">
+        setCp('@Url.Action("ControlPanel", "User")');
+        setNotPanel('@Url.Action("Panel", "Notifications")');
+        setPanelClosed('@Url.Action("PanelClosed", "Notifications")');
+
+    </script>
+    
+    <div id="login-area">
+        <div id="notification-num" class="notification-area no-notification no-select" unselectable="on">0</div>
+        <a id="messages-num" href="/User/Messages" class="messages-area no-notification no-select" unselectable="on" style="color: #FFF;">0</a>
+        <img id="avatar" class="avatar" style="background-image:url('@GmrServer.Global.AvatarUrl');"  src="@Url.Content(GmrServer.Avatar.GetBorderImages(GmrServer.Global.UserSteamID).MediumBorder)" />
+        <div class="host-stats-box">
+            <img class="stats-points-icon" src="/Content/images/points.png" height="16" width="16" alt="points" />
+            <span class="stats-points-text">@string.Format("{0:n0}", GmrServer.Global.TotalPoints())</span>
+        </div>
+    </div>
+}
+else
+{
+    <div id="login-area">
+        @Html.ActionLink("Sign in through Steam", "Login", "User", new { returnUrl = Request.Url }, new { id = "login-button" })
+        @Html.ActionLink("Is this safe?", "SteamDataPolicy", "About", null, new { target = "_blank", id = "is-this-safe" })
+    </div>
+}

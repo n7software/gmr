@@ -1,0 +1,50 @@
+﻿@model GmrLib.Models.User
+@{
+    Layout = "~/Views/Download/_Layout.cshtml";
+    ViewBag.Title = "Download";
+}
+<div style="width: 900px">
+    <img style="float:right; margin-left:100px;" src="@Url.Content("~/Content/images/screen_sm.png")" />
+    <h1>
+        Download the desktop app</h1>
+    <p>
+        The desktop app is definitely the easy way to go. When it's your turn, it'll get
+        the save file and put it in the Civilization V save directory automatically (It
+        will be called <i>"(GMR) Play This One!"</i> when you go to load a hotseat game).
+        When you've finished your turn, your save file is off to the next player. No hassle,
+        no worries.
+    </p>
+    @if (GmrServer.Global.UserSteamID > 0 && Model != null)
+    {
+        <h2 style="margin-top: 50px">
+            Your Authentication Key is:</h2>
+        <div id="auth-key">
+            @Model.AuthKey
+        </div>
+        <p style="width:400px">
+            When you first start up the desktop app, it'll ask for this key. This will link
+            the desktop app to your account. If you ever need this key again, just check back
+            here. Anyway, whenever you're ready, just hit this giant button.
+        </p>
+        <br />
+        <div id="download" class="no-select" unselectable="on" onclick="downloadClicked()">
+            <a id="download_link" href="ClientDeploy/setup.exe">Download</a>
+        </div>
+    }
+    else
+    {
+        <p>
+            In order to download the desktop app you will need to
+            @Html.ActionLink("sign in.", "Login", "User", new { returnUrl = Request.Url }, new { })
+        </p>
+    }
+</div>
+
+@if (GmrServer.Global.UserSteamID > 0)
+{
+    <script type="text/javascript">
+
+        $(document).ready(InitializeDownload);
+
+    </script>
+}

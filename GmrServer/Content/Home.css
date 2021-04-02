@@ -1,0 +1,48 @@
+﻿ul#menu li a#home
+{
+    padding-bottom: 14px;
+    background-color: #222222;
+    color:#CCCCCC;
+    border-radius: 0px;
+    /*border-top-left-radius: 5px;
+    border-top-right-radius: 5px;*/
+}
+
+ul#menu li a#home:hover
+{
+    background-color: #333333;
+    text-decoration: none;
+}
+
+ul#menu li a#home:active
+{
+    background-color: #555555;
+    text-decoration: none;
+}
+
+.twitter-doc
+{
+    border-radius: 0px !important;
+}
+
+.twitter-timeline
+{
+    border-radius: 0px !important;
+}
+
+.blog-post {
+    background-color: #444;
+    padding: 10px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.blog-post h2 a {
+    color: #7BB036;
+}
+
+.blog-post h3 {
+    font-size: 14px;
+}

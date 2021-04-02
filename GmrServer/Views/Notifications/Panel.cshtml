@@ -1,0 +1,23 @@
+﻿@model System.Collections.Generic.IEnumerable<GmrServer.Models.PackagedNotification>
+
+<div @if(ViewBag.Width != null) {<text>style="width:@(ViewBag.Width)px"</text>} class="no-select">
+    @foreach (var notification in Model)
+    {
+        <div id="notification-item-@notification.ID" unselectable="on" class="notification-item 
+            @if(notification.Checked == null){<text>notification-not-clicked</text>}"
+            @if(!String.IsNullOrWhiteSpace(notification.Url)){<text>onclick="notificationClicked('@notification.Url');"</text>}
+            @if (!(ViewBag.ShowTail ?? true) && notification == Model.Last())
+            { <text>style="border-bottom:0px;"</text> } >
+            @Html.Raw(notification.Message)<br />
+            <div class="notification-item-date" unselectable="on">
+                @notification.SentHowLongAgo
+            </div>
+        </div>
+    }
+    @if (ViewBag.ShowTail ?? true)
+    {
+        <div id="notification-tail" onclick="window.location='@Url.Action("Index", "Notifications")'" unselectable="on">
+            See All Notifications
+        </div>
+    }
+</div>

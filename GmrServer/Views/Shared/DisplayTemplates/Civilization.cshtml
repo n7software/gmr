@@ -1,0 +1,19 @@
+﻿@model GmrLib.Models.Civilization
+@{
+    GmrLib.Models.Civilization Selected;
+    if (Model == null)
+    { Selected = GmrLib.Models.Civilization.Unknown; }
+    else
+    { Selected = Model; }
+
+    string backcolor = Model.BackgroundColor;
+    string forecolor = Model.ForegroundColor;
+}
+
+<div class="civilization" style="background-color: #@backcolor; background-image:url('@Url.Content(Selected.ImageUrl)');" >
+    <div style="width:100%; text-align:center;">
+        <span class="civ-name" style="color:#@forecolor" unselectable="on">@Selected.Name</span>
+        <br />
+        <span class="civ-leader" unselectable="on" style="color:#@forecolor" >@Selected.Leader</span>
+    </div>
+</div>

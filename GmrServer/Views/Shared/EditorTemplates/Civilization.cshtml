@@ -1,0 +1,29 @@
+﻿@model GmrLib.Models.Civilization
+@{
+    
+}
+
+<link href="@Url.Content("~/Content/flexcrollstyles.css")" rel="stylesheet" type="text/css" />
+<script type='text/javascript' src="@Url.Content("~/Scripts/flexcroll.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/civselector.js")"></script>
+
+<script type="text/javascript">
+
+    setSelectorPopup('@Url.Action("SelectorPopup", "Game")/');
+    setCivSelector('@Url.Action("CivSelector", "Game")/');
+
+</script>
+
+@Html.HiddenFor(m => m.CivID, new { id = "CivID"  })
+@Html.HiddenFor(m => m.Name, new { id = "Name"})
+@Html.HiddenFor(m => m.Leader, new { id = "Leader" })
+
+<div id="civ-selector" class="no-select" @if(ViewBag.AllCivs.Count > 1) {<text>onclick="toggleSelectorPopup()"</text>}>
+    @Html.Partial("~/Views/Shared/DisplayTemplates/Civilization.cshtml", Model)
+</div>
+
+<div id="selector-popup-wrapper" class="no-select">
+    <div id="selector-popup">
+        @Html.Partial("~/Views/Shared/SelectorPopup.cshtml", null)
+    </div>
+</div>

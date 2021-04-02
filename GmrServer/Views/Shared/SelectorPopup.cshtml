@@ -1,0 +1,7 @@
+﻿@foreach (var c in ViewBag.AllCivs)
+{
+    <div class="selector-item" onclick="updateSelector(@c.CivID, this)">
+        @Html.DisplayFor(m => c)
+    </div>
+}
+@*  *@

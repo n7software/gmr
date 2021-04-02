@@ -1,0 +1,740 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8A55B966-91D4-4892-A82D-22770FAB1304}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GmrServer</RootNamespace>
+    <AssemblyName>GmrServer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Mvc5">
+      <HintPath>..\packages\DotNetOpenAuth.Mvc5.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mailjet.Client, Version=2.0.1.0, Culture=neutral, PublicKeyToken=c297171c8bcce79f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mailjet.Api.2.0.1\lib\net45\Mailjet.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.2.0.0\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.0.2.13022\lib\portable-windows8+net40+sl5+windowsphone8\Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.3\lib\net45\WebMatrix.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.3\lib\net45\WebMatrix.WebData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Avatar.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\DiplomacyController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\CommunityController.cs" />
+    <Compile Include="Controllers\DevController.cs" />
+    <Compile Include="Controllers\DownloadController.cs" />
+    <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\QueryController.cs" />
+    <Compile Include="Controllers\SessionCheckController.cs" />
+    <Compile Include="Controllers\SupportUsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Global.cs" />
+    <Compile Include="IDiplomacy.cs" />
+    <Compile Include="Models\Blog.cs" />
+    <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\GamesIndexModel.cs" />
+    <Compile Include="Models\PackagedNotification.cs" />
+    <Compile Include="Models\PagedPlayerList.cs" />
+    <Compile Include="Models\SaveDownload.cs" />
+    <Compile Include="Models\SaveUpload.cs" />
+    <Compile Include="Models\SubmitTurnResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RssRefresher.cs" />
+    <Compile Include="SteamApiThreaderWeb.cs" />
+    <Compile Include="Util\NoBufferPolicySelector.cs" />
+    <Compile Include="Util\Pie.cs" />
+    <Compile Include="Util\Utilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Community.css" />
+    <Content Include="Content\Browser.css" />
+    <Content Include="Content\images\bluav_lg.png" />
+    <Content Include="Content\images\civ\assyria.png" />
+    <Content Include="Content\images\civ\assyriasm.png" />
+    <Content Include="Content\images\civ\austria.png" />
+    <Content Include="Content\images\civ\austriasm.png" />
+    <Content Include="Content\images\civ\brazil.png" />
+    <Content Include="Content\images\civ\brazilsm.png" />
+    <Content Include="Content\images\civ\byzantine.png" />
+    <Content Include="Content\images\civ\byzantinesm.png" />
+    <Content Include="Content\images\civ\carthage.png" />
+    <Content Include="Content\images\civ\carthagesm.png" />
+    <Content Include="Content\images\civ\celts.png" />
+    <Content Include="Content\images\civ\celtssm.png" />
+    <Content Include="Content\images\civ\ethiopia.png" />
+    <Content Include="Content\images\civ\ethiopiasm.png" />
+    <Content Include="Content\images\civ\huns.png" />
+    <Content Include="Content\images\civ\hunssm.png" />
+    <Content Include="Content\images\civ\indonesia.png" />
+    <Content Include="Content\images\civ\indonesiasm.png" />
+    <Content Include="Content\images\civ\maya.png" />
+    <Content Include="Content\images\civ\mayasm.png" />
+    <Content Include="Content\images\civ\morocco.png" />
+    <Content Include="Content\images\civ\moroccosm.png" />
+    <Content Include="Content\images\civ\netherlands.png" />
+    <Content Include="Content\images\civ\netherlandssm.png" />
+    <Content Include="Content\images\civ\poland.png" />
+    <Content Include="Content\images\civ\polandsm.png" />
+    <Content Include="Content\images\civ\portugal.png" />
+    <Content Include="Content\images\civ\portugalsm.png" />
+    <Content Include="Content\images\civ\shoshone.png" />
+    <Content Include="Content\images\civ\shoshonesm.png" />
+    <Content Include="Content\images\civ\sweden.png" />
+    <Content Include="Content\images\civ\swedensm.png" />
+    <Content Include="Content\images\civ\venice.png" />
+    <Content Include="Content\images\civ\venicesm.png" />
+    <Content Include="Content\images\civ\zulu.png" />
+    <Content Include="Content\images\civ\zulusm.png" />
+    <Content Include="Content\images\dialog-load.gif" />
+    <Content Include="Content\images\edit-icon.png" />
+    <Content Include="Content\images\game\civ-v-bnw-small.png" />
+    <Content Include="Content\images\game\civ-v-bnw.png" />
+    <Content Include="Content\images\game\civ-v-gk-bnw-small.png" />
+    <Content Include="Content\images\game\civ-v-gk-bnw.png" />
+    <Content Include="Content\images\game\civ-v-gk-small.png" />
+    <Content Include="Content\images\game\civ-v-gk.png" />
+    <Content Include="Content\images\game\civ-v-small.png" />
+    <Content Include="Content\images\game\civ-v.png" />
+    <Content Include="Content\images\gift.png" />
+    <Content Include="Content\images\grnav_lg.png" />
+    <Content Include="Content\images\gryav_lg.png" />
+    <Content Include="Content\images\help.png" />
+    <Content Include="Content\images\host-border-sm.png" />
+    <Content Include="Content\images\host-border.png" />
+    <Content Include="Content\images\left-icon.png" />
+    <Content Include="Content\images\message.png" />
+    <Content Include="Content\images\n7-logo-small.png" />
+    <Content Include="Content\images\new-tab-dark.png" />
+    <Content Include="Content\images\new-tab-light.png" />
+    <Content Include="Content\images\New_Unit_Mech_94.png" />
+    <Content Include="Content\images\ornav_lg.png" />
+    <Content Include="Content\images\page-left.png" />
+    <Content Include="Content\images\page-right.png" />
+    <Content Include="Content\images\piecontainer.png" />
+    <Content Include="Content\images\civ\babylon.png" />
+    <Content Include="Content\images\civ\babylonsm.png" />
+    <Content Include="Content\images\civ\denmark.png" />
+    <Content Include="Content\images\civ\denmarksm.png" />
+    <Content Include="Content\images\civ\inca.png" />
+    <Content Include="Content\images\civ\incasm.png" />
+    <Content Include="Content\images\civ\korea.png" />
+    <Content Include="Content\images\civ\koreasm.png" />
+    <Content Include="Content\images\civ\mongolia.png" />
+    <Content Include="Content\images\civ\mongoliasm.png" />
+    <Content Include="Content\images\civ\polynesia.png" />
+    <Content Include="Content\images\civ\polynesiasm.png" />
+    <Content Include="Content\images\civ\spain.png" />
+    <Content Include="Content\images\civ\spainsm.png" />
+    <Content Include="Content\images\left.png" />
+    <Content Include="Content\images\plus-big.png" />
+    <Content Include="Content\images\points.png" />
+    <Content Include="Content\images\points_sm.png" />
+    <Content Include="Content\images\revert.png" />
+    <Content Include="Content\images\sits_large_border.png" />
+    <Content Include="Content\images\skip.png" />
+    <Content Include="Content\images\sort-ascending.png" />
+    <Content Include="Content\images\sort-descending.png" />
+    <Content Include="Content\images\sort-none.png" />
+    <Content Include="Content\images\steam.png" />
+    <Content Include="Content\images\surrender.png" />
+    <Content Include="Content\images\tt-load.gif" />
+    <Content Include="Content\images\up.png" />
+    <Content Include="Content\images\video.png" />
+    <Content Include="Content\jquery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_flat_15_8d8d8d_40x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\jquery\images\ui-bg_gloss-wave_16_121212_500x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_highlight-hard_15_888888_1x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_highlight-hard_55_555555_1x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_highlight-soft_16_121212_1x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_highlight-soft_35_adadad_1x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_highlight-soft_60_dddddd_1x100.png" />
+    <Content Include="Content\jquery\images\ui-bg_inset-soft_15_121212_1x100.png" />
+    <Content Include="Content\jquery\images\ui-icons_666666_256x240.png" />
+    <Content Include="Content\jquery\images\ui-icons_aaaaaa_256x240.png" />
+    <Content Include="Content\jquery\images\ui-icons_bbbbbb_256x240.png" />
+    <Content Include="Content\jquery\images\ui-icons_c98000_256x240.png" />
+    <Content Include="Content\jquery\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Content\jquery\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\jquery\images\ui-icons_f29a00_256x240.png" />
+    <Content Include="Content\jquery\jquery-ui-1.8.18.custom.css" />
+    <Content Include="Content\jquery\jquery.qtip.min.css" />
+    <Content Include="Content\SupportUs.css" />
+    <Content Include="Content\Download.css" />
+    <Content Include="Content\flexcrollstyles.css" />
+    <Content Include="Content\Game.css" />
+    <Content Include="Content\Home.css" />
+    <Content Include="Content\images\bluav.png" />
+    <Content Include="Content\images\bluavsm.png" />
+    <Content Include="Content\images\check.png" />
+    <Content Include="Content\images\civ\america.png" />
+    <Content Include="Content\images\civ\americasm.png" />
+    <Content Include="Content\images\civ\arabia.png" />
+    <Content Include="Content\images\civ\arabiasm.png" />
+    <Content Include="Content\images\civ\aztec.png" />
+    <Content Include="Content\images\civ\aztecsm.png" />
+    <Content Include="Content\images\civ\china.png" />
+    <Content Include="Content\images\civ\chinasm.png" />
+    <Content Include="Content\images\civ\egypt.png" />
+    <Content Include="Content\images\civ\egyptsm.png" />
+    <Content Include="Content\images\civ\england.png" />
+    <Content Include="Content\images\civ\englandsm.png" />
+    <Content Include="Content\images\civ\france.png" />
+    <Content Include="Content\images\civ\francesm.png" />
+    <Content Include="Content\images\civ\germany.png" />
+    <Content Include="Content\images\civ\germanysm.png" />
+    <Content Include="Content\images\civ\greece.png" />
+    <Content Include="Content\images\civ\greecesm.png" />
+    <Content Include="Content\images\civ\india.png" />
+    <Content Include="Content\images\civ\indiasm.png" />
+    <Content Include="Content\images\civ\iroquois.png" />
+    <Content Include="Content\images\civ\iroquoissm.png" />
+    <Content Include="Content\images\civ\japan.png" />
+    <Content Include="Content\images\civ\japansm.png" />
+    <Content Include="Content\images\civ\ottoman.png" />
+    <Content Include="Content\images\civ\ottomansm.png" />
+    <Content Include="Content\images\civ\persia.png" />
+    <Content Include="Content\images\civ\persiasm.png" />
+    <Content Include="Content\images\civ\rome.png" />
+    <Content Include="Content\images\civ\romesm.png" />
+    <Content Include="Content\images\civ\russia.png" />
+    <Content Include="Content\images\civ\russiasm.png" />
+    <Content Include="Content\images\civ\siam.png" />
+    <Content Include="Content\images\civ\siamsm.png" />
+    <Content Include="Content\images\civ\songhai.png" />
+    <Content Include="Content\images\civ\songhaism.png" />
+    <Content Include="Content\images\civ\unknown.png" />
+    <Content Include="Content\images\civ\unknownsm.png" />
+    <Content Include="Content\images\down.png" />
+    <Content Include="Content\images\gmr.png" />
+    <Content Include="Content\images\grnav.png" />
+    <Content Include="Content\images\grnavsm.png" />
+    <Content Include="Content\images\gryav.png" />
+    <Content Include="Content\images\gryavsm.png" />
+    <Content Include="Content\images\invite.png" />
+    <Content Include="Content\images\letter-icon.png" />
+    <Content Include="Content\images\minus.png" />
+    <Content Include="Content\images\notification-load.gif" />
+    <Content Include="Content\images\ornav.png" />
+    <Content Include="Content\images\ornavsm.png" />
+    <Content Include="Content\images\plus.png" />
+    <Content Include="Content\images\right.png" />
+    <Content Include="Content\images\save-color.png" />
+    <Content Include="Content\images\save-icon.png" />
+    <Content Include="Content\images\screen_big.png" />
+    <Content Include="Content\images\screen_sm.png" />
+    <Content Include="Content\images\search.png" />
+    <Content Include="Content\images\shadow.png" />
+    <Content Include="Content\images\small-load.gif" />
+    <Content Include="Content\images\start.png" />
+    <Content Include="Content\images\trash_small.png" />
+    <Content Include="Content\images\SupportUs.png" />
+    <Content Include="Content\images\x-color.png" />
+    <Content Include="Content\images\x.png" />
+    <Content Include="Content\images\trash.png" />
+    <Content Include="Content\themes\base\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.menu.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.spinner.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\base\minified\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.menu.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.spinner.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\User.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="robots.txt" />
+    <Content Include="Scripts\civselector.js" />
+    <Content Include="Scripts\gameselector.js" />
+    <Content Include="Scripts\flexcroll.js" />
+    <Content Include="Scripts\gmr.js" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-effects.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="Scripts\jquery.loadingdots.js" />
+    <Content Include="Scripts\jquery.qtip.js" />
+    <Content Include="Scripts\jquery.tools.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\login.js" />
+    <Content Include="Scripts\modernizr-2.7.2.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\SessionExpired.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Community\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Community\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\CompleteLogin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LoginArea.cshtml" />
+    <Content Include="Views\About\PrivacyPolicy.cshtml" />
+    <Content Include="Views\About\TermsOfUse.cshtml" />
+    <Content Include="Views\About\SteamDataPolicy.cshtml" />
+    <Content Include="Views\About\Us.cshtml" />
+    <Content Include="Views\Download\_Layout.cshtml" />
+    <Content Include="Views\Download\Index.cshtml" />
+    <Content Include="Views\Notifications\Panel.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\User\ControlPanel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CivSaveLib\CivSaveLib.csproj">
+      <Project>{99388aba-211a-4c6c-82f3-a0788f1e08d0}</Project>
+      <Name>CivSaveLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GmrLib\GmrLib\GmrLib.csproj">
+      <Project>{91105f02-5a89-43f8-81b1-a6b863f546a7}</Project>
+      <Name>GmrLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GmrWorker\GmrWorker.csproj">
+      <Project>{82F3ACA2-3AA5-4E26-A941-1C33279E75A1}</Project>
+      <Name>GmrWorker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\DisplayTemplates\Civilization.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Civilization.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\Join.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\SelectorPopup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\CantJoin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Dev\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\DisplayTemplates\Game.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\BaseGame.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Game.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\FindUsers.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\AddAIPlayer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\ChangeCiv.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\PublicGames.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SupportUs\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SupportUs\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SupportUs\Thanks.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\NotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Game\BrowserPage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\BaseComments.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\SteamGame.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\SelectorPopupGame.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\DisplayTemplates\SteamGame.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Live-Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\Live.pubxml" />
+    <Content Include="Views\Shared\DisplayTemplates\TurnTimer.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TurnTimer.cshtml" />
+    <Content Include="Views\Shared\TurnTimerArea.cshtml" />
+    <Content Include="Views\About\TurnTimer.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Comment.cshtml" />
+    <Content Include="Views\Shared\CommentPage.cshtml" />
+    <Content Include="Views\About\InGamePasswords.cshtml" />
+    <Content Include="Views\Dev\TimeZone.cshtml" />
+    <Content Include="Views\Game\Create.cshtml" />
+    <Content Include="Views\About\Mods.cshtml" />
+    <Content Include="Views\Game\InvalidTurnSubmit.cshtml" />
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
+    <Content Include="Views\Game\FindGames.cshtml" />
+    <Content Include="Views\Game\MyGames.cshtml" />
+    <Content Include="Views\Game\SignIn.cshtml" />
+    <Content Include="Views\Community\Players.cshtml" />
+    <Content Include="Views\Community\PlayerDetails.cshtml" />
+    <Content Include="Views\Community\PlayerPage.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PackagedUserStats.cshtml" />
+    <Content Include="Views\Community\PlayerDetailGames.cshtml" />
+    <Content Include="Views\Community\PlayerDetailTurns.cshtml" />
+    <Content Include="Views\User\Messages.cshtml" />
+    <Content Include="Views\Shared\CreateMessage.cshtml" />
+    <Content Include="Views\Game\GameDetailTurns.cshtml" />
+    <Content Include="Views\Game\GameDetailComments.cshtml" />
+    <Content Include="Views\User\MyMessages.cshtml" />
+    <Content Include="Views\User\MessageDetails.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Message.cshtml" />
+    <Content Include="Views\User\MyMessagesPage.cshtml" />
+    <Content Include="Views\About\FAQ.cshtml" />
+    <Content Include="Views\Community\Turns.cshtml" />
+    <Content Include="Views\About\API.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>65210</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+</Project>

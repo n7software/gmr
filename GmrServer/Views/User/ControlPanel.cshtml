@@ -1,0 +1,143 @@
+﻿@model GmrLib.Models.User
+@{
+    dynamic prefs = GmrLib.Models.PackagedPreferences.Get(Model);
+    var timeZones = GmrLib.Models.TurnTimer.TimeZones;
+}
+<script type="text/javascript">
+    var cache = new Image(16, 16);
+    cache.src = '@Url.Content("~/Content/Images/small-load.gif")';
+
+    $("#email-address").keyup(function (event) {
+        if (event.keyCode == 13) {
+            saveEmail();
+        }
+    }); 
+    
+    $("#game-password").keyup(function (event) {
+        if (event.keyCode == 13) {
+            savePassword();
+        }
+    });
+
+</script>
+
+<div id="dialog-confirm-vacation-mode" title="Turn on Vacation Mode?" style="visibility: hidden; display:none;">
+    <p>
+        This will cause you to be skipped whenever it's your turn.<br />
+        Are you sure you want to do this?
+    </p>
+</div>
+
+<div class="cp-item">
+    <span style="float:left">Logged in as @Model.UserName.</span>
+    <span style="float:right">@Html.ActionLink("Logout", "LogOut", "User")</span>
+    &nbsp;
+</div>
+<div class="cp-item">
+    <h3>Location</h3>
+    <div style="height:65px;">
+        <div style="float:left;">
+            <h4>
+                Vacation Mode 
+                &nbsp;<a href="/About/FAQ#what-is-vacation-mode" target="_blank"><img src="/Content/images/help.png" class="help-icon" alt="help"/></a>
+            </h4>
+            <div id="vacation-mode-on" unselectable="on" onclick="setVacationMode(true)" class="no-select vacation-box @if (prefs.VacationMode) {<text>selected-vacation-box</text>}">
+                On</div>
+            <div id="vacation-mode-off" unselectable="on" onclick="setVacationMode(false)" class="no-select vacation-box @if (!prefs.VacationMode) {<text>selected-vacation-box</text>}">
+                Off</div>
+        </div>
+        <div style="float:right; padding-right:10px; margin-top:5px;">
+            <h4>
+                Time Zone
+            </h4>
+            <div>
+                <select name="TimeZone" id="TimeZone" onchange="setTimeZone(this)">
+                    @foreach(var tz in timeZones)
+                    {
+                        <option value="@tz.Value" @if(prefs.TimeZone == decimal.Parse(tz.Value)) { <text>selected="selected"</text> }>
+                            @tz.Text
+                        </option>
+                    }
+                </select>
+            </div>
+            @*<div style="position:relative; left:-3px;">
+                <input type="checkbox" id="AutoDST" name="AutoDST" @if(prefs.AutoDST) { <text>checked="checked"</text> } onchange="updatePreference(this)" />
+                <label for="AutoDST">Auto DST</label>
+            </div>*@
+        </div>
+    </div>
+</div>
+<div class="cp-item">
+    <h3>Email Notifications</h3>
+    <div>
+        <div style="height:30px; margin-top:15px">
+            <input class="text-box single-line  @if(String.IsNullOrWhiteSpace(Model.Email)){<text>watermark</text>}" 
+            id="email-address" name="EmailAddress" type="text" value="@(String.IsNullOrWhiteSpace(Model.Email) ? "Email Address" : Model.Email)" 
+            style="width:185px; float:left; margin-right: 5px;" 
+            @if(String.IsNullOrWhiteSpace(Model.Email)){<text> onclick="watermark(this)" </text>} />
+            <div id="save" class="button link-button save-icon" style="margin-right:5px" onclick="saveEmail()"></div>
+            <div id="delete" class="button link-button delete-icon" onclick="deleteEmail()"></div>
+        </div>
+        <div id="checkboxes">
+            <strong>Send me emails for...</strong><br />
+            <input type="checkbox" id="EmailGameInvites" onchange="updatePreference(this)"
+                @if(prefs.EmailGameInvites){<text>checked="checked"</text>} /><label for="EmailGameInvites"> game invitations</label><br />
+
+            <input type="checkbox" id="EmailPlayerJoinsGame" onchange="updatePreference(this)"
+                @if (prefs.EmailPlayerJoinsGame){<text>checked="checked"</text>} /><label for="EmailPlayerJoinsGame"> a player joins my game</label><br />
+
+            <input type="checkbox" id="EmailTurnNotify" onchange="updatePreference(this)"
+                @if(prefs.EmailTurnNotify){<text>checked="checked"</text>} /><label for="EmailTurnNotify"> it's my turn</label><br />
+
+            <input type="checkbox" id="EmailComment" onchange="updatePreference(this)"
+                @if(prefs.EmailComment){<text>checked="checked"</text>} /><label for="EmailComment"> someone comments in a game</label><br />
+
+            <input type="checkbox" id="EmailNewMessage" onchange="updatePreference(this)"
+                @if(prefs.EmailNewMessage){<text>checked="checked"</text>} /><label for="EmailNewMessage"> you receive a new message</label><br />
+
+            <input type="checkbox" id="EmailGameEnds" onchange="updatePreference(this)"
+                @if(prefs.EmailGameEnds){<text>checked="checked"</text>} /><label for="EmailGameEnds"> a game is ending</label><br />
+
+            <input type="checkbox" id="EmailTurnTimerChanges" onchange="updatePreference(this)"
+                @if(prefs.EmailTurnTimerChanges){<text>checked="checked"</text>} /><label for="EmailTurnTimerChanges"> a game's turn timer is modified</label><br />
+
+            <input type="checkbox" id="EmailSkipped" onchange="updatePreference(this)"
+                @if(prefs.EmailSkipped){<text>checked="checked"</text>} /><label for="EmailSkipped"> I get skipped</label><br />
+
+            <input type="checkbox" id="EmailOther" onchange="updatePreference(this)"
+                @if(prefs.EmailOther){<text>checked="checked"</text>} /><label for="EmailOther"> other notifications</label><br />
+
+            @*<span class="subscript" style="margin-top:5px"><br />Checkbox settings saved automatically</span>*@
+            @*<hr />
+            <input type="checkbox" id="CheckAll" onchange="checkUncheckAll(this.checked)" /><label for="CheckAll" style="font-weight:bold"> check/uncheck all </label><br />*@
+        </div>
+    </div>
+</div>
+<div class="cp-item" style="border-bottom: 0px; margin-bottom:30px;">
+        <h3>
+            Save Files
+        </h3>
+        @*<div style="height:80px;">
+            <h4>
+                File Type
+                &nbsp;<img src="@Url.Content("~/Content/images/help.png")" style="cursor:pointer; position:relative; top:5px;" onclick="window.open('@Url.Action("InGamePasswords", "About")', 'In-Game Passwords', 'width=615,height=400,scrollbars=1');" alt="help" />
+            </h4>
+            <div id="hotseat-saves" unselectable="on" onclick="setSaveType('HotSeat')" class="no-select file-type-box @if (prefs.SaveFileType == "HotSeat") {<text>selected-file-type-box</text>}">
+                Basic<br />(Hotseat)</div>
+            <div id="single-player-saves" unselectable="on" onclick="setSaveType('SinglePlayer')" class="no-select file-type-box @if (prefs.SaveFileType == "SinglePlayer") {<text>selected-file-type-box</text>}">
+                Advanced<br />(Single Player)</div>
+        </div>*@
+        <div>
+            <h4>
+                In-Game Password
+                &nbsp;<a href="/About/FAQ#what-is-in-game-password" onclick="window.open('@Url.Action("InGamePasswords", "About")', 'In-Game Passwords', 'width=615,height=400,scrollbars=1'); return false;"><img src="/Content/images/help.png" class="help-icon" alt="help"/></a>
+            </h4>
+            <input id="game-password" 
+                   type="text" 
+                   class="text-box single-line"
+                   style="width:185px; float:left; margin-right: 5px;"
+                   value="@(String.IsNullOrWhiteSpace(prefs.GamePassword) ? "" : prefs.GamePassword)"/>
+            <div id="password-save" class="button link-button save-icon" style="margin-right:5px" onclick="savePassword()"></div>
+            <div id="password-done" style="float:left"></div>
+        </div>
+</div>

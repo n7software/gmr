@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e3b07f65fe8248f7b68ef9bfe881be2a" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="GmrLib.Models.Civilization" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Comment" Width="1.5" PointX="3.125" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.GameInviteToken" Width="1.5" PointX="9.875" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.GamePlayer" Width="1.5" PointX="3.125" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Game" Width="1.5" PointX="6.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.MessageRecipient" Width="1.5" PointX="0.5" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Message" Width="1.5" PointX="3" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Notification" Width="1.5" PointX="6.125" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Payment" Width="1.5" PointX="5.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Preference" Width="1.5" PointX="0.5" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Save" Width="1.5" PointX="9.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.SteamGame" Width="1.5" PointX="2.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.Turn" Width="1.5" PointX="8.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.User" Width="1.5" PointX="0.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.SteamGameCivilization" Width="1.5" PointX="4.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GmrLib.Models.UserStat" Width="1.5" PointX="9" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="GmrLib.Models.FK_GamePlayers_Civilizations" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_SteamGameCivilizations_Civilizations" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Comments_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Comments_Messages" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Comments_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_GameInviteTokens_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Turns_GamePlayers" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_UserGames_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_UserGames_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Games_SteamGames" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Games_Users_Host" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Games_Users_Winner" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Notifications_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Turns_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_MessageRecipients_Messages" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_MessageRecipients_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Messages_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Notifications_Messages" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Notifications_Users_Reveiver" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Notifications_Users_Sender" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Payments_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Preferences_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Turns_Saves" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_SteamGameCivilizations_SteamGames" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Turns_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.GameAllowedCivs" ManuallyRouted="false" />
+        <AssociationConnector Association="GmrLib.Models.FK_Notifications_Turns" />
+        <EntityTypeShape EntityType="GmrLib.Models.UsersGamesStarted" Width="1.5" PointX="9" PointY="6.625" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

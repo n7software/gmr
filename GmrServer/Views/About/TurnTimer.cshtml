@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")?v=2" />
+    <style type="text/css">
+        body
+        {
+            
+	        margin-bottom: 20px;
+        }
+    </style>
+    <title>How to Use the GMR Turn Timer</title>
+</head>
+<body>
+    <div style="width:570px; margin: 0 auto 20px auto; background-color: #565656; padding: 15px 15px 15px 15px;" >
+        <h2>The GMR Turn Timer</h2>
+        <h3>What is it?</h3>
+        <p>
+            The GMR turn timer is a feature that lets a game host set a game to skip players if they haven't 
+            taken their turn in a set time span. It's meant to help games progress more quickly and not get stuck
+            on one or two players who don't take their turns.
+         </p>
+         <p>
+            It can be turned on in any game, whether it's been started or not.
+         </p>
+         <h3>How does it work?</h3>
+         <p>
+            The turn timer works by setting the skipped player to AI in the game's save file and passing the save file
+            to the next player.
+        </p>
+        <p>
+            This does create a limitation in that we can't skip all but one player.
+            If we did that, when the sole remaining player clicks "Next Turn" in game, all the other players would have their turns 
+            taken by AI and it would immediately go back to the same player.
+            So, check to make sure that this doesn't happen. If it does, we'll revert all the skipped turns and turn off
+            the timer in your game.
+         </p>
+         <h3>What are all these settings?</h3>
+         <p>
+            The turn timer is designed to be flexible and powerful. Here's a rundown of what you can do with it:
+         </p>
+         <h4>Timer days and hours</h4>
+         <p>
+            This is how long a player has to take their turn. For example, set it to one day, and a turn started Monday
+            at noon will end Tuesday at noon. Set it to zero days, twelve hours, and a turn started at the same time would end at
+            midnight.
+         </p>
+         <h4>Days in which the timer runs</h4>
+         <p>
+            These are the days that the turn timer applies. Extra hours from days that the timer isn't running 
+            <strong>rollover</strong>. For example, if you were to set a one day timer to run on Monday, Wednesday,
+            and Friday, a turn started Monday at noon would end Wednesday at noon.
+         </p>
+         <h4>Time zone</h4>
+         <p>
+            This is the time zone we'll use to calculate all times with your turn timer. Note that we don't factor in daylight
+            savings or extra stuff like that.
+         </p>
+         <h4>Time range</h4>
+         <p>
+            You can set the turn timer so turns can only expire during a certain time of day. You might use this feature to prevent
+            a game among friends from having turns expire in the middle of the night. Extra hours from excluded parts of the day
+            <strong>do not rollover</strong>. For example, if you set the timer to be unable to expire before 10:00 AM or after 6:00 PM,
+            a turn that would normally expire at midnight would expire the following day at 10:00 AM. In other words, if a turn were going
+            to expire in the exluded time range, it would end up expiring at the start of the time range the next day.
+         </p>
+         <p>
+            This feature is <strong>optional</strong>.
+         </p>
+         <h4>Kick limit</h4>
+         <p>
+            The kick limit kicks a player from your game and replaces then with AI once they've been skipped the number of times you specify.
+            It's intended so that if a player is really holding your game up, they'll be removed.
+         </p>
+         <p>
+            This feature is <strong>optional</strong>.
+         </p>
+         <h3>What's that blue ring?</h3>
+         <p>
+            The blue ring is a visual indicator for how much time is left in the current turn. Completely blue means the turn just started.
+            Completely gray means the player is about to be skipped. The ring does take into account days in which the timer runs and 
+            the time range.
+         </p>
+         <h3>Any other questions?</h3>
+         <p>
+            Feel free to @Html.ActionLink("contact us", "Us", "About", null, new { target = "_blank" })!
+         </p>
+    </div>
+</body>
+</html>

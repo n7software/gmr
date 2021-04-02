@@ -1,0 +1,17 @@
+﻿@model IEnumerable<GmrLib.Models.Game>
+@{
+    ViewBag.ShowPlayerCount = true;
+}
+
+@Html.DisplayForModel()
+
+@if (Model.Count() >= GmrServer.Controllers.GameController.GamesPerPage)
+{
+    <div id="loading">
+        <div id="loading-animation"></div>
+    </div>
+}
+else
+{
+    <div id="public-games-end"></div>
+}

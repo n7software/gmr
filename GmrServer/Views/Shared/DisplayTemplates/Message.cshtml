@@ -1,0 +1,89 @@
+﻿@using System.Linq
+@model GmrLib.Models.Message
+@{
+    Layout = null;
+
+    GmrLib.Models.User firstRecipient = null;
+    GmrLib.Models.Comment lastComment = null;
+    int recipientCount = Model.Recipients.Count;
+
+    string commentCount = string.Format("{0:n0}", Model.Comments.Count());
+
+    if (recipientCount > 0)
+    {
+        lastComment = Model.Comments.OrderByDescending(c => c.DateCreated).FirstOrDefault();
+        if (lastComment == null)
+        {
+            firstRecipient = Model.Recipients.First(r => r.Recipient.UserId == Model.CreatedByUser.UserId).Recipient;
+        }
+        else
+        {
+            firstRecipient = Model.Recipients.First(r => r.Recipient.UserId == lastComment.UserID).Recipient;
+        }
+    }
+
+    var currentUserRecipient = Model.Recipients.FirstOrDefault(r => r.Recipient.UserId == GmrServer.Global.UserSteamID);
+    bool hasNewComments = currentUserRecipient != null && currentUserRecipient.HasNew;
+}
+
+<div class="message-base-container">
+    <div id="message-@Model.Id" class="message @if(hasNewComments){<text>message-has-new</text>}">
+        <ul class="message-recipients">
+            @foreach (var recipient in Model.Recipients.Where(r => r.Recipient.UserId != firstRecipient.UserId).Select(r => r.Recipient))
+            {
+                <div class="message-recipient-container">
+                    <li class="message-recipient">
+                        <a href="@GmrServer.Global.GetPlayerDetailsUrl(recipient.UserId)" target="_blank">
+                            <img class="avatarsm game-avatarsm tooltip @(recipient.UserId)sm"
+                                 style="background-image: url('@recipient.AvatarUrl');"
+                                 src="@Url.Content(GmrServer.Avatar.GetBorderImages(recipient.UserId).SmallBorder)"
+                                 alt="@recipient.UserName" title="@recipient.UserName"/>
+                        </a>
+                    </li>
+                </div>
+                
+                <script type="text/javascript">requestUserInfo("@recipient.UserId");</script>
+            }
+        </ul>
+
+        <div class="message-last-recipient">
+            <a href="@GmrServer.Global.GetPlayerDetailsUrl(firstRecipient.UserId)" target="_blank">
+                <img class="avatar game-avatar tooltip @firstRecipient.UserId"
+                     style="background-image: url('@firstRecipient.MediumAvatarUrl');"
+                     src="@Url.Content(GmrServer.Avatar.GetBorderImages(firstRecipient.UserId).MediumBorder)"
+                     alt="@firstRecipient.UserName" title="@firstRecipient.UserName" />
+            </a>
+
+            <script type="text/javascript">requestUserInfo("@firstRecipient.UserId");</script>
+        </div>
+
+        <div class="message-title">
+            <a href="/User/Messages#@Model.Id"
+               target="_blank"
+               class="message-title-text"
+               onclick="return goToMessageDetails(@Model.Id);"><span class="needs-parsing" title="@Model.LastUpdated.ToString()"></span> - View all (@commentCount)</a>
+        </div>
+        
+        @if (hasNewComments)
+        {
+            <a class="mark-as-read-link" href="#" onclick=" markMessageAsRead(@Model.Id, this); return false; ">mark as read</a>
+        }
+
+        <div class="message-last-comment" @if(recipientCount <= 2){<text>style="width: 530px;"</text>}>
+            @if (lastComment != null)
+            {
+                <text>
+                @Html.Raw(GmrServer.Util.Utilities.ParseCommentCodes(lastComment.Value, false))
+                </text>
+            }
+            else
+            {
+                <i>No comment has been entered yet.</i>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    loadDates();
+</script>

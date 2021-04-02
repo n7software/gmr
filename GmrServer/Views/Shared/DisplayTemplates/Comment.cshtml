@@ -1,0 +1,63 @@
+﻿@model GmrLib.Models.Comment
+@{
+    
+}
+
+
+<script type="text/javascript">requestUserInfo("@Model.UserID");</script>
+
+<div class="comment">
+    <div class="author">
+        <a href="@GmrServer.Global.GetPlayerDetailsUrl(Model.UserID)" target="_blank">
+            <img class="avatar tooltip unparsed-tooltip @Model.UserID" 
+                 style="background-image:url('@Model.User.MediumAvatarUrl');" 
+                 src="@Url.Content(GmrServer.Avatar.GetBorderImages(Model.UserID).MediumBorder)"
+                 alt="@Model.User.UserName"
+                 title="@Model.User.UserName" />
+        </a>
+        <div class="host-stats-box" style="color:@GmrServer.Global.PremiumColor(Model.User.AccountType);">
+            <span class="stats-rank-text">@GmrServer.Global.GetRankFromPoints(Model.User.TotalPoints, Model.UserID)</span>
+            <span class="stats-points-text">@string.Format("{0:n0}", Model.User.TotalPoints)</span>
+            <img class="stats-points-icon" src="/Content/images/points.png" height="16" width="16" alt="points" />
+        </div>
+    </div>
+    <div class="comment-content">
+        <div class="comment-date needs-parsing" title="@Model.DateCreated.ToString()">
+        </div>
+        @if (Model.DateModified != null)
+        {         
+            <div class="comment-date needs-parsing" style="margin-left: 20px; font-style: italic;" title="@Model.DateModified.Value.ToString()">edited on </div>
+        }
+
+        @if (GmrServer.Global.UserSteamID == Model.UserID)
+        {
+            <div class="comment-controls">
+                <a href="" title="Edit comment" onclick="editComment(@Model.CommentID); return false;">edit</a>
+                -
+                                <a href="" title="Delete comment" onclick="confirmCommentDelete(@Model.CommentID); return false;">delete</a>
+            </div>
+        }
+        <div id="cb-@Model.CommentID" class="comment-body">
+            @try
+            {
+                @Html.Raw(GmrServer.Util.Utilities.ParseCommentCodes(Model.Value))
+            }
+            catch
+            { @Html.Raw(Model.Value) }
+        </div>
+        @if (GmrServer.Global.UserSteamID == Model.UserID)
+        {
+            <div id="c-@Model.CommentID" class="comment-edit hide-comment">
+                @using (Html.BeginForm("EditComment", "Comment", FormMethod.Post, new { name = "postEditComment-" + Model.CommentID, id = "postEditComment-" + Model.CommentID }))
+                {
+                    <textarea name="commentText" id="commentText" class="comment-box" rows="5">@HttpUtility.HtmlDecode(Model.Value)</textarea>
+                    <input type="hidden" name="id" value="@Model.CommentID" />
+                    <span id="edit-comment-error-@Model.CommentID" class="field-validation-error" style="margin: 5px 0px 0px 10px; float: left; display: none;"></span>
+                    <div id="post-edit-comment" class="no-select" unselectable="on" onclick="postCommentEdit(this, @Model.CommentID);" style="text-indent:36px;">
+                        Save
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<GmrLib.Models.Turn>
+@{
+    Layout = null;
+
+    var lastDateTag = DateTime.MinValue.Date;
+
+    int timeZoneOffset = 0;
+    
+    var currentUser = GmrServer.Global.CurrentUser();
+    if (currentUser != null)
+    {
+        var prefs = GmrLib.Models.PackagedPreferences.Get(currentUser);
+        timeZoneOffset = (int)prefs.TimeZone;
+    }
+}
+
+<div class="player-turn-list">
+    <div class="player-turn-list-header">
+        <div class="turn-game turn-cell">
+            <span class="turn-cell-title">Game</span>
+        </div>
+        <div class="turn-started turn-cell">
+            <span class="turn-cell-title">Started</span>
+        </div>
+        <div class="turn-finished turn-cell">
+            <span class="turn-cell-title">Finished</span>
+        </div>
+        <div class="turn-type turn-cell">
+            <span class="turn-cell-title">Skipped</span>
+        </div>
+        <div class="turn-points turn-cell">
+            <span class="turn-cell-title">Points</span>
+        </div>
+    </div>
+    <div class="player-turn-list-content">
+        @foreach (var turn in Model.Where(t => t != null && t.Finished.HasValue))
+        {
+            var finished = turn.Finished.Value.AddHours(timeZoneOffset);
+            var started = turn.Started.Value.AddHours(timeZoneOffset);
+            var civilization = (turn.GamePlayer != null && turn.GamePlayer.Civilization != null) ? turn.GamePlayer.Civilization : GmrLib.Models.Civilization.Unknown;
+            
+            if (finished.Date != lastDateTag)
+            {
+                lastDateTag = finished.Date;
+                
+                <div class="turn-date-tag">@lastDateTag.ToString("MMMM d, yyyy")</div>
+            }
+            
+            <div class="turn-row">
+                <div class="turn-game-icon turn-cell" style="background-color:#@civilization.BackgroundColor;">
+                    <div class="turn-cell-text">
+                        <img src="@Url.Content(civilization.SmallImageUrl)" />
+                    </div>
+                </div>
+                <div class="turn-game-name turn-cell">
+                    <div class="turn-cell-text">
+                        <a href="/Game#@turn.GameID" target="_blank">@turn.Game.Name</a>
+                    </div>
+                </div>
+                <div class="turn-started turn-cell">
+                    <div class="turn-cell-text">
+                        @started.ToString("h:mm tt")
+                        <br />
+                        @started.ToString("MMM d, yyyy")
+                    </div>
+                </div>
+                <div class="turn-finished turn-cell">
+                    <div class="turn-cell-text">
+                        @finished.ToString("h:mm tt")
+                        <br />
+                        @finished.ToString("MMM d, yyyy")
+                    </div>
+                </div>
+                <div class="turn-type turn-cell">
+                    <div class="turn-cell-text">
+                        @turn.SkipStatusDisplay
+                    </div>
+                </div>
+                <div class="turn-points turn-cell">
+                    <div class="turn-cell-text">
+                        <img src="/Content/images/points.png" />
+                        <span>@string.Format("{0:n0}", turn.Points)</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿@model GmrLib.Models.Civilization
+@{
+    ViewBag.Title = "Add an AI player to " + ViewBag.GameName;
+}
+
+<div class="tabcontentcontainer">
+    <h2>Add an AI player to @ViewBag.GameName</h2>
+
+    <p>
+        Select civilization
+    </p>
+
+    @using (Html.BeginForm())
+    {
+        @Html.EditorForModel()
+        <br />
+        <input type="submit" id="add-ai" class="button plus-icon" value="Add AI Player" />
+    }
+</div>

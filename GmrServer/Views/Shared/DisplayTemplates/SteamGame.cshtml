@@ -1,0 +1,14 @@
+﻿@model GmrLib.Models.SteamGame
+@{
+    GmrLib.Models.SteamGame Selected;
+    if (Model == null)
+    { Selected = GmrLib.Models.SteamGame.Civ5; }
+    else
+    { Selected = Model; }
+}
+
+<div class="steam-game" 
+     style="background-image:url('@Url.Content(Selected.ImageUrl)');" >
+</div>
+
+<input type="hidden" class="steam-game-id" value="@Selected.SteamGameID" />

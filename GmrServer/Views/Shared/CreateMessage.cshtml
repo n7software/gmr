@@ -1,0 +1,50 @@
+﻿<h2 style="margin-bottom: 15px;">Send a Message</h2>
+
+<span id="recipients-error" class="field-validation-error" style="display: none;">You must select at least one recipient</span>
+<span id="new-message-error" class="field-validation-error" style="display: none;">You must select at least one recipient</span>
+<div id="message-select-recipients">
+    <div id="recipients">
+        <h4>Select recipients</h4>
+        <ul id="recipient-list">
+        </ul>
+
+        <div class="trash-container-message">
+            <ul class="remove-players-message">
+                <li></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="find-recipients">
+        <h4 style="margin-bottom: -7px;">Find users</h4>
+        @Html.Partial("FindUsers")
+    </div>
+
+    <div id="message-body">
+        <h4>Message</h4>
+
+        <textarea id="message-text" name="MessageText" class="prompt" rows="5" onfocus="clearPrompt(this);" tag="Enter the message you'd like to send...">Enter the message you'd like to send...</textarea>
+        <br />
+        <span id="message-text-error" class="field-validation-error" style="display: none;">You must enter at least 2 characters, and no more than 2,048</span>
+        <span class="subscript" style="margin: 3px 0px 0px 15px; float: left;"><strong>Bold</strong>: [b]text[/b]; <i>Italics</i>: [i]text[/i].<br />
+            Links: [link]http://multiplayerrobot.com[/link] or [link=http://multiplayerrobot.com]Giant Multiplayer Robot[/link]<br />
+            Start a new paragraph by pushing enter twice.
+        </span>
+    </div>
+    
+    <div style="float: left; width: 100%; margin-top: 20px;">
+        <input type="checkbox" id="message-append-existing" checked />
+        <label for="message-append-existing">Append to existing conversation</label>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('.remove-players:first').sortable({ receive: removeRecipient });
+        $('#found-list').sortable({ connectWith: '#recipient-list' });
+        $('#recipient-list').sortable({ receive: addRecipient, connectWith: '.remove-players' });
+    });
+</script>

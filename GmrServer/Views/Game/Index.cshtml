@@ -1,0 +1,92 @@
+﻿@{
+    Layout = "~/Views/Game/_Layout.cshtml";
+    ViewBag.Title = "Games";
+
+    bool showPublicGames = ViewBag.ShowPublic ?? false;
+    bool isAuthenticated = GmrServer.Global.UserSteamID > -1 && Session[GmrServer.Global.UserSteamIDKey] != null;
+}
+
+<script type="text/javascript">
+    function createGameDialog() {
+        $("#dialog-create-game").show();
+        $("#dialog-create-game").dialog({
+            resizable: false,
+            height: 500,
+            modal: true,
+            show: "clip",
+            hide: "clip",
+            buttons: {
+                "Create": function () {
+                    createGame();
+                },
+                "Cancel": function () {
+                    $('#game-name').val('');
+                    setGameType('@GmrLib.Models.GameType.Standard');
+                    selectGame(@GmrLib.Models.SteamGame.Civ5.SteamGameID);
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    @if (isAuthenticated && !showPublicGames)
+    {
+        <text>
+    defaultTab = "#tab-my-games";
+    defaultTabContent = "#my-games";
+    isUserAuthenticated = true;
+        </text>
+    }
+
+    $(document).ready(initializeGameIndexPage);
+</script>
+
+
+@if (ViewBag.GameCreationError ?? false)
+{
+    <span class="field-validation-error">Game creation error. If you were creating a Scenario, please make sure to select the right game.</span>
+}
+
+<div class="tabmenucontainer">
+    <ul class="tabmenu">
+        <li id="tab-my-games"><a href="/Game" onclick="selectTab('#tab-my-games', '#my-games'); setLocationHash('#'); loadFirstMyGames(); return false;">My Games</a></li>
+        <li id="tab-public-games"><a href="/Game#public" onclick="selectTab('#tab-public-games', '#public-games'); setLocationHash('public'); loadFirstPublicGames(); return false;">Public Games</a></li>
+        <li id="tab-game-details" style="display: none;"><a id="link-game-details" href="/Game#" style="color: #419EF3" onclick="selectTab('#tab-game-details', '#game-details'); setLocationHash(lastGameDetailsId); return false;"></a></li>
+    </ul>
+</div>
+<div style="clear: both"></div>
+<div class="tabcontentcontainer">
+    <div id="my-games" class="tabcontent">
+        @if (isAuthenticated)
+        {
+            <div id="loading-my-games">
+                <div id="loading-my-games-animation"></div>
+            </div>
+        }
+        else
+        {
+            <div id="sign-in" class="no-select" unselectable="on" onclick="window.location = '@Url.Action("Login", "User", new { returnUrl = Request.Url })';">
+                Sign In
+            </div>
+        }
+    </div>
+
+    <div id="public-games" class="tabcontent">
+        <div id="public-games-content"></div>
+        <div id="loading-public-games">
+            <div id="loading-public-games-animation"></div>
+        </div>
+    </div>
+
+    <div id="game-details" class="tabcontent">
+        <div id="game-details-content"></div>
+        <div id="loading-game-details">
+            <div id="loading-game-details-animation"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dialog-create-game" style="display: none;">
+    @Html.Partial("Create")
+</div>

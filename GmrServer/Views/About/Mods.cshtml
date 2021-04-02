@@ -1,0 +1,113 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")?v=2" />
+    <style type="text/css">
+        body
+        {
+            
+	        margin-bottom: 20px;
+        }
+    </style>
+    <title>Mods and Scenarios in GMR</title>
+</head>
+<body>
+    <div style="width:570px; margin: 0 auto 20px auto; background-color: #565656; padding: 15px 15px 15px 15px;" >
+        <h2>Mods and Scenarios in Giant Multiplayer Robot</h2>
+        <h3>What are Mods and Scenarios?</h3>
+        <p>
+            Civilization V supports extending the base game via mods and scenarios. <strong>Mods</strong> extend the game by adding
+            or changing anything from civilizations to units. <strong>Scenarios</strong> are pre-built worlds which place the player
+            into a certain situation, sometimes with special conditions for victory.
+            </p>
+            <p>
+            Civilization V and its DLC come with a set of scenarios, and additional mods and scenarios can be 
+            downloaded via <a href="http://steamcommunity.com/workshop/browse?appid=8930&browsesort=trend" target="_blank">Steam Workshop</a>.
+            </p>
+            <h3>Support in GMR</h3>
+        <p>
+            Civilization V doesn't ordinarily support mods or scenarios for multiplayer games. However, Giant Multiplayer Robot
+            allows you to turn a single player mod or scenario game into a multiplayer hot seat game.
+        </p>
+        <p>
+            The basic idea is that a mod or scenario game is created in Civilization V and then submitted while it's still the 
+            game host's turn. GMR then sends the save file back to the host with the game type changed to hot seat and the other
+            players added in.
+        </p>
+        <h3>So how exactly do I use mods in GMR?</h3>
+        <h4>Creating your mod game in GMR</h4>
+        <p>
+            In the <strong>My Games</strong> page, click the button that says <strong>Create a new game</strong>. This will
+            display a dialog with a few game options. From here, simply select the type of game that you'd like to create.
+        <p>
+            The <strong>Basic Mod</strong> type is for modded games which add to the base game, but do not replace any of
+            the base game civilizations.
+        </p>
+        <p>
+            The <strong>Total Mod</strong> type is for modded games which replace base game
+            civilizations. Selecting this means that all players in your game will show as "Unknown" on GMR.
+        </p>
+            The <strong>Scenario</strong> type is for games that have already been setup, which includes
+            actual scenarios or existing games. For the Scenario type, you'll need to upload the initial save file before
+            creating the game. GMR will then setup the game for you with the appropriate players and civilizations.
+        </p>
+        <p>
+            Once you've created your game, be sure to communicate which mods it uses. The game comments are a good way to
+            do this. All players in your game will need to install the mods you're using.
+        </p>
+        <h4>Creating your mod game in Civ V</h4>
+        <p>
+            Before creating your mod game in Civ V, make sure to disable any DLC you aren't using – this is especially
+            important if you're creating a vanilla Civ V game and have Gods and Kings installed. To do this, select the 
+            <strong>DLC</strong> menu option in the main menu. After you have disabled the DLC you don't need, return to 
+            the main menu and select <strong>Mods</strong>. Upon entering this menu, Civ V will update or download any 
+            pending mods you have subscribed to in Steam Workshop. Once this is complete, select the mods you wish to 
+            use and click <strong>Next</strong>.
+        </p>
+        <p>
+            From here, the mod setup can vary depending on the mod. Most of the time, you'll select <strong>Single Player 
+            Game</strong> and then <strong>Set Up Game</strong>. Sometimes, especially for scenarios or custom maps, 
+            you may need to select <strong>Custom Game</strong> or use special settings in your game setup. 
+            Check with the mod's page on Steam Workshop for instructions on using a specific mod.
+        </p>
+        <p>
+            Alternatively, for official scenarios, you can select <strong>Single Player</strong> from the main menu then 
+            select <strong>Scenario</strong>.
+        </p>
+        <h4>Submitting the first save</h4>
+        <p>
+            For all mod and scenario games, you'll need to give GMR the save file to turn it into a hot seat game and setup
+            the other human players. For Basic and Total Mods, this will occur after you start the game. For Scenarios, 
+            this will occur when you create the game. 
+        </p>
+        <p>
+            For the first turn, you'll need to save the game and submit it <strong>before</strong> clicking next turn. 
+            You'll find instructions on where to find your save file on the Game Details page. After submitting this turn, 
+            it will still be your turn. GMR will give you back the save file, and you'll need to load it from the hot seat 
+            menu and play it normally.
+        </p>
+        <p>
+            From this point on, the game will play like all other GMR games.
+        </p>
+        <h3>If your game crashes on load</h3>
+        <p>
+            If you run into problems with your game crashing, try installing and using the 
+            <a href="http://steamcommunity.com/sharedfiles/filedetails/?id=75500984" target="_blank">Custom Advanced Setup Screen</a> mod to
+            load your hot seat save files. To do this, first subscribe to the mod in Steam Workshop. Then, select 
+            <strong>Mods</strong> from the Civilization V main menu and enable all the mods your game uses plus Custom Advanced Setup Screen. 
+            Then, select <strong>Single Player</strong> -&gt; <strong>Custom Game</strong> -&gt; <strong>Load Hot Seat Game</strong>. 
+            From there, you can load your modded hot seat save file and play your turn.
+        </p>
+        <h3>Any other questions?</h3>
+        <p>
+            Feel free to @Html.ActionLink("contact us", "Us", "About", null, new { target = "_blank" })!
+        </p>
+    </div>
+</body>
+</html>

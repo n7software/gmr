@@ -1,0 +1,86 @@
+﻿@model IEnumerable<GmrLib.Models.Game>
+@{
+    ViewBag.ShowPlayerCount = true;
+
+    dynamic prefs = null;
+    if (GmrServer.Global.IsUserAuthenticated())
+    {
+        prefs = GmrLib.Models.PackagedPreferences.Get(GmrServer.Global.CurrentUser());
+    }
+}
+
+<link href="@Url.Content("~/Content/Browser.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    
+    $(loadMorePublicGames);
+
+</script>
+
+<div class="right-box" style="">
+    @if (GmrServer.Global.IsUserAuthenticated())
+    {
+        <div class="right-box-content">
+            <h3>Show games that</h3>
+            <input type="checkbox"
+               id="ShowPublicNewGames"
+               onchange="updateListPreference(this.id, this.checked, 'SavingNewSelection')"
+               @if (prefs.ShowPublicNewGames)
+               {<text>checked="checked"</text>} />
+            <label for="ShowPublicNewGames">Haven't started yet</label>
+            <br />
+            <input type="checkbox"
+               id="ShowPublicInProgressGames"
+               onchange="updateListPreference(this.id, this.checked, 'SavingInProgressSelection')"
+               @if (prefs.ShowPublicInProgressGames)
+               {<text>checked="checked"</text>} />
+            <label for="ShowPublicInProgressGames">Are in progress</label>
+            <br />
+            <br />
+            <label for="SortPublicGamesMethod">Sort games by</label>
+            <select id="SortPublicGamesMethod"
+                    onchange="updateListPreference(this.id, this.value, 'SavingSortMethod')">
+                <option @if(prefs.SortPublicGamesMethod == 0) {<text> selected </text>}
+                    value="0">Date created</option>
+                <option @if(prefs.SortPublicGamesMethod == 1) {<text> selected </text>}
+                    value="1">Date created desc</option>
+                <option @if(prefs.SortPublicGamesMethod == 2) {<text> selected </text>}
+                    value="2">Human players</option>
+                <option @if(prefs.SortPublicGamesMethod == 3) {<text> selected </text>}
+                    value="3">Human players desc</option>
+            </select>
+            <br />
+            <br />
+
+            <div id="refresh-public-games" class="button right-box-button" style="margin-top: 10px;" onclick="refreshPublicGames()">Refresh List</div>
+        </div>
+    }
+
+    <div class="create-game right-box-content" style="border-bottom: 0;">
+        @if (GmrServer.Global.UserSteamID > -1)
+        {
+            <div id="create-game-button" class="button right-box-button" style="" onclick="createGameDialog()">Create a new game</div>
+        }
+        else
+        {
+            <div id="create-game-button" class="button right-box-button" style="" onclick="window.location = '@Url.Action("Login", "User", new { returnUrl = "/Game" })';">Create a new game</div>
+        }
+    </div>
+</div>
+
+@if (Model.Count() > 0)
+{
+    <div id="game-browser">
+        @Html.Partial("BrowserPage", Model)
+    </div>
+}
+else
+{
+    <div style="width: 680px">
+        <p>
+            There are currently no public games awaiting members.
+            <br />
+            You can try changing the filter settings to the right or <a href="" onclick="createGameDialog(); return false">create one</a> yourself :)
+        </p>
+    </div>
+}

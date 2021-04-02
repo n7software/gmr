@@ -1,0 +1,179 @@
+﻿@model GmrLib.Models.Game
+@{
+    GmrLib.Models.GamePlayer nextPlayer = null;
+    int players = Model.Players.Count;
+    int whoIsNext = 0;
+
+    if (players > 0)
+    {
+        var turn = Model.Turns.LastOrDefault();
+        if (turn == null)
+        {
+            nextPlayer = Model.Players.FirstOrDefault(p => p.UserID == Model.HostUserId);
+        }
+        else
+        {
+            nextPlayer = Model.Players.FirstOrDefault(p => p.User == turn.User);
+        }
+
+        if (nextPlayer != null)
+        {
+            whoIsNext = nextPlayer.TurnOrder;
+        }
+    }
+
+    if (nextPlayer == null)
+    {
+        nextPlayer = new GmrLib.Models.GamePlayer
+        {
+            Civilization = GmrLib.Models.Civilization.Unknown,
+            TurnOrder = 1,
+            User = Model.Host
+        };
+    }
+
+    bool gameEditable = ViewBag.GameEditable ?? false;
+    ViewBag.GameID = Model.GameID;
+}
+
+<script type="text/javascript">
+    var offset = @whoIsNext +1;
+</script>
+
+<div class="game-base-container">
+    <div class="game @if (@Model.HasStarted)
+                     {<text>game-started</text>}">
+        <div class="game-name">
+            <div class="name-block">
+                <img class="steam-game-title tooltip" 
+                     src="@Url.Content(Model.SteamGame.SmallImageUrl)" 
+                     alt="@Model.SteamGame.Name"
+                     title="@Model.SteamGame.Name"/>
+                @if (Model.GameType != GmrLib.Models.GameType.Standard)
+                {
+                    <div class="game-type">
+                        @GmrLib.Models.Game.GameTypeToString(Model.GameType)
+                    </div>
+                }
+                @if (Model.AllowDLC)
+                {
+                    <div class="game-type">
+                        DLC
+                    </div>
+                }
+
+                @if (gameEditable)
+                {
+                    <h2 class="unparsed-game-tooltip game-title-text" gameId="@Model.GameID">@Model.Name</h2>
+                }
+                else
+                {
+                    <a style="float:left;"
+                       href="/Game#@Model.GameID"
+                       target="_blank"
+                       class="unparsed-game-tooltip game-title-text"
+                       gameId="@Model.GameID"
+                       onclick="return goToGameDetails(@Model.GameID);">@Model.Name</a>
+                }
+            </div>
+
+            <div id="game-details-tooltip-@Model.GameID" class="game-details-tooltip" style="display: none;">
+                <div class="game-details-tooltip-content">
+                    <div class="comment-date needs-parsing" title="@Model.Created.ToString()">Created on </div>
+                    <br />
+                    <br />
+                    <div>
+                        @Html.Raw(GmrServer.Util.Utilities.ParseCommentCodes(Model.Description, false))
+                    </div>
+                </div>
+            </div>
+
+            @if (ViewBag.ShowPlayerCount ?? false)
+            {
+                <div class="player-count">
+                    @Model.NumberOfFilledPlayerSlots/@Model.MaxPlayers
+                </div>
+            }
+        </div>
+
+        @{ var nextPlayerCiv = nextPlayer.Civilization ?? GmrLib.Models.Civilization.Unknown; }
+
+        <div class="game-host" style="background-color:#@nextPlayerCiv.BackgroundColor">
+
+            <img class="tooltip" style="float:left;" src="@Url.Content(nextPlayerCiv.ImageUrl)" alt="@nextPlayerCiv.Name" title="@nextPlayerCiv.Name" />
+
+            @if (nextPlayer.UserID != 0)
+            { @Html.Raw(@"<a href=""" + GmrServer.Global.GetPlayerDetailsUrl(nextPlayer.UserID) + @""" target=""_blank"">") }
+
+            <img class="avatar game-avatar tooltip @nextPlayer.UserID @if(nextPlayer.User == Model.Host) { <text>host-icon</text> }" 
+                style="background-image:url('@nextPlayer.User.MediumAvatarUrl');" 
+                src="@Url.Content(GmrServer.Avatar.GetBorderImages(nextPlayer.UserID).MediumBorder)" 
+                 alt="@nextPlayer.User.NamePlusHost(Model.Host)" title="@nextPlayer.User.NamePlusHost(Model.Host)" />
+
+
+            @if (nextPlayer.UserID != 0)
+            { @Html.Raw(@"</a>") }
+
+            <div class="host-stats-box" style="color:@GmrServer.Global.PremiumColor(nextPlayer.User.AccountType);">
+                <span class="stats-rank-text">@GmrServer.Global.GetRankFromPoints(nextPlayer.User.TotalPoints, nextPlayer.UserID)</span>
+                <img class="stats-points-icon" src="/Content/images/points.png" height="16" width="16" alt="points" />
+                <span class="stats-points-text">@string.Format("{0:n0}", nextPlayer.User.TotalPoints)</span>
+            </div>
+            <script type="text/javascript">requestUserInfo("@nextPlayer.UserID");</script>
+        </div>
+        <ul class="game-players">
+            @for (int i = 1; i < players; i++)
+            {
+                int index = (whoIsNext + i) % players;
+                var player = Model.Players.FirstOrDefault(p => p.TurnOrder == index);
+                if (player != null)
+                {
+                    var civ = player.Civilization ?? GmrLib.Models.Civilization.Unknown;
+                <div class="game-player-container @if (Model.GameType == GmrLib.Models.GameType.Scenario && player.UserID != 0)
+                                                  {<text>human-player</text>}">
+                    <li class="game-player @if ((gameEditable && Model.GameType != GmrLib.Models.GameType.Scenario) ||
+                                                (gameEditable && Model.GameType == GmrLib.Models.GameType.Scenario && player.UserID != 0))
+                                           { <text>draggable</text>}"
+                        style="background-color:#@civ.BackgroundColor">
+
+                        <img class="civ-icon tooltip" src="@Url.Content(civ.SmallImageUrl)" alt="@civ.Name" title="@civ.Name" />
+
+                        @if (player.UserID != 0)
+                        { @Html.Raw(@"<a href=""" + GmrServer.Global.GetPlayerDetailsUrl(player.UserID) + @""" target=""_blank"">") }
+
+                        <img class="avatarsm game-avatarsm tooltip @(player.UserID)sm @if(player.User == Model.Host) { <text>host-icon-sm</text> } "
+                             style="background-image:url('@player.User.AvatarUrl');" src="@Url.Content(GmrServer.Avatar.GetBorderImages(player.UserID).SmallBorder)" 
+                             alt="@player.User.NamePlusHost(Model.Host)" title="@player.User.NamePlusHost(Model.Host)" />
+
+                        @if (player.UserID != 0)
+                        { @Html.Raw("</a>") }
+
+                        <input class="turn-order" type="hidden" value="@player.TurnOrder" />
+                        <input class="user-id" type="hidden" value="@player.UserID" />
+                        <script type="text/javascript">requestUserInfo("@player.UserID");</script>
+                    </li>
+                    
+                    @if (player.UserID != 0)
+                    {
+                        <div class="player-stats-box" style="color:@GmrServer.Global.PremiumColor(player.User.AccountType);">
+                            <img class="stats-points-icon" src="/Content/images/points_sm.png" height="12" width="12" alt="points" />
+                            <span class="stats-points-text">@string.Format("{0:n0}", player.User.TotalPoints)</span>
+                            <span class="stats-rank-text">@GmrServer.Global.GetRankFromPoints(player.User.TotalPoints, player.UserID)</span>
+                        </div>
+                    }
+                </div>
+                }
+            }
+        </ul>
+
+        @if (gameEditable && Model.Type != (int)GmrLib.Models.GameType.Scenario)
+        {
+            <span class="subscript" style="float: left; padding-left: 185px;">Drag players to re-order</span>
+        }
+
+        @if (Model.HasStarted)
+        {
+            <span class="game-started-tag" style="display: none;">In Progress</span>
+        }
+    </div>
+</div>

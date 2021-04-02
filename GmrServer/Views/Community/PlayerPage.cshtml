@@ -1,0 +1,10 @@
+﻿@model IEnumerable<GmrLib.Models.PackagedUserStats>
+@{
+    Layout = null;
+
+    int totalPages = ViewBag.TotalPages ?? 0;
+}
+
+<input type="hidden" id="total-pages-available" value="@totalPages">
+
+@Html.DisplayForModel()

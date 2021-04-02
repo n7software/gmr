@@ -1,0 +1,56 @@
+﻿@model GmrLib.Models.Message
+@{
+    Layout = null;
+    GmrLib.Models.User firstRecipient = null;
+    GmrLib.Models.Comment lastComment = null;
+    int recipientCount = Model.Recipients.Count;
+
+    string commentCount = string.Format("{0:n0}", Model.Comments.Count());
+
+    if (recipientCount > 0)
+    {
+        lastComment = Model.Comments.LastOrDefault();
+        if (lastComment == null)
+        {
+            firstRecipient = Model.Recipients.First(r => r.Recipient.UserId == Model.CreatedByUser.UserId).Recipient;
+        }
+        else
+        {
+            firstRecipient = Model.Recipients.First(r => r.Recipient.UserId == lastComment.UserID).Recipient;
+        }
+    }
+
+    var currentUserRecipient = Model.Recipients.FirstOrDefault(r => r.Recipient.UserId == GmrServer.Global.UserSteamID);
+}
+
+@if (Model != null)
+{
+    <div class="message-detail-name" style="display: none;">@firstRecipient.UserName</div>
+    
+    <h3>Message recipients</h3>
+    <div class="message">
+        <div class="message-recipients">
+            @foreach (var recipient in Model.Recipients.Select(r => r.Recipient))
+            {
+                <div class="message-recipient-container">
+                    <li class="message-recipient">
+                        <a href="@GmrServer.Global.GetPlayerDetailsUrl(recipient.UserId)" target="_blank">
+                            <img class="avatarsm game-avatarsm tooltip @(recipient.UserId)sm"
+                                 style="background-image: url('@recipient.AvatarUrl');"
+                                 src="@Url.Content(GmrServer.Avatar.GetBorderImages(recipient.UserId).SmallBorder)"
+                                 alt="@recipient.UserName" title="@recipient.UserName"/>
+                        </a>
+                    </li>
+                </div>
+                
+                <script type="text/javascript">requestUserInfo("@recipient.UserId");</script>
+            }
+        </div>
+    </div>
+    
+    @Html.Partial("BaseComments")
+}
+else
+{
+    <h3>Sorry, this message wasn't found :(</h3>
+}

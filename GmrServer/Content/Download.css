@@ -1,0 +1,69 @@
+﻿ul#menu li a#download
+{
+    padding-bottom: 14px;
+    background-color: #222222;
+    color:#CCCCCC;
+    border-radius: 0px;
+    /*border-top-left-radius: 5px;
+    border-top-right-radius: 5px;*/
+}
+
+ul#menu li a#download:hover
+{
+    background-color: #333333;
+    text-decoration: none;
+}
+
+ul#menu li a#download:active
+{
+    background-color: #555555;
+    text-decoration: none;
+}
+
+
+div#download
+{
+	width:200px;
+	height:62px;
+	padding-left:85px;
+	padding-top:14px;
+	font-weight:bold;
+	color:#85D1D8;
+	font-size:24pt;
+	/*border:1px #CCCCCC solid;*/
+	background-color:#404040;
+	background-image:url('images/down.png');
+	background-repeat:no-repeat;
+	background-position:6px 6px;
+	cursor:pointer;
+	/*border-radius:10px;*/
+
+}
+div#download:hover
+{
+	background-color:  #505050;
+}
+div#download:active
+{
+	background-color: #606060;
+}
+
+div#download a,
+div#download a:active,
+div#download a:visited
+{
+	color:#85D1D8;
+}
+
+div#auth-key
+{
+	width:350px;
+	height:52px;
+	text-align:center;
+	padding-top:4px;
+	font-weight:bold;
+	color:#85D1D8;
+	font-size:24pt;
+	/*border:1px #CCCCCC solid;*/
+	/*background-color:#787878;*/
+}

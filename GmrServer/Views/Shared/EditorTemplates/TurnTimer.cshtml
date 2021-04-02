@@ -1,0 +1,125 @@
+﻿@model GmrLib.Models.TurnTimer
+           
+@{
+    bool newlyAdded = Model.Days != 0 || Model.Hours != 0;
+}
+
+<script type="text/javascript">
+    function RemoveTurnTimer() {
+        $("#dialog-confirm-delete-tt").css({ visibility: "visible" });
+        $("#dialog-confirm-delete-tt").dialog({
+            resizable: false,
+            height: 200,
+            modal: true,
+            buttons: {
+                "Yes": function () {
+                    $(this).dialog("close");
+                    $.post('@Url.Action("RemoveTurnTimer", "Game", new { id = Model.GameID })',
+                        function () {
+                            DisplayTurnTimer();
+                        });
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    };
+
+    function getCheckboxValue(selector) {
+        var val = $(selector + ':checked').val();
+        if (val == undefined)
+            return 'false';
+        else return 'true';
+    }
+
+    function SaveTurnTimer() {
+        $('#turn-timer-errors').html('<div class="validating turn-timer-load">Validating...</div>');
+        var postStr = '@Url.Action("SetTurnTimer", "Game", new { id = Model.GameID })' +
+        '?Days=' + $('#Days').val() +
+        '&Hours=' + $('#Hours').val() +
+        '&Sunday=' + getCheckboxValue('#Sunday') +
+        '&Monday=' + getCheckboxValue('#Monday') +
+        '&Tuesday=' + getCheckboxValue('#Tuesday') +
+        '&Wednesday=' + getCheckboxValue('#Wednesday') +
+        '&Thursday=' + getCheckboxValue('#Thursday') +
+        '&Friday=' + getCheckboxValue('#Friday') +
+        '&Saturday=' + getCheckboxValue('#Saturday') +
+        '&TimeZone=' + $('#TimeZone').val() +
+        '&StartStr=' + $('#Start').val() +
+        '&StopStr=' + $('#Stop').val() +
+        '&SkipLimit=' + $('#SkipLimit').val();
+        $.post(postStr,
+        function (data) {
+            if (data == '') {
+                DisplayTurnTimer();
+            }
+            else {
+                $('#turn-timer-errors').html(data);
+            }
+        });
+        
+    }
+</script>
+
+<div id="dialog-confirm-delete-tt" title="Remove turn timer?" style="visibility: hidden; display:none;">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        This will remove the turn timer from this game.<br />
+        <br />
+        Are you sure you want to do this?
+    </p>
+</div>
+
+<div id="turn-timer-container" class="edit-turn-timer">
+    @using (Html.BeginForm())
+    {
+        <div style="float:left; width:350px;">
+            <div id="turn-timer-buttons" style="top:240px;">
+                <div id="back-turn-timer" class="button link-button left-icon" style="margin-right:5px" onclick="DisplayTurnTimer()"></div>
+                <div id="save-turn-timer" class="button link-button save-icon" style="margin-right:5px" onclick="SaveTurnTimer()" ></div>
+                @if(newlyAdded)
+                {
+                    <div id="remove-turn-timer" class="button link-button delete-icon" style="margin-right:5px" onclick="RemoveTurnTimer()"></div>
+                }
+            </div>
+            <h2 style="position:relative; @if (newlyAdded) { <text>left:-100px;</text>  } else { <text>left:-65px;</text> }">
+            @if(newlyAdded) { <text>Modify</text> } else {<text>Add</text> } Turn Timer
+            &nbsp;<img src="@Url.Content("~/Content/images/help.png")" style="cursor:pointer" onclick="window.open('@Url.Action("TurnTimer", "About")', 'How to Use the GMR Turn Timer', 'width=615,height=800,scrollbars=1');" alt="help" />
+            </h2>
+            Set timer to 
+            @Html.TextBoxFor(m => m.Days, new { style = "width:40px; text-align:right;" }) Days, 
+            @Html.TextBoxFor(m => m.Hours, new { style = "width:40px; text-align:right;" }) Hours<br />
+            <div style="width:680; margin: 5px 0 30px 0;">
+                <div class="timer-day">on&nbsp;&nbsp;&nbsp;</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Sunday)<br />Sun</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Monday)<br />Mon</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Tuesday)<br />Tue</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Wednesday)<br />Wed</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Thursday)<br />Thu</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Friday)<br />Fri</div>
+                <div class="timer-day">@Html.CheckBoxFor(m => m.Saturday)<br />Sat</div>
+            </div><br />
+            Time Zone @Html.DropDownListFor(m => m.TimeZone, GmrLib.Models.TurnTimer.TimeZones)
+            <h3>Optional Settings</h3>
+            <div style="margin-bottom:10px;">
+                Cannot expire before
+                @Html.TextBoxFor(m => m.Start, new { style = "width:70px;" })
+                or after
+                @Html.TextBoxFor(m => m.Stop, new { style = "width:70px;" })
+                <br />
+                <sub>(Type in times. i.e.: 10:00 AM, 6:00 PM, 19:00)</sub>
+            </div>
+            Kick a player after being skipped
+            @Html.TextBoxFor(m => m.SkipLimit, new { style = "width:35px;" }) 
+            times
+
+            <script type="text/javascript">
+                $('#Start').val('@Model.FriendlyStart');
+                $('#Stop').val('@Model.FriendlyStop');
+            </script>
+        </div>
+        <div id="turn-timer-errors" class="field-validation-error" style="float:right; width:180px; padding-right:10px;">
+        </div>
+    }
+</div>

@@ -1,0 +1,43 @@
+﻿@model System.Collections.Generic.IEnumerable<GmrLib.Models.Game>
+@{
+    Layout = "~/Views/Game/_Layout.cshtml";
+    ViewBag.Title = "Find Games";
+    ViewBag.ShowPlayerCount = true;
+
+    string searchValue = ViewBag.SearchValue ?? string.Empty;
+}
+<link href="@Url.Content("~/Content/Browser.css")" rel="stylesheet" type="text/css" />
+
+<h2>Find Games</h2>
+
+@using (Html.BeginForm())
+{
+    <input id="searchValue" name="searchValue" value="@searchValue" style="float:left; width:300px;" />
+    <div id="search-games" 
+         class="button link-button search-icon" 
+         style="float:left; width:26px; margin-left:5px;" 
+         onclick="$('#search-games').closest('form').submit();"></div>
+}
+<br style="clear:both;" />
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div id="game-browser">
+        @Html.DisplayForModel()
+    </div>
+}
+else
+{    
+    <div style="width: 680px">
+        <p>
+            @if (string.IsNullOrEmpty(searchValue))
+            {
+                <text>Enter all or part of the name for the game you want to search for.</text>
+            }
+            else
+            {
+                <text>Sorry, no games were found that match that name.</text>
+            }
+        </p>
+    </div>
+}

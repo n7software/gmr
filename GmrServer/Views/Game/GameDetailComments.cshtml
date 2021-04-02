@@ -1,0 +1,15 @@
+﻿@model GmrLib.Models.Game
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    <text>
+    @Html.Partial("BaseComments")
+    </text>
+}
+else
+{
+    <h3>Sorry, this game wasn't found :(</h3>
+}
